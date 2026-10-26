@@ -82,7 +82,11 @@ button{font:inherit;color:inherit}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--fondo)}
 .barra-seccion{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--fondo);border-bottom:1px solid var(--linea)}
 .barra-seccion .envoltura{display:flex;align-items:center;gap:12px;min-height:52px}
-.volver{display:inline-flex;align-items:center;gap:2px;color:var(--texto);text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px 8px 6px;border-radius:999px;background:var(--superficie)}
+.volver{display:grid;place-items:center;flex:none;width:40px;height:40px;color:var(--texto);text-decoration:none;border-radius:50%;background:var(--superficie)}
+.marca-mini img{display:block;width:40px;height:40px;object-fit:contain}
+.tit-bloque{display:grid;min-width:0;line-height:1.1}
+.tit-bloque small{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
+.barra-seccion .envoltura{gap:10px!important;min-height:60px!important}
 .volver svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .titulo-seccion{font-family:var(--titulo);font-size:20px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* Inicio */
@@ -344,8 +348,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
 <nav class="barra-seccion" id="barra-seccion" hidden aria-label="Navegación">
   <div class="envoltura">
-    <a class="volver" href="#inicio" data-vista="inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Inicio</a>
-    <span class="titulo-seccion" id="titulo-seccion"></span>
+    <a class="volver" href="#inicio" data-vista="inicio" aria-label="Volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
+    <a class="marca-mini" href="#inicio" tabindex="-1" aria-hidden="true"><img alt=""></a>
+    <span class="tit-bloque"><small>Gira México 2026</small><span class="titulo-seccion" id="titulo-seccion"></span></span>
   </div>
 </nav>
 
@@ -698,6 +703,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   }
   const portada = document.querySelector(".portada"), mini = $("#mini");
   mini.querySelector("img").src = portada.querySelector("img").src;
+  document.querySelector(".marca-mini img").src = portada.querySelector("img").src;
   function miniBarra() {
     const ver = !portada.hidden && window.scrollY > portada.offsetHeight - 20;
     mini.classList.toggle("ver", ver);
