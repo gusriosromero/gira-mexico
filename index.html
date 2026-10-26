@@ -73,7 +73,7 @@ button{font:inherit;color:inherit}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--fondo)}
 .pestanas{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--fondo);border-bottom:1px solid var(--linea)}
 .pestanas .envoltura{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
-.pestanas button{background:none;border:0;padding:14px 12px 12px;font-weight:600;font-size:14px;color:var(--suave);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
+.pestanas button{background:none;border:0;padding:14px 10px 12px;font-weight:600;font-size:14px;color:var(--suave);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
 .pestanas button[aria-selected="true"]{color:var(--texto);border-color:var(--amarillo)}
 main{padding-block:24px 64px}
 section.vista{display:grid;gap:28px}
@@ -143,6 +143,12 @@ p{margin:0}
 .lugares p{font-size:14px}
 .lugares .meta{font-size:12px;font-weight:700;color:var(--suave)}
 .lugares a{font-size:13px;font-weight:700;color:var(--texto);text-decoration-color:var(--celeste);text-underline-offset:3px;justify-self:start}
+/* Instalar */
+.direccion{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.direccion code{font-family:var(--cuerpo);font-weight:700;font-size:15px;background:var(--superficie);border-radius:10px;padding:10px 12px;min-width:0;overflow-wrap:anywhere;user-select:all}
+.pasos-os{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pasos{margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+@media (max-width:560px){.pasos-os{grid-template-columns:1fr}}
 /* Relojes */
 .relojes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .reloj{border:1px solid var(--linea);border-radius:var(--radio);padding:12px;min-width:0}
@@ -235,7 +241,7 @@ p{margin:0}
 
 <header class="portada">
   <div class="envoltura">
-    <img src="icons/logo.png" alt="Logo de Acuarela Mimbi" width="96" height="87">
+    <img src="icons/logo.png" alt="Logo Acuarela Mimbi Gira México 2026" width="96" height="90">
     <div>
       <span class="acento">Gira</span>
       <h1>México 2026</h1>
@@ -251,6 +257,7 @@ p{margin:0}
     <button role="tab" id="tab-lugares" data-vista="lugares" aria-selected="false">Lugares</button>
     <button role="tab" id="tab-tips" data-vista="tips" aria-selected="false">Tips</button>
     <button role="tab" id="tab-mi-lista" data-vista="mi-lista" aria-selected="false">Qué llevar</button>
+    <button role="tab" id="tab-instalar" data-vista="instalar" aria-selected="false">Instalar</button>
   </div>
 </nav>
 
@@ -413,6 +420,30 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- INSTALAR -->
+  <section class="vista" id="vista-instalar" hidden>
+    <div class="bloque">
+      <span class="etiqueta">En tu celular</span>
+      <h2>Cómo instalarla</h2>
+      <p>Instalada queda con su ícono, se abre como una app y <b>funciona sin internet</b> en México después de abrirla una vez.</p>
+      <p class="aviso alerta" id="ya-instalada" hidden>Ya la estás usando instalada. ¡Listo!</p>
+    </div>
+    <div class="bloque">
+      <h3>Dirección</h3>
+      <div class="direccion">
+        <code id="url-app">gusriosromero.github.io/gira-mexico</code>
+        <button class="btn sec" id="copiar-url" type="button">Copiar</button>
+      </div>
+    </div>
+    <div class="pasos-os">
+      <div class="tip"><h3>Android</h3>
+        <ol class="pasos"><li>Abrí la dirección en <b>Chrome</b>.</li><li>Tocá el menú <b>⋮</b> arriba a la derecha.</li><li>Elegí <b>Instalar app</b> o <b>Agregar a pantalla de inicio</b>.</li></ol></div>
+      <div class="tip"><h3>iPhone</h3>
+        <ol class="pasos"><li>Abrí la dirección en <b>Safari</b>.</li><li>Tocá <b>Compartir</b> (el cuadrado con la flecha).</li><li>Elegí <b>Agregar a inicio</b> y después <b>Agregar</b>.</li></ol></div>
+    </div>
+    <p class="nota">Usá siempre la app del ícono: lo que marcás en "Qué llevar" se guarda en ella. Cuando haya novedades, se actualiza sola la próxima vez que la abras con conexión.</p>
+  </section>
+
   <!-- MI LISTA -->
   <section class="vista" id="vista-mi-lista" hidden>
     <div id="mi-lista"></div>
@@ -439,7 +470,7 @@ p{margin:0}
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
   // ---------- Pestañas ----------
-  const vistas = ["recorrido", "lugares", "tips", "mi-lista"];
+  const vistas = ["recorrido", "lugares", "tips", "mi-lista", "instalar"];
   function mostrar(v) {
     if (!vistas.includes(v)) v = "recorrido";
     for (const x of vistas) {
@@ -528,6 +559,15 @@ p{margin:0}
     }
   }
   render();
+
+  // ---------- Instalar ----------
+  if (matchMedia("(display-mode: standalone)").matches || navigator.standalone) $("#ya-instalada").hidden = false;
+  $("#copiar-url").addEventListener("click", async () => {
+    const b = $("#copiar-url");
+    try { await navigator.clipboard.writeText("https://gusriosromero.github.io/gira-mexico/"); b.textContent = "Copiado"; }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($("#url-app")); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent = "Seleccionado"; }
+    setTimeout(() => { b.textContent = "Copiar"; }, 2000);
+  });
 
   // ---------- Lugares ----------
   function activar(n, desdeMapa) {
