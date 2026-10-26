@@ -71,10 +71,32 @@ button{font:inherit;color:inherit}
 
 /* Pestañas */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--fondo)}
-.pestanas{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--fondo);border-bottom:1px solid var(--linea)}
-.pestanas .envoltura{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
-.pestanas button{background:none;border:0;padding:14px 10px 12px;font-weight:600;font-size:14px;color:var(--suave);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
-.pestanas button[aria-selected="true"]{color:var(--texto);border-color:var(--amarillo)}
+.barra-seccion{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--fondo);border-bottom:1px solid var(--linea)}
+.barra-seccion .envoltura{display:flex;align-items:center;gap:12px;min-height:52px}
+.volver{display:inline-flex;align-items:center;gap:2px;color:var(--texto);text-decoration:none;font-weight:700;font-size:14px;padding:8px 12px 8px 6px;border-radius:999px;background:var(--superficie)}
+.volver svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.titulo-seccion{font-family:var(--titulo);font-size:20px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Inicio */
+.cab-inicio{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modo{display:flex;gap:4px;background:var(--superficie);border-radius:999px;padding:4px}
+.modo button{border:0;background:none;color:var(--suave);width:36px;height:32px;border-radius:999px;display:grid;place-items:center;cursor:pointer}
+.modo button[aria-pressed="true"]{background:var(--fondo);color:var(--texto);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.modo svg,.mosaico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.menu{display:grid;gap:10px}
+.mosaico{display:grid;color:var(--texto);text-decoration:none;border-radius:var(--radio);background:var(--c);transition:transform .1s}
+.mosaico:active{transform:scale(.97)}
+.mosaico .ico{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--fondo)}
+.mosaico .ico svg{width:24px;height:24px}
+.mosaico b{display:block;font-weight:700;font-size:14px;line-height:1.25}
+.mosaico small{display:block;color:var(--suave);font-size:12.5px;line-height:1.35}
+.c-durazno{--c:var(--p-durazno)}.c-rosa{--c:var(--p-rosa)}.c-lila{--c:var(--p-lila)}.c-celeste{--c:var(--p-celeste)}.c-alerta{--c:var(--alerta-fondo)}
+.menu.grilla{grid-template-columns:repeat(3,minmax(0,1fr))}
+.menu.grilla .mosaico{justify-items:center;text-align:center;gap:8px;padding:16px 8px 14px;align-content:start}
+.menu.grilla small{display:none}
+.menu.lista .mosaico{grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:14px;padding:10px 14px}
+.menu.lista .mosaico::after{content:"›";font-size:24px;color:var(--suave);line-height:1}
+.menu.lista b{font-size:15px}
+@media (min-width:600px){.menu.grilla{grid-template-columns:repeat(4,minmax(0,1fr))}}
 main{padding-block:24px 64px}
 section.vista{display:grid;gap:28px}
 .etiqueta{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
@@ -296,20 +318,35 @@ p{margin:0}
   </div>
 </header>
 
-<nav class="pestanas" aria-label="Secciones">
-  <div class="envoltura" role="tablist">
-    <button role="tab" id="tab-recorrido" data-vista="recorrido" aria-selected="true">Recorrido</button>
-    <button role="tab" id="tab-lugares" data-vista="lugares" aria-selected="false">Lugares</button>
-    <button role="tab" id="tab-tips" data-vista="tips" aria-selected="false">Tips</button>
-    <button role="tab" id="tab-plata" data-vista="plata" aria-selected="false">Conversor de moneda</button>
-    <button role="tab" id="tab-mi-lista" data-vista="mi-lista" aria-selected="false">Qué llevar</button>
-    <button role="tab" id="tab-repertorio" data-vista="repertorio" aria-selected="false">Repertorio</button>
-    <button role="tab" id="tab-emergencias" data-vista="emergencias" aria-selected="false">Emergencias</button>
-    <button role="tab" id="tab-instalar" data-vista="instalar" aria-selected="false">Instalar</button>
+<nav class="barra-seccion" id="barra-seccion" hidden aria-label="Navegación">
+  <div class="envoltura">
+    <a class="volver" href="#inicio" data-vista="inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Inicio</a>
+    <span class="titulo-seccion" id="titulo-seccion"></span>
   </div>
 </nav>
 
 <main class="envoltura">
+
+  <!-- INICIO -->
+  <section class="vista" id="vista-inicio">
+    <div class="cab-inicio">
+      <h2>Secciones</h2>
+      <div class="modo" role="group" aria-label="Forma de ver las secciones">
+        <button type="button" data-modo="grilla" aria-pressed="true" aria-label="Cuadrícula"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></button>
+        <button type="button" data-modo="lista" aria-pressed="false" aria-label="Lista"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg></button>
+      </div>
+    </div>
+    <div class="menu grilla" id="menu">
+      <a class="mosaico c-durazno" href="#recorrido" data-vista="recorrido"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span class="txt"><b>Recorrido</b><small>Vuelos, fechas y el festival</small></span></a>
+      <a class="mosaico c-celeste" href="#lugares" data-vista="lugares"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span class="txt"><b>Lugares</b><small>Mapa de San Blas y qué visitar</small></span></a>
+      <a class="mosaico c-lila" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
+      <a class="mosaico c-rosa" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Conversor de moneda</b><small>Pesos, guaraníes y dólares</small></span></a>
+      <a class="mosaico c-durazno" href="#mi-lista" data-vista="mi-lista"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span><span class="txt"><b>Qué llevar</b><small>Tu lista de equipaje</small></span></a>
+      <a class="mosaico c-celeste" href="#repertorio" data-vista="repertorio"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="txt"><b>Repertorio</b><small>Cuadros y audios de ensayo</small></span></a>
+      <a class="mosaico c-alerta" href="#emergencias" data-vista="emergencias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="txt"><b>Emergencias</b><small>Números útiles y tus datos</small></span></a>
+      <a class="mosaico c-lila" href="#instalar" data-vista="instalar"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span class="txt"><b>Instalar</b><small>Tener la app en el celular</small></span></a>
+    </div>
+  </section>
 
   <!-- RECORRIDO -->
   <section class="vista" id="vista-recorrido">
@@ -622,18 +659,30 @@ p{margin:0}
   const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
-  // ---------- Pestañas ----------
-  const vistas = ["recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "emergencias", "instalar"];
+  // ---------- Navegación ----------
+  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "emergencias", "instalar"];
+  const nombres = {};
+  document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
   function mostrar(v) {
-    if (!vistas.includes(v)) v = "recorrido";
-    for (const x of vistas) {
-      $("#vista-" + x).hidden = x !== v;
-      $("#tab-" + x).setAttribute("aria-selected", String(x === v));
-    }
-    escribir("info-vista", v);
+    if (!vistas.includes(v)) v = "inicio";
+    for (const x of vistas) $("#vista-" + x).hidden = x !== v;
+    const enInicio = v === "inicio";
+    document.querySelector(".portada").hidden = !enInicio;
+    $("#barra-seccion").hidden = enInicio;
+    $("#titulo-seccion").textContent = nombres[v] || "";
+    window.scrollTo(0, 0);
   }
-  document.querySelectorAll(".pestanas button").forEach(b => b.addEventListener("click", () => mostrar(b.dataset.vista)));
-  mostrar((location.hash || "").slice(1) || leer("info-vista", "recorrido"));
+  window.addEventListener("hashchange", () => mostrar(location.hash.slice(1)));
+  mostrar(location.hash.slice(1));
+
+  const menu = $("#menu");
+  function modo(m) {
+    menu.className = "menu " + m;
+    document.querySelectorAll(".modo button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.modo === m)));
+    escribir("info-menu", m);
+  }
+  document.querySelectorAll(".modo button").forEach(b => b.addEventListener("click", () => modo(b.dataset.modo)));
+  modo(leer("info-menu", "grilla") === "lista" ? "lista" : "grilla");
 
   // ---------- Hoy ----------
   const INICIO = new Date(2026, 10, 30); // 30/11/2026, fecha local
