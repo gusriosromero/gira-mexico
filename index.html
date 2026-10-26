@@ -83,6 +83,14 @@ h3{font-size:16px;font-weight:700}
 p{margin:0}
 .bloque{display:grid;gap:12px}
 .nota{color:var(--suave);font-size:13px}
+/* Repertorio */
+.cuadros{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.cuadro{border:1px solid var(--linea);border-radius:var(--radio);padding:14px 16px;display:grid;gap:10px;align-content:start}
+.cuadro .num{font-family:var(--titulo);font-size:22px;line-height:1;text-transform:uppercase}
+.cuadro .num small{display:block;font-family:var(--cuerpo);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--suave);margin-bottom:4px}
+.cuadro ol{margin:0;padding-left:22px;display:grid;gap:6px}
+.cuadro li::marker{color:var(--suave);font-weight:700}
+.cuadro .extra{color:var(--suave);font-style:italic}
 
 /* Recorrido */
 .ruta{list-style:none;margin:0;padding:0;display:grid}
@@ -295,6 +303,7 @@ p{margin:0}
     <button role="tab" id="tab-tips" data-vista="tips" aria-selected="false">Tips</button>
     <button role="tab" id="tab-plata" data-vista="plata" aria-selected="false">Plata</button>
     <button role="tab" id="tab-mi-lista" data-vista="mi-lista" aria-selected="false">Qué llevar</button>
+    <button role="tab" id="tab-repertorio" data-vista="repertorio" aria-selected="false">Repertorio</button>
     <button role="tab" id="tab-emergencias" data-vista="emergencias" aria-selected="false">Emergencias</button>
     <button role="tab" id="tab-instalar" data-vista="instalar" aria-selected="false">Instalar</button>
   </div>
@@ -489,6 +498,27 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- REPERTORIO -->
+  <section class="vista" id="vista-repertorio" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Lo que bailamos</span>
+      <h2>Repertorio</h2>
+      <p class="nota">Orden de cada cuadro en la función. Puede cambiar; lo confirman José y Vivi.</p>
+    </div>
+    <div class="cuadros">
+      <div class="cuadro"><div class="num"><small>Cuadro</small>1</div>
+        <ol><li>Tetagua Sapukai</li><li>Pájaro Campana</li><li>Carreta Guy</li><li>Tren Lechero</li></ol></div>
+      <div class="cuadro"><div class="num"><small>Cuadro</small>2</div>
+        <p class="extra">Abre con voz en off</p>
+        <ol><li>Virgen de Caacupé</li><li>Mamá Kumandá</li><li>Galopera</li><li>Musiqueada Che Amape</li></ol></div>
+      <div class="cuadro"><div class="num"><small>Cuadro</small>3</div>
+        <p class="extra">Apertura a definir</p>
+        <ol><li>La Paraguaya</li><li>Pycasu Hovy</li><li>Nda Rekoi La Culpa</li></ol></div>
+      <div class="cuadro"><div class="num"><small>Por ubicar</small>+</div>
+        <ol><li>Gallito Cantor</li></ol></div>
+    </div>
+  </section>
+
   <!-- EMERGENCIAS -->
   <section class="vista" id="vista-emergencias" hidden>
     <div class="bloque">
@@ -591,7 +621,7 @@ p{margin:0}
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
   // ---------- Pestañas ----------
-  const vistas = ["recorrido", "lugares", "tips", "plata", "mi-lista", "emergencias", "instalar"];
+  const vistas = ["recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "emergencias", "instalar"];
   function mostrar(v) {
     if (!vistas.includes(v)) v = "recorrido";
     for (const x of vistas) {

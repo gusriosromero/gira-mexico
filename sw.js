@@ -1,5 +1,5 @@
 // Cambiar VERSION en cada publicación para que los celulares bajen la versión nueva.
-const VERSION = "gira-2026-10-26-9";
+const VERSION = "gira-2026-10-26-10";
 const ARCHIVOS = ["./", "index.html", "manifest.webmanifest", "icons/gira-logo-2.png", "icons/gira-icon-192.png", "icons/gira-icon-512.png", "icons/gira-maskable-512.png", "icons/gira-apple-touch-icon.png", "fonts/anton.woff2", "fonts/great-vibes.woff2", "fonts/montserrat-400.woff2", "fonts/montserrat-500.woff2", "fonts/montserrat-600.woff2", "fonts/montserrat-700.woff2"];
 
 self.addEventListener("install", e => {
