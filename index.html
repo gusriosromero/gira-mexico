@@ -173,6 +173,23 @@ p{margin:0}
 .cotiz-campos{display:grid;gap:10px;margin-top:10px;font-size:14px}
 .cotiz-campos input{font:inherit;font-weight:700;width:90px;padding:4px 6px;border-radius:8px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);text-align:right}
 .cotiz-campos .btn{justify-self:start}
+/* Emergencias */
+.numeros{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.numero{display:grid;gap:2px;border:1px solid var(--linea);border-radius:var(--radio);padding:12px 14px;color:var(--texto);text-decoration:none}
+.numero b{font-family:var(--titulo);font-weight:400;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+.numero span{font-size:13px;color:var(--suave)}
+.numero.urgente{background:var(--alerta-fondo);border-color:var(--alerta)}
+.contactos{display:grid;gap:8px}
+.contacto{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--linea);padding:8px 0}
+.contacto a{flex:1;min-width:0;color:var(--texto);text-decoration:none;display:grid}
+.contacto a span{font-size:13px;color:var(--suave)}
+.contacto button{background:none;border:0;color:var(--suave);font-size:13px;font-weight:700;cursor:pointer;padding:6px}
+.form-contacto,.ficha-salud{display:grid;gap:8px}
+.form-contacto{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}
+.form-contacto input,.ficha-salud input{font:inherit;padding:9px 10px;border-radius:10px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);min-width:0;width:100%}
+.ficha-salud label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--suave)}
+@media (max-width:560px){.numeros{grid-template-columns:1fr}.form-contacto{grid-template-columns:1fr}}
+.funcion-dia{border:2px solid var(--tinta);border-radius:var(--radio);padding:12px 14px}
 /* Relojes */
 .relojes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .reloj{border:1px solid var(--linea);border-radius:var(--radio);padding:12px;min-width:0}
@@ -278,6 +295,7 @@ p{margin:0}
     <button role="tab" id="tab-tips" data-vista="tips" aria-selected="false">Tips</button>
     <button role="tab" id="tab-plata" data-vista="plata" aria-selected="false">Plata</button>
     <button role="tab" id="tab-mi-lista" data-vista="mi-lista" aria-selected="false">Qué llevar</button>
+    <button role="tab" id="tab-emergencias" data-vista="emergencias" aria-selected="false">Emergencias</button>
     <button role="tab" id="tab-instalar" data-vista="instalar" aria-selected="false">Instalar</button>
   </div>
 </nav>
@@ -471,6 +489,51 @@ p{margin:0}
     </div>
   </section>
 
+  <!-- EMERGENCIAS -->
+  <section class="vista" id="vista-emergencias" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Tener a mano</span>
+      <h2>Emergencias</h2>
+      <p class="nota">Funciona sin internet. Tocá un número para llamar.</p>
+    </div>
+    <div class="numeros">
+      <a class="numero urgente" href="tel:911"><b>911</b><span>Emergencias en México: ambulancia, policía, bomberos</span></a>
+      <a class="numero" href="tel:078"><b>078</b><span>Asistencia al turista en México</span></a>
+    </div>
+    <div class="bloque">
+      <h3>Embajada del Paraguay en México</h3>
+      <p>Av. Homero 415, Polanco, Miguel Hidalgo, 11560 Ciudad de México</p>
+      <div class="numeros">
+        <a class="numero" href="tel:+525578584077"><b>+52 55 7858 4077</b><span>Emergencias</span></a>
+        <a class="numero" href="tel:+525555319905"><b>+52 55 5531 9905</b><span>Oficina</span></a>
+      </div>
+      <p class="nota">Datos tomados del sitio de la embajada en octubre de 2026. Conviene confirmarlos antes de viajar.</p>
+    </div>
+    <div class="bloque">
+      <h3>Mis contactos</h3>
+      <p class="nota">Agregá los teléfonos de José, Vivi, tu compañero de habitación o tu familia. Quedan guardados solo en este celular.</p>
+      <div id="contactos" class="contactos"></div>
+      <form id="form-contacto" class="form-contacto">
+        <input id="c-nombre" placeholder="Nombre" autocomplete="off" aria-label="Nombre del contacto">
+        <input id="c-tel" placeholder="Teléfono, con código de país" inputmode="tel" autocomplete="off" aria-label="Teléfono del contacto">
+        <button class="btn" type="submit">Agregar</button>
+      </form>
+    </div>
+    <div class="bloque">
+      <h3>Mis datos de salud</h3>
+      <p class="nota">Por si alguien tiene que ayudarte. Quedan guardados solo en este celular.</p>
+      <div class="ficha-salud">
+        <label for="s-sangre">Grupo sanguíneo<input id="s-sangre" placeholder="Ej.: O+" autocomplete="off"></label>
+        <label for="s-alergias">Alergias<input id="s-alergias" placeholder="Ninguna" autocomplete="off"></label>
+        <label for="s-remedios">Medicamentos que tomo<input id="s-remedios" autocomplete="off"></label>
+        <label for="s-seguro">Seguro de viaje y nº de póliza<input id="s-seguro" autocomplete="off"></label>
+        <label for="s-asistencia">Teléfono de asistencia del seguro<input id="s-asistencia" inputmode="tel" autocomplete="off"></label>
+        <label for="s-familia">Contacto en Paraguay<input id="s-familia" placeholder="Nombre y teléfono" autocomplete="off"></label>
+      </div>
+      <p class="estado-guardado" id="s-estado"></p>
+    </div>
+  </section>
+
   <!-- INSTALAR -->
   <section class="vista" id="vista-instalar" hidden>
     <div class="bloque">
@@ -521,7 +584,7 @@ p{margin:0}
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
   // ---------- Pestañas ----------
-  const vistas = ["recorrido", "lugares", "tips", "plata", "mi-lista", "instalar"];
+  const vistas = ["recorrido", "lugares", "tips", "plata", "mi-lista", "emergencias", "instalar"];
   function mostrar(v) {
     if (!vistas.includes(v)) v = "recorrido";
     for (const x of vistas) {
@@ -635,6 +698,33 @@ p{margin:0}
     if (para === "cantaro") return perfil === "bailarina" && cantaro;
     return perfil === para;
   }
+  const FUNCION = [
+    ["f-vestuario", "Vestuario completo de los cuadros de hoy"],
+    ["f-zapatos", "Zapatos de baile"],
+    ["f-accesorios", "Accesorios", "Peineta, pañuelo, sombrero, aros, lo que lleve tu cuadro"],
+    ["f-cantaro", "Cántaro", null, "cantaro"],
+    ["f-maquillaje", "Maquillaje y cosas de peinado"],
+    ["f-medias", "Medias y ropa interior de repuesto"],
+    ["f-agua", "Agua y algo para comer"],
+    ["f-ropa", "Uniforme o ropa para después de la función"],
+    ["f-celular", "Celular cargado"]
+  ];
+  const hoyClave = () => new Date().toLocaleDateString("en-CA");
+  function bloqueFuncion() {
+    let f = leer("info-funcion", {});
+    if (f.fecha !== hoyClave()) f = { fecha: hoyClave(), hechos: {} };
+    const items = FUNCION.filter(x => !x[3] || aplica(x[3]));
+    const ok = items.filter(x => f.hechos[x[0]]).length;
+    const g = el("div", { class: "grupo-lista funcion-dia" },
+      el("header", {}, el("h3", { text: "Antes de cada función" }), el("span", { class: "cnt", text: `${ok}/${items.length}` })),
+      el("p", { class: "nota", text: "Se reinicia sola cada día. Revisala antes de salir del hotel." }));
+    for (const [id, texto, nota] of items) {
+      const chk = el("input", { type: "checkbox", id: "chk-" + id, checked: !!f.hechos[id] });
+      chk.addEventListener("change", () => { if (chk.checked) f.hechos[id] = true; else delete f.hechos[id]; escribir("info-funcion", f); render(); });
+      g.append(el("label", { class: "item" + (f.hechos[id] ? " hecho" : ""), for: "chk-" + id }, chk, el("div", { class: "txt" }, el("span", { text: texto }), nota ? el("small", { text: nota }) : null)));
+    }
+    return g;
+  }
   function render() {
     const cont = $("#mi-lista");
     cont.textContent = "";
@@ -653,6 +743,7 @@ p{margin:0}
       el("h2", { text: "Qué llevar" }),
       el("p", { class: "nota", text: "Elegí tu perfil y marcá lo que ya tenés listo. Lo que marcás queda guardado solo en este celular." }),
       chips));
+    const enFestival = hoyClave() >= "2026-12-04" && hoyClave() <= "2026-12-13";
     if (perfil === "bailarina") {
       const c = el("input", { type: "checkbox", id: "chk-cantaro", checked: cantaro });
       c.addEventListener("change", () => { cantaro = c.checked; escribir("info-cantaro", cantaro); render(); });
@@ -679,8 +770,38 @@ p{margin:0}
       }
       cont.append(g);
     }
+    if (perfil !== "staff") {
+      const bf = bloqueFuncion();
+      if (enFestival) cont.insertBefore(bf, cont.querySelector(".resumen")); else cont.append(bf);
+    }
   }
   render();
+
+  // ---------- Emergencias ----------
+  let contactos = leer("info-contactos", []);
+  function pintarContactos() {
+    const c = $("#contactos"); c.textContent = "";
+    if (!contactos.length) c.append(el("p", { class: "nota", text: "Todavía no agregaste contactos." }));
+    contactos.forEach((k, i) => c.append(el("div", { class: "contacto" },
+      el("a", { href: "tel:" + k.tel.replace(/[^\d+]/g, "") }, el("b", { text: k.nombre }), el("span", { text: k.tel })),
+      el("button", { type: "button", text: "Quitar", "aria-label": "Quitar a " + k.nombre, onclick: () => { contactos.splice(i, 1); escribir("info-contactos", contactos); pintarContactos(); } }))));
+  }
+  $("#form-contacto").addEventListener("submit", e => {
+    e.preventDefault();
+    const nombre = $("#c-nombre").value.trim(), tel = $("#c-tel").value.trim();
+    if (!nombre || !tel) return;
+    contactos.push({ nombre, tel }); escribir("info-contactos", contactos);
+    $("#c-nombre").value = ""; $("#c-tel").value = ""; pintarContactos();
+  });
+  pintarContactos();
+  const salud = leer("info-salud", {});
+  let tSalud = null;
+  for (const k of ["sangre", "alergias", "remedios", "seguro", "asistencia", "familia"]) {
+    const inp = $("#s-" + k); inp.value = salud[k] || "";
+    inp.addEventListener("input", () => { salud[k] = inp.value; clearTimeout(tSalud); tSalud = setTimeout(() => { escribir("info-salud", salud); $("#s-estado").textContent = "Guardado en este celular"; }, 500); });
+  }
+
+
 
   // ---------- Instalar ----------
   if (matchMedia("(display-mode: standalone)").matches || navigator.standalone) $("#ya-instalada").hidden = false;
