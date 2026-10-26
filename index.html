@@ -149,6 +149,30 @@ p{margin:0}
 .pasos-os{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .pasos{margin:4px 0 0;padding-left:20px;display:grid;gap:6px;font-size:14px}
 @media (max-width:560px){.pasos-os{grid-template-columns:1fr}}
+/* Hoy */
+.hoy{width:min(100%,460px);background:var(--fondo);border:2px solid var(--tinta);border-radius:var(--radio);padding:12px 14px;text-align:left;display:grid;gap:2px}
+.hoy .dia{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
+.hoy b{font-family:var(--titulo);font-weight:400;font-size:24px;line-height:1.15;text-transform:uppercase}
+.hoy p{font-size:14px}
+.hoy .barra-dias{display:grid;grid-template-columns:repeat(17,1fr);gap:2px;margin-top:6px}
+.hoy .barra-dias i{height:5px;border-radius:2px;background:var(--linea)}
+.hoy .barra-dias i.pasado{background:var(--celeste)}
+.hoy .barra-dias i.hoy-i{background:var(--amarillo)}
+/* Plata */
+.conversor{display:grid;gap:10px}
+.moneda{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px;align-items:center;border:1px solid var(--linea);border-radius:var(--radio);padding:10px 14px;cursor:text}
+.moneda span{display:grid}
+.moneda small{color:var(--suave);font-weight:700;font-size:12px;letter-spacing:.06em}
+.moneda input{font-family:var(--titulo);font-size:28px;text-align:right;border:0;background:transparent;color:var(--texto);width:100%;min-width:0;font-variant-numeric:tabular-nums;padding:2px 0}
+.moneda input:focus{outline:none}
+.moneda:focus-within{border-color:var(--texto)}
+.refs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ref{background:var(--superficie);border-radius:12px;padding:10px 12px;font-size:13px}
+.ref b{display:block;font-size:15px;font-variant-numeric:tabular-nums}
+.cotiz summary{cursor:pointer;font-weight:700;font-size:14px}
+.cotiz-campos{display:grid;gap:10px;margin-top:10px;font-size:14px}
+.cotiz-campos input{font:inherit;font-weight:700;width:90px;padding:4px 6px;border-radius:8px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);text-align:right}
+.cotiz-campos .btn{justify-self:start}
 /* Relojes */
 .relojes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .reloj{border:1px solid var(--linea);border-radius:var(--radio);padding:12px;min-width:0}
@@ -243,6 +267,7 @@ p{margin:0}
     <img src="icons/gira-logo-2.png" alt="Acuarela Mimbi, Elenco Folklórico, Gira México 2026" width="240" height="225">
     <h1 class="oculto">Gira México 2026 · Acuarela Mimbi</h1>
     <div class="linea-datos"><span class="cuenta" id="cuenta"></span><span class="datos">30/11 al 16/12</span></div>
+    <div class="hoy" id="hoy" hidden></div>
   </div>
 </header>
 
@@ -251,6 +276,7 @@ p{margin:0}
     <button role="tab" id="tab-recorrido" data-vista="recorrido" aria-selected="true">Recorrido</button>
     <button role="tab" id="tab-lugares" data-vista="lugares" aria-selected="false">Lugares</button>
     <button role="tab" id="tab-tips" data-vista="tips" aria-selected="false">Tips</button>
+    <button role="tab" id="tab-plata" data-vista="plata" aria-selected="false">Plata</button>
     <button role="tab" id="tab-mi-lista" data-vista="mi-lista" aria-selected="false">Qué llevar</button>
     <button role="tab" id="tab-instalar" data-vista="instalar" aria-selected="false">Instalar</button>
   </div>
@@ -395,6 +421,36 @@ p{margin:0}
     <div class="tip"><h3>Para probar</h3><p>El pan de plátano de Juan Bananas, que se vende desde 1973 en la calle H. Batallón de San Blas 219, y las cocadas de piña.</p></div>
   </section>
 
+  <!-- PLATA -->
+  <section class="vista" id="vista-plata" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Conversor</span>
+      <h2>Plata</h2>
+      <p class="nota">Funciona sin internet. Escribí un monto en cualquier moneda.</p>
+    </div>
+    <div class="conversor">
+      <label class="moneda" for="m-mxn"><span><b>Pesos mexicanos</b><small>MXN</small></span><input id="m-mxn" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+      <label class="moneda" for="m-pyg"><span><b>Guaraníes</b><small>PYG</small></span><input id="m-pyg" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+      <label class="moneda" for="m-usd"><span><b>Dólares</b><small>USD</small></span><input id="m-usd" inputmode="decimal" autocomplete="off" placeholder="0"></label>
+    </div>
+    <div class="bloque">
+      <h3>Precios aproximados</h3>
+      <p class="nota">Valores orientativos, para tener una idea.</p>
+      <div class="refs" id="refs"></div>
+    </div>
+    <details class="cotiz">
+      <summary>Cotización usada</summary>
+      <div class="cotiz-campos">
+        <label for="t-pyg">1 dólar = <input id="t-pyg" inputmode="decimal" autocomplete="off"> guaraníes</label>
+        <label for="t-mxn">1 dólar = <input id="t-mxn" inputmode="decimal" autocomplete="off"> pesos</label>
+        <p class="nota" id="t-fuente"></p>
+        <button class="btn sec" id="t-reset" type="button">Usar la cotización automática</button>
+        <p class="nota"><a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">Rates By Exchange Rate API</a></p>
+      </div>
+    </details>
+    <div class="tip"><h3>Consejos</h3><p>Lo recomendado es llevar al menos US$500 en efectivo, en billetes sanos. Allá se paga en pesos mexicanos: cambiá en casas de cambio o bancos, no en la calle. Si vas a usar tarjeta, avisá a tu banco que la vas a usar en el exterior.</p></div>
+  </section>
+
   <!-- TIPS -->
   <section class="vista" id="vista-tips" hidden>
     <div class="bloque">
@@ -407,7 +463,6 @@ p{margin:0}
       <div class="tip"><h3>Jejenes</h3><p>San Blas es famoso por los jejenes, mosquitos chiquitos que pican al atardecer. Repelente siempre en la cartera o la mochila.</p></div>
       <div class="tip"><h3>Calor</h3><p>En diciembre San Blas y Puerto Vallarta rondan los 28 a 30 °C de día. Ropa liviana, gorra, protector solar y algo de abrigo para el avión.</p></div>
       <div class="tip"><h3>Enchufes</h3><p>México usa enchufe de patas planas, como Estados Unidos. Llevá un adaptador; el cargador del celular ya funciona con su voltaje.</p></div>
-      <div class="tip"><h3>Plata</h3><p>Lo recomendado es llevar al menos US$500 en efectivo, en billetes sanos. La moneda allá es el peso mexicano (MXN). Si vas a usar tarjeta, avisá a tu banco que vas a usar la tarjeta en el exterior.</p></div>
       <div class="tip"><h3>Agua</h3><p>No tomes agua de la canilla. Comprá agua embotellada o pedí agua de garrafón.</p></div>
       <div class="tip"><h3>Celular</h3><p>Activá roaming o comprá un chip o eSIM mexicano. Bajá el mapa de Nayarit en Google Maps para usarlo sin datos.</p></div>
       <div class="tip"><h3>Horarios</h3><p>San Blas está 4 horas detrás de Paraguay y Guadalajara 3. Las funciones son a las 19:30, hora local.</p></div>
@@ -465,7 +520,7 @@ p{margin:0}
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 
   // ---------- Pestañas ----------
-  const vistas = ["recorrido", "lugares", "tips", "mi-lista", "instalar"];
+  const vistas = ["recorrido", "lugares", "tips", "plata", "mi-lista", "instalar"];
   function mostrar(v) {
     if (!vistas.includes(v)) v = "recorrido";
     for (const x of vistas) {
@@ -477,13 +532,84 @@ p{margin:0}
   document.querySelectorAll(".pestanas button").forEach(b => b.addEventListener("click", () => mostrar(b.dataset.vista)));
   mostrar((location.hash || "").slice(1) || leer("info-vista", "recorrido"));
 
+  // ---------- Hoy ----------
+  const INICIO = new Date(2026, 10, 30); // 30/11/2026, fecha local
+  const DIAS = {
+    "2026-11-30": ["Día de viaje", "Asunción → Panamá → Guadalajara", "Estar en el aeropuerto a las 03:30. Llegada a Guadalajara a las 22:49, hora local."],
+    "2026-12-01": ["Guadalajara", "Itinerario a confirmar", ""],
+    "2026-12-02": ["Guadalajara", "Itinerario a confirmar", ""],
+    "2026-12-03": ["Guadalajara", "Itinerario a confirmar", ""],
+    "2026-12-04": ["San Blas", "Llegada e inicio del festival", "Función a las 19:30, hora local."],
+    "2026-12-13": ["San Blas", "Última noche del festival", "Función a las 19:30, hora local."],
+    "2026-12-14": ["Salida de San Blas", "Temprano por la mañana", "De noche, estar en el aeropuerto de Guadalajara a las 21:00."],
+    "2026-12-15": ["Vuelta a casa", "Guadalajara → Panamá → Asunción", "Escala en Panamá. El vuelo CM 207 sale a las 15:55."],
+    "2026-12-16": ["Asunción", "¡Llegamos!", "Aterrizamos a las 00:02. Gracias por la gira."]
+  };
+  for (let d = 5; d <= 12; d++) DIAS[`2026-12-${String(d).padStart(2, "0")}`] = ["San Blas", "Festival", "Función a las 19:30, hora local."];
+  function hoyCard() {
+    const ahora = new Date();
+    const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+    const n = Math.round((hoy - INICIO) / 864e5) + 1;
+    const card = $("#hoy");
+    const clave = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, "0")}-${String(hoy.getDate()).padStart(2, "0")}`;
+    const d = DIAS[clave];
+    if (n < 1 || n > 17 || !d) { card.hidden = true; return null; }
+    card.textContent = "";
+    card.append(el("b", { text: d[0] }), el("p", { text: d[1] }), d[2] ? el("p", { class: "nota", text: d[2] }) : null,
+      el("div", { class: "barra-dias", "aria-hidden": "true" }, Array.from({ length: 17 }, (_, i) => el("i", { class: i + 1 < n ? "pasado" : i + 1 === n ? "hoy-i" : "" }))));
+    card.hidden = false;
+    return n;
+  }
+
+  // ---------- Plata ----------
+  const BASE = { pyg: 5735, mxn: 18.68, fecha: "25/10/2026" };
+  let auto = leer("info-tasa-auto", null) || BASE;   // última cotización bajada
+  let propia = leer("info-tasa", null);              // la que escribió la persona
+  let tasa = propia || auto;
+  const num = v => { const t = String(v).trim().replace(/\./g, "").replace(",", "."); const x = parseFloat(t); return isFinite(x) ? x : null; };
+  const fmtN = (x, dec) => x == null ? "" : x.toLocaleString("es-PY", { maximumFractionDigits: dec, minimumFractionDigits: 0 });
+  const M = { usd: ["m-usd", 2], pyg: ["m-pyg", 0], mxn: ["m-mxn", 2] };
+  const aUsd = (m, x) => m === "usd" ? x : x / tasa[m];
+  const deUsd = (m, x) => m === "usd" ? x : x * tasa[m];
+  let ultima = "mxn";
+  function convertir(desde) {
+    ultima = desde;
+    const x = num($("#" + M[desde][0]).value);
+    for (const m of Object.keys(M)) if (m !== desde) $("#" + M[m][0]).value = x == null ? "" : fmtN(deUsd(m, aUsd(desde, x)), M[m][1]);
+  }
+  for (const m of Object.keys(M)) $("#" + M[m][0]).addEventListener("input", () => convertir(m));
+  function refs() {
+    const c = $("#refs"); c.textContent = "";
+    for (const [t, mxn] of [["Agua o refresco", 20], ["Comida en fonda", 120], ["Taxi corto", 80], ["Recuerdo chico", 150]]) {
+      c.append(el("div", { class: "ref" }, t, el("b", { text: `$${fmtN(mxn, 0)} MXN` }), el("span", { class: "nota", text: `≈ G. ${fmtN(Math.round(deUsd("pyg", aUsd("mxn", mxn)) / 100) * 100, 0)}` })));
+    }
+  }
+  function pintarTasa() {
+    $("#t-pyg").value = fmtN(tasa.pyg, 0); $("#t-mxn").value = fmtN(tasa.mxn, 2);
+    $("#t-fuente").textContent = propia ? "Estás usando una cotización propia, guardada en este celular." : `Cotización de mercado del ${auto.fecha}. Se actualiza sola cuando abrís la app con internet. En casas de cambio puede ser un poco peor.`;
+    refs(); convertir(ultima);
+  }
+  for (const k of ["pyg", "mxn"]) $("#t-" + k).addEventListener("change", e => { const x = num(e.target.value); if (x > 0) { propia = { pyg: tasa.pyg, mxn: tasa.mxn, [k]: x }; tasa = propia; escribir("info-tasa", propia); } pintarTasa(); });
+  $("#t-reset").addEventListener("click", () => { propia = null; tasa = auto; try { localStorage.removeItem("info-tasa"); } catch (e) {} pintarTasa(); });
+  $("#m-mxn").value = "100"; pintarTasa();
+  fetch("https://open.er-api.com/v6/latest/USD").then(r => r.json()).then(j => {
+    if (j.result !== "success" || !(j.rates?.PYG > 0) || !(j.rates?.MXN > 0)) return;
+    auto = { pyg: Math.round(j.rates.PYG), mxn: Math.round(j.rates.MXN * 100) / 100, fecha: new Date(j.time_last_update_unix * 1000).toLocaleDateString("es-PY") };
+    escribir("info-tasa-auto", auto);
+    if (!propia) tasa = auto;
+    pintarTasa();
+  }).catch(() => {});
+
   // ---------- Cuenta regresiva y relojes ----------
   const salida = new Date("2026-11-30T06:00:00-03:00");
   function tic() {
     const dias = Math.ceil((salida - Date.now()) / 864e5);
     const c = $("#cuenta");
     c.textContent = "";
-    if (dias > 1) c.append("Faltan ", el("b", { text: String(dias) }), " días");
+    const n = hoyCard();
+    if (n) c.append("Día ", el("b", { text: String(n) }), " de 17");
+    else if (Date.now() > new Date(2026, 11, 17)) c.textContent = "¡Gracias por la gira!";
+    else if (dias > 1) c.append("Faltan ", el("b", { text: String(dias) }), " días");
     else if (dias === 1) c.append(el("b", { text: "¡Mañana" }), " salimos!");
     else c.textContent = "¡Estamos de gira!";
     const fmt = tz => new Intl.DateTimeFormat("es-PY", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz }).format(new Date());
