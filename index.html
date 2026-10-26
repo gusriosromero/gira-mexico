@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gira México 2026</title>
+<meta name="description" content="Recorrido, vuelos, lugares, tips y qué llevar para la gira del Elenco Folklórico Acuarela Mimbi a México.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17171c" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gira México">
+</head>
+<body>
+<style>
+@font-face{font-family:Anton;src:url(fonts/anton.woff2) format("woff2");font-display:swap}
+@font-face{font-family:"Great Vibes";src:url(fonts/great-vibes.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Montserrat;font-weight:400;src:url(fonts/montserrat-400.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Montserrat;font-weight:500;src:url(fonts/montserrat-500.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Montserrat;font-weight:600;src:url(fonts/montserrat-600.woff2) format("woff2");font-display:swap}
+@font-face{font-family:Montserrat;font-weight:700;src:url(fonts/montserrat-700.woff2) format("woff2");font-display:swap}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+/* Layout: banda de portada con manchas pastel, pestañas fijas, una columna de lectura (máx. 760px). */
+/* Mapa: tokens propios */
+:root{
+  --m-tierra:#fbeee4; --m-mar:#bde6f2; --m-casa:#f3b7d0; --m-cerro:#cfe3a8; --m-agua-txt:#1f6f96;
+  --fondo:#ffffff; --texto:#17171c; --suave:#55596b; --linea:#dde0ea;
+  --superficie:#f6f7fb; --tinta:#17171c; --amarillo:#f5b301; --celeste:#34ace6;
+  --ok:#3f8a0c; --ok-fondo:#e9f5dc; --alerta:#b45309; --alerta-fondo:#fff3dc;
+  --p-durazno:#f9c9b0; --p-rosa:#f3b7d0; --p-lila:#d2c4f0; --p-celeste:#bde6f2;
+  --titulo:Anton,Impact,"Arial Narrow",sans-serif;
+  --acento:"Great Vibes","Segoe Script",cursive;
+  --cuerpo:Montserrat,"Segoe UI",Arial,sans-serif;
+  --radio:14px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --fondo:#17171c; --texto:#ffffff; --suave:#a9adc0; --linea:#34374a; --superficie:#20212a;
+  --ok:#9ad44a; --ok-fondo:#25321a; --alerta:#f5b301; --alerta-fondo:#33290f;
+  --p-durazno:#5a3a2c; --p-rosa:#55304a; --p-lila:#3c3463; --p-celeste:#1f4a5a; --m-tierra:#262532; --m-mar:#1f4a5a; --m-casa:#7a4762; --m-cerro:#3a4a2a; --m-agua-txt:#9fd6ef; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fondo:#17171c; --texto:#ffffff; --suave:#a9adc0; --linea:#34374a; --superficie:#20212a;
+  --ok:#9ad44a; --ok-fondo:#25321a; --alerta:#f5b301; --alerta-fondo:#33290f;
+  --p-durazno:#5a3a2c; --p-rosa:#55304a; --p-lila:#3c3463; --p-celeste:#1f4a5a; --m-tierra:#262532; --m-mar:#1f4a5a; --m-casa:#7a4762; --m-cerro:#3a4a2a; --m-agua-txt:#9fd6ef; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--fondo);color:var(--texto);font-family:var(--cuerpo);font-size:15px;line-height:1.55}
+.envoltura{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--celeste);outline-offset:2px}
+
+/* Portada */
+.portada{position:relative;overflow:hidden;
+  background:
+    radial-gradient(38% 60% at 12% 30%,var(--p-durazno) 0 60%,transparent 61%),
+    radial-gradient(30% 55% at 88% 20%,var(--p-celeste) 0 58%,transparent 59%),
+    radial-gradient(35% 60% at 70% 95%,var(--p-lila) 0 58%,transparent 59%),
+    radial-gradient(28% 50% at 30% 100%,var(--p-rosa) 0 55%,transparent 56%),
+    var(--fondo)}
+.portada .envoltura{display:flex;gap:20px;align-items:center;padding-block:28px 24px}
+.portada img{width:96px;height:auto;flex:none}
+.portada .acento{font-family:var(--acento);font-size:40px;line-height:.8;display:block;margin-bottom:-4px}
+.portada h1{font-family:var(--titulo);font-weight:400;font-size:clamp(40px,9vw,64px);line-height:1;letter-spacing:.01em;text-transform:uppercase}
+.portada .datos{font-weight:600;font-size:14px;margin-top:6px}
+.cuenta{display:inline-block;margin-top:10px;background:var(--tinta);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.cuenta b{color:var(--amarillo)}
+
+/* Pestañas */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--fondo)}
+.pestanas{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--fondo);border-bottom:1px solid var(--linea)}
+.pestanas .envoltura{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.pestanas button{background:none;border:0;padding:14px 12px 12px;font-weight:600;font-size:14px;color:var(--suave);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer}
+.pestanas button[aria-selected="true"]{color:var(--texto);border-color:var(--amarillo)}
+main{padding-block:24px 64px}
+section.vista{display:grid;gap:28px}
+.etiqueta{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
+h2{font-family:var(--titulo);font-weight:400;font-size:28px;letter-spacing:.01em;text-transform:uppercase}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+.bloque{display:grid;gap:12px}
+.nota{color:var(--suave);font-size:13px}
+
+/* Recorrido */
+.ruta{list-style:none;margin:0;padding:0;display:grid}
+.ruta li{display:grid;grid-template-columns:72px 18px 1fr;gap:12px;min-height:64px}
+.ruta .fecha{font-weight:700;font-size:13px;text-align:right;padding-top:2px;font-variant-numeric:tabular-nums}
+.ruta .fecha small{display:block;font-weight:500;color:var(--suave)}
+.ruta .eje{position:relative}
+.ruta .eje::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--linea)}
+.ruta li:first-child .eje::before{top:8px}
+.ruta li:last-child .eje::before{bottom:calc(100% - 8px)}
+.ruta .eje::after{content:"";position:absolute;left:2px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--fondo);border:3px solid var(--celeste)}
+.ruta li.clave .eje::after{background:var(--amarillo);border-color:var(--tinta)}
+.ruta li.duda .eje::after{border-style:dashed;border-color:var(--suave)}
+.ruta .lugar{padding-bottom:18px;min-width:0}
+.ruta .lugar b{display:block}
+.ruta .lugar span{color:var(--suave);font-size:14px}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.chip.duda{background:var(--superficie);color:var(--suave);border:1px dashed var(--suave)}
+
+.vuelos{display:grid;gap:10px}
+.tramo{border:1px solid var(--linea);border-radius:var(--radio);padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:4px 12px;align-items:center}
+.tramo .cab{grid-column:1/-1;display:flex;justify-content:space-between;gap:8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--suave)}
+.tramo .pto b{display:block;font-family:var(--titulo);font-weight:400;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+.tramo .pto span{font-size:12px;color:var(--suave)}
+.tramo .pto.fin{text-align:right}
+.tramo .avion{color:var(--celeste);font-size:18px}
+.escala{font-size:13px;color:var(--suave);padding-left:14px}
+.presentarse{background:var(--alerta-fondo);border-radius:var(--radio);padding:12px 14px;font-size:14px}
+/* Lugares */
+.mapa{margin:0;border-radius:var(--radio);overflow:hidden;border:1px solid var(--linea);max-width:520px;width:100%;justify-self:center}
+.mapa svg{display:block;width:100%;height:auto}
+.m-tierra{fill:var(--m-tierra)}
+.m-mar{fill:var(--m-mar)}
+.m-olas path{fill:none;stroke:var(--fondo);stroke-width:2;stroke-linecap:round;opacity:.7}
+.m-estero{fill:none;stroke:var(--m-mar);stroke-width:12;stroke-linecap:round}
+.m-camino{fill:none;stroke:var(--fondo);stroke-width:5;stroke-linecap:round}
+.m-camino.fino{stroke-width:3;stroke-dasharray:1 6}
+.m-pueblo rect{fill:var(--m-casa)}
+.m-cerro{fill:var(--m-cerro)}
+.m-playa{fill:none;stroke:var(--amarillo);stroke-width:5;stroke-linecap:round;opacity:.8}
+.m-flecha{stroke:var(--texto);stroke-width:2;fill:none}
+.m-punta{fill:var(--texto)}
+.m-agua-txt{font:italic 600 11px var(--cuerpo);fill:var(--m-agua-txt)}
+.m-estero-txt{font:italic 600 9px var(--cuerpo);fill:var(--m-agua-txt)}
+.m-ruta-txt{font:600 9px var(--cuerpo);fill:var(--suave)}
+.m-lugar-txt{font:13px var(--titulo);letter-spacing:.06em;fill:var(--texto)}
+.m-norte path{fill:var(--texto)}.m-norte text{font:700 10px var(--cuerpo);fill:var(--texto)}
+.m-pines g{cursor:pointer}
+.m-pines circle{fill:var(--tinta);stroke:var(--amarillo);stroke-width:2.5}
+.m-pines text{font:14px var(--titulo);fill:#fff;text-anchor:middle}
+.m-pines g.activo circle{fill:var(--amarillo);stroke:var(--tinta)}
+.m-pines g.activo text{fill:var(--tinta)}
+.lugares{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.lugares li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;padding:14px 8px;border-bottom:1px solid var(--linea);border-radius:10px;cursor:pointer}
+.lugares li.activo{background:var(--superficie)}
+.lugares .num{width:28px;height:28px;border-radius:50%;background:var(--tinta);color:#fff;display:grid;place-items:center;font-family:var(--titulo);font-size:15px;border:2px solid var(--amarillo)}
+.lugares li>div{display:grid;gap:4px;min-width:0}
+.lugares p{font-size:14px}
+.lugares .meta{font-size:12px;font-weight:700;color:var(--suave)}
+.lugares a{font-size:13px;font-weight:700;color:var(--texto);text-decoration-color:var(--celeste);text-underline-offset:3px;justify-self:start}
+/* Relojes */
+.relojes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.reloj{border:1px solid var(--linea);border-radius:var(--radio);padding:12px;min-width:0}
+.reloj .hora{font-family:var(--titulo);font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.reloj .donde{font-size:12px;font-weight:600}
+.reloj .dif{font-size:12px;color:var(--suave)}
+
+/* Tips */
+.tips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tip{background:var(--superficie);border-radius:var(--radio);padding:14px 16px;display:grid;gap:4px;align-content:start}
+.tip h3{font-size:15px}
+.tip p{font-size:14px;color:var(--suave)}
+.tip.importante{background:var(--alerta-fondo)}
+.tip.importante p{color:var(--texto)}
+
+/* Mi lista */
+.aviso{border:1px dashed var(--linea);border-radius:var(--radio);padding:18px;display:grid;gap:8px;text-align:left}
+.aviso.alerta{border-color:var(--alerta);background:var(--alerta-fondo)}
+.resumen{display:flex;gap:16px;align-items:center}
+.anillo{--p:0;width:84px;height:84px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:conic-gradient(var(--amarillo) calc(var(--p)*1%),var(--linea) 0)}
+.anillo span{width:66px;height:66px;border-radius:50%;background:var(--fondo);display:grid;place-items:center;font-family:var(--titulo);font-size:22px;font-variant-numeric:tabular-nums}
+.resumen h2{font-size:30px}
+.resumen .rol{color:var(--suave);font-weight:600;font-size:14px}
+.grupo-lista{display:grid;gap:6px}
+#mi-lista{display:grid;gap:22px}
+.grupo-lista header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid var(--texto);padding-bottom:6px}
+.grupo-lista header .cnt{font-size:13px;font-weight:600;color:var(--suave);font-variant-numeric:tabular-nums}
+.item{display:flex;gap:12px;align-items:flex-start;padding:10px 4px;border-bottom:1px solid var(--linea);cursor:pointer}
+.item input{appearance:none;flex:none;width:24px;height:24px;margin:1px 0 0;border:2px solid var(--suave);border-radius:7px;display:grid;place-items:center;cursor:pointer;background:var(--fondo)}
+.item input:checked{background:var(--tinta);border-color:var(--tinta)}
+.item input:checked::after{content:"";width:6px;height:12px;border:solid var(--amarillo);border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+:root[data-theme="dark"] .item input:checked{background:var(--amarillo);border-color:var(--amarillo)}
+:root[data-theme="dark"] .item input:checked::after{border-color:var(--tinta)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .item input:checked{background:var(--amarillo);border-color:var(--amarillo)}:root:not([data-theme="light"]) .item input:checked::after{border-color:var(--tinta)}}
+.item .txt{min-width:0}
+.item .txt small{display:block;color:var(--suave);font-size:13px}
+.item.hecho .txt>span{color:var(--suave);text-decoration:line-through;text-decoration-color:var(--suave)}
+.estado-guardado{font-size:12px;color:var(--suave);min-height:18px}
+
+/* Elegir quién soy */
+.personas{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.personas button{border:1px solid var(--linea);background:var(--fondo);border-radius:12px;padding:10px 12px;text-align:left;cursor:pointer;display:grid;gap:2px}
+.personas button:hover:not(:disabled){border-color:var(--texto)}
+.personas button:disabled{opacity:.45;cursor:not-allowed}
+.personas button small{color:var(--suave);font-size:12px}
+.confirmar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;background:var(--tinta);color:#fff}
+:root[data-theme="dark"] .btn{background:var(--amarillo);color:var(--tinta)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{background:var(--amarillo);color:var(--tinta)}}
+.btn.sec{background:transparent;color:var(--texto);border:1px solid var(--linea)}
+
+/* Panel del grupo */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kpi{border:1px solid var(--linea);border-radius:var(--radio);padding:12px}
+.kpi b{display:block;font-family:var(--titulo);font-size:30px;font-weight:400;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12px;color:var(--suave);font-weight:600}
+.filas{display:grid}
+.fila{border-bottom:1px solid var(--linea)}
+.fila>button{width:100%;background:none;border:0;padding:12px 4px;display:grid;grid-template-columns:minmax(0,1fr) 120px 56px;gap:12px;align-items:center;text-align:left;cursor:pointer}
+.fila .nom b{display:block;font-size:14px}
+.fila .nom small{color:var(--suave);font-size:12px}
+.barra{height:8px;border-radius:99px;background:var(--linea);overflow:hidden}
+.barra i{display:block;height:100%;background:var(--amarillo);border-radius:99px}
+.barra.completa i{background:var(--ok)}
+.fila .pct{font-weight:700;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.fila .pend{padding:0 4px 14px;display:grid;gap:4px;font-size:13px}
+.fila .pend ul{margin:0;padding-left:18px;color:var(--suave)}
+.pill{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:2px 8px}
+.pill.sin{background:var(--superficie);color:var(--suave)}
+.pill.ok{background:var(--ok-fondo);color:var(--ok)}
+
+/* Ajustes */
+.ajuste{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--linea)}
+.ajuste .ctrls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end;font-size:13px}
+.ajuste select{font:inherit;font-size:13px;padding:4px 6px;border-radius:8px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto)}
+.ajuste label{display:flex;gap:4px;align-items:center}
+
+@media (max-width:560px){
+  .tips{grid-template-columns:1fr}
+  .relojes,.kpis{gap:6px}
+  .reloj .hora,.kpi b{font-size:24px}
+  .fila>button{grid-template-columns:minmax(0,1fr) 70px 44px}
+  .ajuste{grid-template-columns:1fr}
+  .ajuste .ctrls{justify-content:flex-start}
+  .portada img{width:72px}
+}
+@media (prefers-reduced-motion:no-preference){.barra i,.anillo{transition:all .3s ease}}
+</style>
+
+<header class="portada">
+  <div class="envoltura">
+    <img src="icons/logo.png" alt="Logo de Acuarela Mimbi" width="96" height="87">
+    <div>
+      <span class="acento">Gira</span>
+      <h1>México 2026</h1>
+      <p class="datos">Elenco Folklórico Acuarela Mimbi · 30/11 al 16/12</p>
+      <span class="cuenta" id="cuenta"></span>
+    </div>
+  </div>
+</header>
+
+<nav class="pestanas" aria-label="Secciones">
+  <div class="envoltura" role="tablist">
+    <button role="tab" id="tab-recorrido" data-vista="recorrido" aria-selected="true">Recorrido</button>
+    <button role="tab" id="tab-lugares" data-vista="lugares" aria-selected="false">Lugares</button>
+    <button role="tab" id="tab-tips" data-vista="tips" aria-selected="false">Tips</button>
+    <button role="tab" id="tab-mi-lista" data-vista="mi-lista" aria-selected="false">Qué llevar</button>
+  </div>
+</nav>
+
+<main class="envoltura">
+
+  <!-- RECORRIDO -->
+  <section class="vista" id="vista-recorrido">
+    <div class="bloque">
+      <span class="etiqueta">El viaje</span>
+      <h2>Recorrido</h2>
+      <p class="nota">Las fechas con línea punteada todavía las confirma José con la organización.</p>
+    </div>
+    <ol class="ruta">
+      <li><div class="fecha">30 nov<small>06:31</small></div><div class="eje"></div><div class="lugar"><b>Salida de Asunción</b><span>Vuelo a Ciudad de Panamá. Estar en el aeropuerto a las 03:30.</span></div></li>
+      <li class="clave"><div class="fecha">30 nov<small>22:49</small></div><div class="eje"></div><div class="lugar"><b>Llegada a Guadalajara</b><span>Jalisco, México. Hora local, 3 horas menos que Paraguay.</span></div></li>
+      <li class="duda"><div class="fecha">1 al 3 dic</div><div class="eje"></div><div class="lugar"><b>Días previos al festival <span class="chip duda">a confirmar</span></b><span>Itinerario y traslado a San Blas (unas 3 a 4 horas por tierra).</span></div></li>
+      <li class="clave"><div class="fecha">4 dic<small>vie</small></div><div class="eje"></div><div class="lugar"><b>Llegada a San Blas, Nayarit</b><span>Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026.</span></div></li>
+      <li><div class="fecha">4 al 13 dic</div><div class="eje"></div><div class="lugar"><b>Festival</b><span>Función todas las noches a las 19:30, en San Blas y pueblos cercanos. Desfile y honores a la bandera.</span></div></li>
+      <li><div class="fecha">14 dic<small>lun</small></div><div class="eje"></div><div class="lugar"><b>Salida de San Blas</b><span>Temprano por la mañana.</span></div></li>
+      <li class="duda"><div class="fecha">14 dic</div><div class="eje"></div><div class="lugar"><b>Puerto Vallarta <span class="chip duda">a confirmar</span></b><span>Playa y paseo antes de volver.</span></div></li>
+      <li><div class="fecha">15 dic<small>00:12</small></div><div class="eje"></div><div class="lugar"><b>Vuelo desde Guadalajara</b><span>Sale en la noche del 14 al 15. Estar en el aeropuerto a las 21:00 del 14. Escala en Panamá.</span></div></li>
+      <li class="clave"><div class="fecha">16 dic<small>00:02</small></div><div class="eje"></div><div class="lugar"><b>Llegada a Asunción</b><span>De vuelta en casa.</span></div></li>
+    </ol>
+
+    <div class="bloque">
+      <span class="etiqueta">Copa Airlines</span>
+      <h2>Vuelos</h2>
+      <p class="nota">Horarios locales de cada aeropuerto, según la cotización. Confirmar con los pasajes emitidos.</p>
+    </div>
+    <div class="bloque">
+      <h3>Ida · lunes 30 de noviembre</h3>
+      <p class="presentarse"><b>Estar en el aeropuerto Silvio Pettirossi a las 03:30</b>, 3 horas antes por ser vuelo internacional.</p>
+      <div class="vuelos">
+        <div class="tramo"><div class="cab"><span>CM 290</span><span>30 nov</span></div><div class="pto"><b>06:31</b><span>Asunción</span></div><div class="avion" aria-hidden="true">✈</div><div class="pto fin"><b>10:45</b><span>Panamá</span></div></div>
+        <p class="escala">Escala en Panamá de casi 9 horas</p>
+        <div class="tramo"><div class="cab"><span>CM 721</span><span>30 nov</span></div><div class="pto"><b>19:25</b><span>Panamá</span></div><div class="avion" aria-hidden="true">✈</div><div class="pto fin"><b>22:49</b><span>Guadalajara</span></div></div>
+      </div>
+    </div>
+    <div class="bloque">
+      <h3>Vuelta · noche del 14 al 15 de diciembre</h3>
+      <p class="presentarse"><b>Estar en el aeropuerto de Guadalajara a las 21:00 del 14</b>, 3 horas antes del vuelo.</p>
+      <div class="vuelos">
+        <div class="tramo"><div class="cab"><span>CM 723</span><span>15 dic</span></div><div class="pto"><b>00:12</b><span>Guadalajara</span></div><div class="avion" aria-hidden="true">✈</div><div class="pto fin"><b>05:24</b><span>Panamá</span></div></div>
+        <p class="escala">Escala en Panamá de unas 10 horas y media</p>
+        <div class="tramo"><div class="cab"><span>CM 207</span><span>15 dic</span></div><div class="pto"><b>15:55</b><span>Panamá</span></div><div class="avion" aria-hidden="true">✈</div><div class="pto fin"><b>00:02</b><span>Asunción · 16 dic</span></div></div>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <span class="etiqueta">Hora ahora</span>
+      <div class="relojes">
+        <div class="reloj"><div class="donde">Asunción</div><div class="hora" id="h-asu">--:--</div><div class="dif">UTC−3</div></div>
+        <div class="reloj"><div class="donde">Guadalajara</div><div class="hora" id="h-gdl">--:--</div><div class="dif">3 h menos</div></div>
+        <div class="reloj"><div class="donde">San Blas</div><div class="hora" id="h-sbl">--:--</div><div class="dif">4 h menos</div></div>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <span class="etiqueta">El festival</span>
+      <h3>5.º Festival Internacional de la Danza del Folklor San Blas</h3>
+      <p>Lo organiza el Ballet Folklórico San Blas, dentro de la red AIFL (Asociación Internacional de Folclor Latinoamericano). El festival cubre alojamiento y las tres comidas. Cada uno se encarga de sus snacks, recuerdos y gastos personales.</p>
+    </div>
+  </section>
+
+  <!-- LUGARES -->
+  <section class="vista" id="vista-lugares" hidden>
+    <div class="bloque">
+      <span class="etiqueta">San Blas, Nayarit</span>
+      <h2>Lugares</h2>
+      <p class="nota">Mapa ilustrado, no a escala. Las distancias son aproximadas desde la plaza; cuando sepamos dónde nos alojamos, las calculo desde ahí.</p>
+    </div>
+    <figure class="mapa">
+      <svg viewBox="0 0 360 440" role="img" aria-labelledby="mapa-tit">
+        <title id="mapa-tit">Mapa ilustrado de San Blas con siete lugares numerados</title>
+        <rect width="360" height="440" class="m-tierra"/>
+        <!-- sierra al fondo -->
+        <path class="m-cerro" d="M180,0 C230,30 260,10 300,35 C330,50 345,30 360,40 L360,0 Z"/>
+        <!-- mar -->
+        <path class="m-mar" d="M0,0 L48,0 C58,50 44,110 70,165 C92,210 135,245 185,262 C215,272 240,282 262,296 C285,312 300,300 318,312 C338,326 348,360 360,372 L360,440 L0,440 Z"/>
+        <g class="m-olas">
+          <path d="M20,250 q8,-6 16,0 t16,0"/><path d="M60,330 q8,-6 16,0 t16,0"/><path d="M150,380 q8,-6 16,0 t16,0"/><path d="M250,410 q8,-6 16,0 t16,0"/>
+        </g>
+        <text class="m-agua-txt" x="70" y="300">Océano Pacífico</text>
+        <text class="m-agua-txt" x="292" y="400" text-anchor="middle">Bahía de</text>
+        <text class="m-agua-txt" x="292" y="414" text-anchor="middle">Matanchén</text>
+        <!-- estero El Pozo -->
+        <path class="m-estero" d="M92,196 C112,176 122,160 128,138 C134,116 146,98 160,70 C168,52 166,34 176,14"/>
+        <text class="m-estero-txt" transform="translate(141,60) rotate(-62)">Estero El Pozo</text>
+        <!-- estero San Cristóbal -->
+        <path class="m-estero" d="M258,292 C262,262 250,240 262,214 C274,188 262,160 270,134 C278,104 300,90 312,70 C324,50 340,44 356,30"/>
+        <text class="m-estero-txt" transform="translate(252,280) rotate(-82)">Estero San Cristóbal</text>
+        <!-- camino -->
+        <path class="m-camino" d="M190,128 C215,128 240,124 266,130 C300,138 330,118 360,112"/>
+        <text class="m-ruta-txt" x="356" y="104" text-anchor="end">A Tepic · Pto. Vallarta</text>
+        <path class="m-camino fino" d="M180,140 C178,175 172,205 176,250"/>
+        <path class="m-camino fino" d="M262,214 C290,250 300,280 318,312"/>
+        <!-- pueblo -->
+        <g class="m-pueblo">
+          <rect x="150" y="104" width="16" height="12" rx="2"/><rect x="170" y="104" width="16" height="12" rx="2"/><rect x="190" y="104" width="12" height="12" rx="2"/>
+          <rect x="150" y="120" width="16" height="12" rx="2"/><rect x="190" y="120" width="12" height="12" rx="2"/>
+          <rect x="150" y="136" width="16" height="12" rx="2"/><rect x="170" y="136" width="16" height="12" rx="2"/><rect x="190" y="136" width="12" height="12" rx="2"/>
+          <rect x="155" y="152" width="14" height="10" rx="2"/><rect x="173" y="152" width="14" height="10" rx="2"/>
+        </g>
+        <text class="m-lugar-txt" x="176" y="96" text-anchor="middle">SAN BLAS</text>
+        <!-- cerro de San Basilio -->
+        <path class="m-cerro" d="M206,150 C214,124 226,112 236,112 C248,112 256,128 262,150 Z"/>
+        <text class="m-ruta-txt" x="234" y="164" text-anchor="middle">Cerro San Basilio</text>
+        <!-- Isla del Rey -->
+        <text class="m-ruta-txt" x="88" y="118" text-anchor="middle">Isla</text>
+        <text class="m-ruta-txt" x="88" y="130" text-anchor="middle">del Rey</text>
+        <!-- playa -->
+        <path class="m-playa" d="M118,222 C140,240 160,252 185,262 C210,270 232,278 252,288"/>
+        <!-- La Tovara -->
+        <path class="m-flecha" d="M300,84 L332,52" marker-end="url(#punta)"/>
+        <text class="m-ruta-txt" x="300" y="66" text-anchor="end">La Tovara</text>
+        <defs><marker id="punta" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" class="m-punta"/></marker></defs>
+        <!-- pines -->
+        <g class="m-pines">
+          <g data-n="1" transform="translate(176,128)"><circle r="11"/><text dy="4">1</text></g>
+          <g data-n="2" transform="translate(234,108)"><circle r="11"/><text dy="4">2</text></g>
+          <g data-n="3" transform="translate(124,150)"><circle r="11"/><text dy="4">3</text></g>
+          <g data-n="4" transform="translate(186,242)"><circle r="11"/><text dy="4">4</text></g>
+          <g data-n="5" transform="translate(268,140)"><circle r="11"/><text dy="4">5</text></g>
+          <g data-n="6" transform="translate(80,160)"><circle r="11"/><text dy="4">6</text></g>
+          <g data-n="7" transform="translate(336,336)"><circle r="11"/><text dy="4">7</text></g>
+        </g>
+        <!-- norte -->
+        <g transform="translate(28,410)" class="m-norte"><path d="M0,-14 L6,4 L0,0 L-6,4 Z"/><text y="16" text-anchor="middle">N</text></g>
+      </svg>
+    </figure>
+    <ol class="lugares" id="lugares">
+      <li id="l1" data-n="1"><span class="num">1</span><div><h3>Plaza y templo de San Blas</h3><p>El centro del pueblo. Punto de encuentro fácil para el grupo.</p><p class="meta">Centro</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Plaza+principal+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+      <li id="l2" data-n="2"><span class="num">2</span><div><h3>Fuerte de la Contaduría</h3><p>Construcción de 1773 en el cerro de San Basilio, con cañones y un pequeño museo. Desde arriba se ve todo el puerto. Al lado están las ruinas del templo de la Virgen del Rosario.</p><p class="meta">≈ 1 km · ideal al atardecer, con repelente</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Fuerte+de+la+Contaduria+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+      <li id="l3" data-n="3"><span class="num">3</span><div><h3>Muelle y malecón</h3><p>El puerto histórico sobre el estero El Pozo, de donde salían los barcos hacia Filipinas en la época colonial.</p><p class="meta">≈ 1 km</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Muelle+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+      <li id="l4" data-n="4"><span class="num">4</span><div><h3>Playa El Borrego</h3><p>Unos 3 km de arena dorada, con palapas donde sirven pescado zarandeado. Hay olas fuertes: es playa de surf, así que mejor bañarse con cuidado.</p><p class="meta">≈ 2 km</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Playa+El+Borrego+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+      <li id="l5" data-n="5"><span class="num">5</span><div><h3>Paseo en lancha a La Tovara</h3><p>Recorrido en lancha entre manglares hasta el manantial de La Tovara, con aves y un cocodrilario. Sale de los embarcaderos sobre el estero San Cristóbal.</p><p class="meta">≈ 1 km hasta el embarcadero</p><a href="https://www.google.com/maps/search/?api=1&amp;query=La+Tovara+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+      <li id="l6" data-n="6"><span class="num">6</span><div><h3>Isla del Rey</h3><p>Se cruza en un viaje corto en lancha. Playa tranquila y el faro.</p><p class="meta">Cruce en lancha</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Isla+del+Rey+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+      <li id="l7" data-n="7"><span class="num">7</span><div><h3>Las Islitas y bahía de Matanchén</h3><p>Playa de olas suaves, buena para pasar el día. En Matanchén se forma una de las olas más largas del mundo.</p><p class="meta">≈ 10 km · en auto o taxi</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Playa+Las+Islitas+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
+    </ol>
+    <div class="tip"><h3>Para probar</h3><p>El pan de plátano de Juan Bananas, que se vende desde 1973 en la calle H. Batallón de San Blas 219, y las cocadas de piña.</p></div>
+  </section>
+
+  <!-- TIPS -->
+  <section class="vista" id="vista-tips" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Para todos</span>
+      <h2>Tips de viaje</h2>
+    </div>
+    <div class="tips">
+      <div class="tip importante"><h3>El vestuario va con vos</h3><p>Si se pierde vestuario, el festival no lo repone. Llevá lo más difícil de reemplazar (peineta, zapatos, piezas bordadas) en el equipaje de mano.</p></div>
+      <div class="tip importante"><h3>Pasaporte</h3><p>Tiene que estar vigente durante todo el viaje y con margen. Sacale foto y guardala en el celular.</p></div>
+      <div class="tip"><h3>Jejenes</h3><p>San Blas es famoso por los jejenes, mosquitos chiquitos que pican al atardecer. Repelente siempre en la cartera o la mochila.</p></div>
+      <div class="tip"><h3>Calor</h3><p>En diciembre San Blas y Puerto Vallarta rondan los 28 a 30 °C de día. Ropa liviana, gorra, protector solar y algo de abrigo para el avión.</p></div>
+      <div class="tip"><h3>Enchufes</h3><p>México usa enchufe de patas planas, como Estados Unidos. Llevá un adaptador; el cargador del celular ya funciona con su voltaje.</p></div>
+      <div class="tip"><h3>Plata</h3><p>Lo recomendado es llevar al menos US$500 en efectivo, en billetes sanos. La moneda allá es el peso mexicano (MXN). Si vas a usar tarjeta, avisá a tu banco que vas a usar la tarjeta en el exterior.</p></div>
+      <div class="tip"><h3>Agua</h3><p>No tomes agua de la canilla. Comprá agua embotellada o pedí agua de garrafón.</p></div>
+      <div class="tip"><h3>Celular</h3><p>Activá roaming o comprá un chip o eSIM mexicano. Bajá el mapa de Nayarit en Google Maps para usarlo sin datos.</p></div>
+      <div class="tip"><h3>Horarios</h3><p>San Blas está 4 horas detrás de Paraguay y Guadalajara 3. Las funciones son a las 19:30, hora local.</p></div>
+      <div class="tip"><h3>Remera del grupo</h3><p>El festival pide que todo el elenco use la misma remera, con el logo de Acuarela y el de AIFL Internacional.</p></div>
+    </div>
+  </section>
+
+  <!-- MI LISTA -->
+  <section class="vista" id="vista-mi-lista" hidden>
+    <div id="mi-lista"></div>
+  </section>
+
+  </main>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const el = (tag, attrs = {}, ...hijos) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "class") n.className = v;
+      else if (k === "text") n.textContent = v;
+      else if (k.startsWith("on")) n.addEventListener(k.slice(2), v);
+      else if (v === true) n.setAttribute(k, "");
+      else if (v !== false && v != null) n.setAttribute(k, v);
+    }
+    for (const h of hijos.flat()) if (h != null) n.append(h);
+    return n;
+  };
+  const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
+  const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+  // ---------- Pestañas ----------
+  const vistas = ["recorrido", "lugares", "tips", "mi-lista"];
+  function mostrar(v) {
+    if (!vistas.includes(v)) v = "recorrido";
+    for (const x of vistas) {
+      $("#vista-" + x).hidden = x !== v;
+      $("#tab-" + x).setAttribute("aria-selected", String(x === v));
+    }
+    escribir("info-vista", v);
+  }
+  document.querySelectorAll(".pestanas button").forEach(b => b.addEventListener("click", () => mostrar(b.dataset.vista)));
+  mostrar((location.hash || "").slice(1) || leer("info-vista", "recorrido"));
+
+  // ---------- Cuenta regresiva y relojes ----------
+  const salida = new Date("2026-11-30T06:00:00-03:00");
+  function tic() {
+    const dias = Math.ceil((salida - Date.now()) / 864e5);
+    const c = $("#cuenta");
+    c.textContent = "";
+    if (dias > 1) c.append("Faltan ", el("b", { text: String(dias) }), " días");
+    else if (dias === 1) c.append(el("b", { text: "¡Mañana" }), " salimos!");
+    else c.textContent = "¡Estamos de gira!";
+    const fmt = tz => new Intl.DateTimeFormat("es-PY", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz }).format(new Date());
+    try {
+      $("#h-asu").textContent = fmt("America/Asuncion");
+      $("#h-gdl").textContent = fmt("America/Mexico_City");
+      $("#h-sbl").textContent = fmt("America/Mazatlan");
+    } catch (e) {}
+  }
+  tic(); setInterval(tic, 30000);
+
+  // ---------- Qué llevar ----------
+  const LISTAS = [{"id": "documentos", "titulo": "Documentos y plata", "para": "todos", "items": [{"id": "pasaporte", "texto": "Pasaporte vigente", "nota": "Con foto guardada en el celular"}, {"id": "cedula", "texto": "Cédula de identidad"}, {"id": "pasajes", "texto": "Pasajes y datos del vuelo en el celular"}, {"id": "seguro", "texto": "Seguro de viaje"}, {"id": "dolares", "texto": "Al menos US$500 en efectivo", "nota": "Incluye el aporte de US$50 al festival"}, {"id": "tarjeta", "texto": "Tarjeta habilitada para el exterior"}]}, {"id": "uniforme", "titulo": "Uniforme del grupo", "para": "todos", "items": [{"id": "u-gala-camisa", "texto": "Vestimenta de gala: camisa de ao po'i"}, {"id": "u-gala-pantalon", "texto": "Vestimenta de gala: pantalón"}, {"id": "u-buzo-campera", "texto": "Buzo Acuarela: campera"}, {"id": "u-buzo-pantalon", "texto": "Buzo Acuarela: buzo"}, {"id": "u-remeras", "texto": "3 remeras de Acuarela"}, {"id": "u-champion", "texto": "Champion blanco"}]}, {"id": "vest-bailarina", "titulo": "Vestuario (ejemplo)", "para": "bailarina", "items": [{"id": "v-gala", "texto": "Vestido de gala"}, {"id": "v-pajaro", "texto": "Vestido de pájaro campana"}, {"id": "v-peineta", "texto": "Peineta"}, {"id": "v-zapatos-m", "texto": "Zapatos de baile"}, {"id": "v-accesorios-m", "texto": "Accesorios de peinado", "nota": "Horquillas, redecilla, gel"}, {"id": "v-maquillaje", "texto": "Maquillaje de escena"}, {"id": "v-cantaro", "texto": "Cántaro bien embalado", "nota": "Solo quienes bailan con cántaro", "para": "cantaro"}]}, {"id": "vest-bailarin", "titulo": "Vestuario (ejemplo)", "para": "bailarin", "items": [{"id": "v-camisa", "texto": "Camisa de ao po'i"}, {"id": "v-pantalon", "texto": "Pantalón"}, {"id": "v-faja", "texto": "Faja"}, {"id": "v-panuelo", "texto": "Pañuelo"}, {"id": "v-sombrero", "texto": "Sombrero pirí"}, {"id": "v-zapatos-h", "texto": "Zapatos de baile"}]}, {"id": "personal", "titulo": "Personal", "para": "todos", "items": [{"id": "remedios", "texto": "Medicamentos personales", "nota": "Con receta si son controlados"}, {"id": "repelente", "texto": "Repelente", "nota": "Para los jejenes de San Blas"}, {"id": "protector", "texto": "Protector solar y gorra"}, {"id": "adaptador", "texto": "Adaptador de enchufe para México", "nota": "Patas planas, como Estados Unidos"}, {"id": "cargador", "texto": "Cargador y power bank", "nota": "En el equipaje de mano"}, {"id": "ropa", "texto": "Ropa liviana y un abrigo para el avión"}, {"id": "malla", "texto": "Traje de baño"}]}];
+  const PERFILES = [["bailarina", "Bailarina"], ["bailarin", "Bailarín"], ["staff", "Staff"]];
+  let perfil = leer("info-perfil", "bailarina");
+  let cantaro = leer("info-cantaro", false);
+  let hechos = leer("info-hechos", {});
+
+  function aplica(para) {
+    if (!para || para === "todos") return true;
+    if (para === "baile") return perfil !== "staff";
+    if (para === "cantaro") return perfil === "bailarina" && cantaro;
+    return perfil === para;
+  }
+  function render() {
+    const cont = $("#mi-lista");
+    cont.textContent = "";
+    const listas = LISTAS.map(l => ({ ...l, items: l.items.filter(it => aplica(it.para || l.para)) })).filter(l => l.items.length);
+    const items = listas.flatMap(l => l.items);
+    const ok = items.filter(it => hechos[it.id]).length;
+    const pct = items.length ? Math.round(ok * 100 / items.length) : 0;
+
+    const chips = el("div", { class: "personas" }, PERFILES.map(([v, t]) => {
+      const b = el("button", { "aria-pressed": String(perfil === v), onclick: () => { perfil = v; escribir("info-perfil", v); render(); } }, el("b", { text: t }));
+      if (perfil === v) b.style.borderColor = "var(--texto)";
+      return b;
+    }));
+    cont.append(el("div", { class: "bloque" },
+      el("span", { class: "etiqueta", text: "Tu valija" }),
+      el("h2", { text: "Qué llevar" }),
+      el("p", { class: "nota", text: "Elegí tu perfil y marcá lo que ya tenés listo. Lo que marcás queda guardado solo en este celular." }),
+      chips));
+    if (perfil === "bailarina") {
+      const c = el("input", { type: "checkbox", id: "chk-cantaro", checked: cantaro });
+      c.addEventListener("change", () => { cantaro = c.checked; escribir("info-cantaro", cantaro); render(); });
+      cont.append(el("label", { class: "item", for: "chk-cantaro" }, c, el("div", { class: "txt" }, el("span", { text: "Bailo con cántaro" }))));
+    }
+    cont.append(el("div", { class: "resumen" },
+      el("div", { class: "anillo", style: `--p:${pct}` }, el("span", { text: pct + "%" })),
+      el("div", {}, el("div", { class: "rol", text: `${ok} de ${items.length} listos` }))));
+    cont.append(el("p", { class: "aviso alerta", text: "Lista de ejemplo. La lista definitiva de vestuario la confirman José y Vivi." }));
+
+    for (const l of listas) {
+      const okL = l.items.filter(it => hechos[it.id]).length;
+      const g = el("div", { class: "grupo-lista" },
+        el("header", {}, el("h3", { text: l.titulo }), el("span", { class: "cnt", text: `${okL}/${l.items.length}` })));
+      for (const it of l.items) {
+        const id = "chk-" + it.id;
+        const chk = el("input", { type: "checkbox", id, checked: !!hechos[it.id] });
+        chk.addEventListener("change", () => {
+          if (chk.checked) hechos[it.id] = true; else delete hechos[it.id];
+          escribir("info-hechos", hechos); render();
+        });
+        g.append(el("label", { class: "item" + (hechos[it.id] ? " hecho" : ""), for: id }, chk,
+          el("div", { class: "txt" }, el("span", { text: it.texto }), it.nota ? el("small", { text: it.nota }) : null)));
+      }
+      cont.append(g);
+    }
+  }
+  render();
+
+  // ---------- Lugares ----------
+  function activar(n, desdeMapa) {
+    document.querySelectorAll(".m-pines g, .lugares li").forEach(x => x.classList.toggle("activo", x.dataset.n === n));
+    if (desdeMapa) document.getElementById("l" + n)?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  document.querySelectorAll(".m-pines g").forEach(g => g.addEventListener("click", () => activar(g.dataset.n, true)));
+  document.querySelectorAll(".lugares li").forEach(li => li.addEventListener("click", e => { if (e.target.tagName !== "A") activar(li.dataset.n, false); }));
+})();
+</script>
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>
