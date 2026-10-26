@@ -89,6 +89,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .barra-seccion .envoltura{gap:10px!important;min-height:60px!important}
 .volver svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .titulo-seccion{font-family:var(--titulo);font-size:20px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* En secciones, el título ya está en la barra de arriba */
+section.vista:not(#vista-inicio) > .bloque:first-child > h2,
+section.vista:not(#vista-inicio) > .bloque:first-child > .etiqueta:not(.conservar){display:none}
+section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqueta))){display:none}
 /* Inicio */
 .cab-inicio{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .modo{display:flex;gap:4px;background:var(--superficie);border-radius:999px;padding:4px}
@@ -263,7 +267,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 .resumen h2{font-size:30px}
 .resumen .rol{color:var(--suave);font-weight:600;font-size:14px}
 .grupo-lista{display:grid;gap:6px}
-#mi-lista{display:grid;gap:22px}
+#mi-lista-cont{display:grid;gap:22px}
 .grupo-lista header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-bottom:2px solid var(--texto);padding-bottom:6px}
 .grupo-lista header .cnt{font-size:13px;font-weight:600;color:var(--suave);font-variant-numeric:tabular-nums}
 .item{display:flex;gap:12px;align-items:flex-start;padding:10px 4px;border-bottom:1px solid var(--linea);cursor:pointer}
@@ -439,7 +443,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   <!-- LUGARES -->
   <section class="vista" id="vista-lugares" hidden>
     <div class="bloque">
-      <span class="etiqueta">San Blas, Nayarit</span>
+      <span class="etiqueta conservar">San Blas, Nayarit</span>
       <h2>Lugares</h2>
       <p class="nota">Mapa ilustrado, no a escala. Las distancias son aproximadas desde la plaza; cuando sepamos dónde nos alojamos, las calculo desde ahí.</p>
     </div>
@@ -502,7 +506,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <g transform="translate(28,410)" class="m-norte"><path d="M0,-14 L6,4 L0,0 L-6,4 Z"/><text y="16" text-anchor="middle">N</text></g>
       </svg>
     </figure>
-    <ol class="lugares" id="lugares">
+    <ol class="lugares" id="lista-lugares">
       <li id="l1" data-n="1"><span class="num">1</span><div><h3>Plaza y templo de San Blas</h3><p>El centro del pueblo. Punto de encuentro fácil para el grupo.</p><p class="meta">Centro</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Plaza+principal+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
       <li id="l2" data-n="2"><span class="num">2</span><div><h3>Fuerte de la Contaduría</h3><p>Construcción de 1773 en el cerro de San Basilio, con cañones y un pequeño museo. Desde arriba se ve todo el puerto. Al lado están las ruinas del templo de la Virgen del Rosario.</p><p class="meta">≈ 1 km · ideal al atardecer, con repelente</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Fuerte+de+la+Contaduria+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
       <li id="l3" data-n="3"><span class="num">3</span><div><h3>Muelle y malecón</h3><p>El puerto histórico sobre el estero El Pozo, de donde salían los barcos hacia Filipinas en la época colonial.</p><p class="meta">≈ 1 km</p><a href="https://www.google.com/maps/search/?api=1&amp;query=Muelle+San+Blas+Nayarit" target="_blank" rel="noopener">Abrir en Google Maps</a></div></li>
@@ -664,7 +668,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   <!-- MI LISTA -->
   <section class="vista" id="vista-mi-lista" hidden>
-    <div id="mi-lista"></div>
+    <div id="mi-lista-cont"></div>
   </section>
 
   </main>
@@ -852,7 +856,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     return g;
   }
   function render() {
-    const cont = $("#mi-lista");
+    const cont = $("#mi-lista-cont");
     cont.textContent = "";
     const listas = LISTAS.map(l => ({ ...l, items: l.items.filter(it => aplica(it.para || l.para)) })).filter(l => l.items.length);
     const items = listas.flatMap(l => l.items);
@@ -865,8 +869,6 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       return b;
     }));
     cont.append(el("div", { class: "bloque" },
-      el("span", { class: "etiqueta", text: "Tu valija" }),
-      el("h2", { text: "Qué llevar" }),
       el("p", { class: "nota", text: "Elegí tu perfil y marcá lo que ya tenés listo. Lo que marcás queda guardado solo en este celular." }),
       chips));
     const enFestival = hoyClave() >= "2026-12-04" && hoyClave() <= "2026-12-13";
