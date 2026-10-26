@@ -61,12 +61,12 @@ button{font:inherit;color:inherit}
     radial-gradient(35% 60% at 70% 95%,var(--p-lila) 0 58%,transparent 59%),
     radial-gradient(28% 50% at 30% 100%,var(--p-rosa) 0 55%,transparent 56%),
     var(--fondo)}
-.portada .envoltura{display:flex;gap:20px;align-items:center;padding-block:28px 24px}
-.portada img{width:96px;height:auto;flex:none}
-.portada .acento{font-family:var(--acento);font-size:40px;line-height:.8;display:block;margin-bottom:-4px}
-.portada h1{font-family:var(--titulo);font-weight:400;font-size:clamp(40px,9vw,64px);line-height:1;letter-spacing:.01em;text-transform:uppercase}
-.portada .datos{font-weight:600;font-size:14px;margin-top:6px}
-.cuenta{display:inline-block;margin-top:10px;background:var(--tinta);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
+.portada .envoltura{display:flex;flex-direction:column;gap:10px;align-items:center;padding-block:20px 18px;text-align:center}
+.portada img{width:min(240px,62vw);height:auto;flex:none;filter:drop-shadow(0 4px 10px rgba(23,23,28,.18))}
+.linea-datos{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+.portada .datos{font-weight:700;font-size:14px;margin:0}
+.oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cuenta{display:inline-block;background:var(--tinta);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
 .cuenta b{color:var(--amarillo)}
 
 /* Pestañas */
@@ -234,20 +234,15 @@ p{margin:0}
   .fila>button{grid-template-columns:minmax(0,1fr) 70px 44px}
   .ajuste{grid-template-columns:1fr}
   .ajuste .ctrls{justify-content:flex-start}
-  .portada img{width:72px}
 }
 @media (prefers-reduced-motion:no-preference){.barra i,.anillo{transition:all .3s ease}}
 </style>
 
 <header class="portada">
   <div class="envoltura">
-    <img src="icons/gira-logo.png" alt="Logo Acuarela Mimbi Gira México 2026" width="96" height="90">
-    <div>
-      <span class="acento">Gira</span>
-      <h1>México 2026</h1>
-      <p class="datos">Elenco Folklórico Acuarela Mimbi · 30/11 al 16/12</p>
-      <span class="cuenta" id="cuenta"></span>
-    </div>
+    <img src="icons/gira-logo-2.png" alt="Acuarela Mimbi, Elenco Folklórico, Gira México 2026" width="240" height="225">
+    <h1 class="oculto">Gira México 2026 · Acuarela Mimbi</h1>
+    <div class="linea-datos"><span class="cuenta" id="cuenta"></span><span class="datos">30/11 al 16/12</span></div>
   </div>
 </header>
 
