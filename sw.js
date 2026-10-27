@@ -1,6 +1,6 @@
 // Cambiar VERSION en cada publicación para que los celulares bajen la versión nueva.
-const VERSION = "gira-2026-10-27-9";
-const ARCHIVOS = ["./", "index.html", "manifest.webmanifest", "icons/gira-logo-2.png", "icons/gira-icon-192.png", "icons/gira-icon-512.png", "icons/gira-maskable-512.png", "icons/gira-apple-touch-icon.png", "fonts/anton.woff2", "fonts/great-vibes.woff2", "fonts/montserrat-400.woff2", "fonts/montserrat-500.woff2", "fonts/montserrat-600.woff2", "fonts/montserrat-700.woff2"];
+const VERSION = "gira-2026-10-27-10";
+const ARCHIVOS = ["./", "index.html", "manifest.webmanifest", "icons/gira-logo-2.png", "icons/gira-app-192.png", "icons/gira-app-512.png", "icons/gira-app-apple.png", "fonts/anton.woff2", "fonts/great-vibes.woff2", "fonts/montserrat-400.woff2", "fonts/montserrat-500.woff2", "fonts/montserrat-600.woff2", "fonts/montserrat-700.woff2"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(ARCHIVOS.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));

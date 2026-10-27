@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#17171c" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/gira-icon-192.png">
-<link rel="apple-touch-icon" href="icons/gira-apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/gira-app-192.png">
+<link rel="apple-touch-icon" href="icons/gira-app-apple.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gira México">
 </head>
@@ -1091,7 +1091,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#e-repaso").hidden = !(t >= finTema(i) && hayRepaso(i));
     document.querySelectorAll("#e-temas button").forEach(b => b.classList.toggle("activo", +b.dataset.i === i));
     if ("mediaSession" in navigator && navigator.mediaSession.metadata?.title !== temas()[i][0] && window.MediaMetadata)
-      navigator.mediaSession.metadata = new MediaMetadata({ title: temas()[i][0], artist: "Cuadro " + cuadro + " · Acuarela Mimbi", album: "Gira México 2026", artwork: [{ src: "icons/gira-icon-512.png", sizes: "512x512", type: "image/png" }] });
+      navigator.mediaSession.metadata = new MediaMetadata({ title: temas()[i][0], artist: "Cuadro " + cuadro + " · Acuarela Mimbi", album: "Gira México 2026", artwork: [{ src: "icons/gira-app-512.png", sizes: "512x512", type: "image/png" }] });
   }
   function pintarPlay() {
     const b = $("#e-play"), sonando = !audio.paused;
