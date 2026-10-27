@@ -126,14 +126,41 @@ h3{font-size:16px;font-weight:700}
 p{margin:0}
 .bloque{display:grid;gap:12px}
 .nota{color:var(--suave);font-size:13px}
-/* Repertorio */
-.cuadros{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.cuadro{border:1px solid var(--linea);border-radius:var(--radio);padding:14px 16px;display:grid;gap:10px;align-content:start}
-.cuadro .num{font-family:var(--titulo);font-size:22px;line-height:1;text-transform:uppercase}
-.cuadro .num small{display:block;font-family:var(--cuerpo);font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--suave);margin-bottom:4px}
-.cuadro ol{margin:0;padding-left:22px;display:grid;gap:6px}
-.cuadro li::marker{color:var(--suave);font-weight:700}
-.cuadro .extra{color:var(--suave);font-style:italic}
+/* Repertorio: reproductor de ensayo */
+.e-pestanas{display:flex;gap:8px;flex-wrap:wrap}
+.e-pestanas button{border:1px solid var(--linea);background:var(--fondo);border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+.e-pestanas button[aria-selected="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+.ensayo{border:1px solid var(--linea);border-radius:var(--radio);padding:16px;display:grid;gap:14px;background:var(--superficie)}
+.e-cargar{display:grid;gap:10px;justify-items:start}
+.e-ahora small{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
+.e-ahora b{display:block;font-family:var(--titulo);font-weight:400;font-size:26px;line-height:1.15;text-transform:uppercase}
+.e-ahora .repaso{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--alerta-fondo);color:var(--alerta)}
+.e-barra{position:relative;height:40px;border-radius:10px;overflow:hidden;background:var(--fondo);border:1px solid var(--linea)}
+.e-seg{position:absolute;top:0;bottom:0;border-right:2px solid var(--fondo)}
+.e-seg:nth-child(4n+1){background:var(--p-celeste)}.e-seg:nth-child(4n+2){background:var(--p-rosa)}.e-seg:nth-child(4n+3){background:var(--p-lila)}.e-seg:nth-child(4n+4){background:var(--p-durazno)}
+.e-rep{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,transparent 0 4px,rgba(0,0,0,.18) 4px 7px)}
+.e-hecho{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.22);pointer-events:none}
+.e-barra input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.e-tiempos{display:flex;justify-content:space-between;font-size:13px;color:var(--suave);font-variant-numeric:tabular-nums;margin-top:-6px}
+.e-controles{display:flex;justify-content:center;align-items:center;gap:10px}
+.e-controles button{border:1px solid var(--linea);background:var(--fondo);border-radius:50%;width:48px;height:48px;display:grid;place-items:center;cursor:pointer;padding:0}
+.e-controles .play{width:68px;height:68px;background:var(--tinta);border-color:var(--tinta);color:#fff}
+.e-controles svg{width:22px;height:22px;fill:currentColor}
+.e-controles .play svg{width:30px;height:30px}
+.e-controles .salto{font-size:13px;font-weight:700}
+.e-opciones{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.e-opciones button{border:1px solid var(--linea);background:var(--fondo);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer}
+.e-opciones button[aria-pressed="true"]{background:var(--ok-fondo);border-color:var(--ok);color:var(--ok)}
+.e-temas{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.e-temas button{width:100%;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;text-align:left;border:1px solid var(--linea);background:var(--fondo);border-radius:12px;padding:12px 14px;cursor:pointer}
+.e-temas .n{font-family:var(--titulo);font-size:18px;color:var(--suave)}
+.e-temas .t{font-variant-numeric:tabular-nums;color:var(--suave);font-size:13px;font-weight:600}
+.e-temas button.activo{border-color:var(--celeste);box-shadow:inset 4px 0 0 var(--celeste);font-weight:700}
+.e-aviso{background:var(--alerta-fondo);color:var(--alerta);border-radius:10px;padding:10px 12px;font-size:13px}
+.e-pie{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.e-pie .nota{flex:1 1 200px}
+:root[data-theme="dark"] .e-pestanas button[aria-selected="true"],:root[data-theme="dark"] .e-controles .play{background:var(--amarillo);border-color:var(--amarillo);color:var(--tinta)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="orgullo"]) .e-pestanas button[aria-selected="true"],:root:not([data-theme="light"]):not([data-theme="orgullo"]) .e-controles .play{background:var(--amarillo);border-color:var(--amarillo);color:var(--tinta)}}
 
 /* Recorrido */
 .ruta{list-style:none;margin:0;padding:0;display:grid}
@@ -596,16 +623,42 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="btn" href="https://drive.google.com/drive/folders/1vsdSQx_iqNGZhx7QIdkBHbcg2cQOOguk" target="_blank" rel="noopener" style="justify-self:start;text-decoration:none">Escuchar los temas</a>
       <p class="nota">Carpeta privada del grupo en Google Drive. Abrila con el correo que le pasaste a Gustavo. Para repasar sin internet, marcá los temas como "Disponible sin conexión" en la app de Drive.</p>
     </div>
-    <div class="cuadros">
-      <div class="cuadro"><div class="num"><small>Cuadro</small>1</div>
-        <ol><li>Tetagua Sapukai</li><li>Pájaro Campana</li><li>Carreta Guy</li><li>Tren Lechero</li></ol></div>
-      <div class="cuadro"><div class="num"><small>Cuadro</small>2</div>
-        <ol><li>Virgen de Caacupé</li><li>Mamá Kumandá</li><li>Galopera</li><li>Musiqueada Che Amape</li></ol></div>
-      <div class="cuadro"><div class="num"><small>Cuadro</small>3</div>
-        <p class="extra">Apertura a definir</p>
-        <ol><li>La Paraguaya</li><li>Pycasu Hovy</li><li>Nda Rekoi La Culpa</li></ol></div>
-      <div class="cuadro"><div class="num"><small>Por ubicar</small>+</div>
-        <ol><li>Gallito Cantor</li></ol></div>
+    <div class="bloque">
+      <h3>Reproductor de ensayo</h3>
+      <p class="nota">Tocá una canción para saltar directo a ella, sin retroceder a mano. Las rayitas de la barra son el repaso de 12 segundos entre tema y tema.</p>
+      <div class="e-pestanas" role="tablist" aria-label="Cuadro">
+        <button role="tab" data-c="1" aria-selected="true">Cuadro 1</button>
+        <button role="tab" data-c="2" aria-selected="false">Cuadro 2</button>
+        <button role="tab" data-c="3" aria-selected="false">Cuadro 3</button>
+      </div>
+    </div>
+    <div class="ensayo" id="ensayo">
+      <div class="e-cargar" id="e-cargar">
+        <p><b>Falta el audio de este cuadro.</b> Elegí el MP3 del <span class="e-nombre">Cuadro 1</span> que te llegó por WhatsApp (o el que bajaste de Drive). Queda guardado en la app y después funciona sin internet.</p>
+        <button class="btn" type="button" id="e-elegir">Elegir el audio</button>
+        <p class="nota">En iPhone, primero guardá el audio en Archivos desde WhatsApp (Compartir, Guardar en Archivos).</p>
+      </div>
+      <div id="e-reproductor" hidden>
+        <div class="e-ahora" aria-live="polite"><small>Sonando</small><b id="e-tema">&nbsp;</b><span class="repaso" id="e-repaso" hidden>Repaso, viene la siguiente</span></div>
+      </div>
+      <div class="e-barra" id="e-barra" hidden><div id="e-segs"></div><div class="e-hecho" id="e-hecho"></div><input type="range" id="e-pos" min="0" max="1000" step="1" value="0" aria-label="Posición en el audio"></div>
+      <div class="e-tiempos" id="e-tiempos" hidden><span id="e-actual">0:00</span><span id="e-total">0:00</span></div>
+      <div class="e-controles" id="e-controles" hidden>
+        <button type="button" id="e-ant" aria-label="Canción anterior"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button type="button" id="e-menos" class="salto" aria-label="Atrás 5 segundos">-5</button>
+        <button type="button" id="e-play" class="play" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+        <button type="button" id="e-mas" class="salto" aria-label="Adelante 5 segundos">+5</button>
+        <button type="button" id="e-sig" aria-label="Canción siguiente"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+      </div>
+      <div class="e-opciones" id="e-opciones" hidden>
+        <button type="button" id="e-repetir" aria-pressed="false">Repetir esta canción</button>
+        <button type="button" id="e-vel">Velocidad 1x</button>
+      </div>
+      <div class="e-aviso" id="e-aviso" hidden></div>
+      <ol class="e-temas" id="e-temas"></ol>
+      <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p><button class="btn sec" type="button" id="e-cambiar">Cambiar audio</button></div>
+      <input type="file" id="e-archivo-input" accept="audio/*,.mp3,.mpeg,.m4a" hidden>
+      <audio id="e-audio" preload="metadata"></audio>
     </div>
   </section>
 
@@ -983,6 +1036,201 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     catch (e) { const r = document.createRange(); r.selectNodeContents($("#url-app")); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent = "Seleccionado"; }
     setTimeout(() => { b.textContent = "Copiar"; }, 2000);
   });
+
+  // ---------- Reproductor de ensayo ----------
+  // Inicio de cada canción en segundos, tomado de los proyectos de CapCut de los enganchados finales.
+  // Entre tema y tema: 0,5 s de pausa + 12 s de repaso del tema que terminó.
+  const CUADROS = {
+    1: { dura: 679.6, temas: [["Tetagua Sapukai", 0], ["Pájaro Campana", 88.7], ["Carreta Guy", 275.67], ["Tren Lechero", 463.3]] },
+    2: { dura: 702, temas: [["Virgen de Caacupé", 0], ["Mamá Kumandá", 278.9], ["Galopera", 381.03], ["Musiqueada Che Amape", 520.73]] },
+    3: { dura: 762.7, temas: [["La Paraguaya", 0], ["Pycasu Hovy", 165.9], ["Nda Rekoi La Culpa", 351.7], ["Gallito Cantor", 501.8]] },
+  };
+  const REPASO = 12.5;
+  const audio = $("#e-audio"), entrada = $("#e-archivo-input");
+  let cuadro = leer("ensayo-cuadro", 1), url = null, repetir = false, vel = 1, cuadroAudio = null;
+  if (!CUADROS[cuadro]) cuadro = 1;
+
+  const mmss = t => { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"); };
+  const dura = () => (isFinite(audio.duration) && audio.duration > 0) ? audio.duration : CUADROS[cuadro].dura;
+  const temas = () => CUADROS[cuadro].temas;
+  const finTema = i => i + 1 < temas().length ? temas()[i + 1][1] - REPASO : dura();
+  function temaEn(t) { let i = 0; temas().forEach(([, ini], k) => { if (t >= ini - 0.05) i = k; }); return i; }
+
+  // Guardado del audio en el celular (IndexedDB), para no elegirlo cada vez y usarlo sin internet.
+  function bd() {
+    return new Promise((ok, mal) => {
+      const r = indexedDB.open("gira-ensayo", 1);
+      r.onupgradeneeded = () => r.result.createObjectStore("audios");
+      r.onsuccess = () => ok(r.result);
+      r.onerror = () => mal(r.error);
+    });
+  }
+  async function bdHacer(modo, fn) {
+    const db = await bd();
+    return new Promise((ok, mal) => {
+      const tx = db.transaction("audios", modo), req = fn(tx.objectStore("audios"));
+      tx.oncomplete = () => ok(req && req.result);
+      tx.onerror = () => mal(tx.error);
+    });
+  }
+  const guardar = (c, dato) => bdHacer("readwrite", s => s.put(dato, c));
+  const traer = c => bdHacer("readonly", s => s.get(c)).catch(() => null);
+
+  function pintarLista() {
+    const ol = $("#e-temas");
+    ol.replaceChildren(...temas().map(([nombre, ini], i) => el("li", {},
+      el("button", { type: "button", "data-i": i, onclick: () => saltar(i, true) },
+        el("span", { class: "n", text: i + 1 }), el("span", { text: nombre }), el("span", { class: "t", text: mmss(ini) })))));
+  }
+  function pintarBarra() {
+    const d = dura(), segs = $("#e-segs"), pct = x => (x / d * 100) + "%";
+    segs.replaceChildren(
+      ...temas().map(([, ini], i) => el("div", { class: "e-seg", style: `left:${pct(ini)};width:${pct((i + 1 < temas().length ? temas()[i + 1][1] : d) - ini)}` })),
+      ...temas().slice(1).map(([, ini]) => el("div", { class: "e-rep", style: `left:${pct(ini - REPASO)};width:${pct(REPASO)}` })));
+  }
+  function pintarEstado() {
+    const t = audio.currentTime || 0, d = dura(), i = temaEn(t);
+    $("#e-hecho").style.width = (t / d * 100) + "%";
+    $("#e-pos").value = Math.round(t / d * 1000);
+    $("#e-pos").setAttribute("aria-valuetext", mmss(t) + " de " + mmss(d));
+    $("#e-actual").textContent = mmss(t);
+    $("#e-total").textContent = mmss(d);
+    $("#e-tema").textContent = temas()[i][0];
+    $("#e-repaso").hidden = !(t >= finTema(i) && i + 1 < temas().length);
+    document.querySelectorAll("#e-temas button").forEach(b => b.classList.toggle("activo", +b.dataset.i === i));
+    if ("mediaSession" in navigator && navigator.mediaSession.metadata?.title !== temas()[i][0] && window.MediaMetadata)
+      navigator.mediaSession.metadata = new MediaMetadata({ title: temas()[i][0], artist: "Cuadro " + cuadro + " · Acuarela Mimbi", album: "Gira México 2026", artwork: [{ src: "icons/gira-icon-512.png", sizes: "512x512", type: "image/png" }] });
+  }
+  function pintarPlay() {
+    const b = $("#e-play"), sonando = !audio.paused;
+    b.setAttribute("aria-label", sonando ? "Pausa" : "Reproducir");
+    b.querySelector("svg").innerHTML = sonando ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+  }
+  function mostrarReproductor(hay) {
+    $("#e-cargar").hidden = hay;
+    ["#e-reproductor", "#e-barra", "#e-tiempos", "#e-controles", "#e-opciones", "#e-pie"].forEach(s => { $(s).hidden = !hay; });
+  }
+  function avisar(txt) { $("#e-aviso").hidden = !txt; $("#e-aviso").textContent = txt || ""; }
+
+  async function abrirCuadro(c) {
+    audio.pause();
+    cuadro = c; escribir("ensayo-cuadro", c); cuadroAudio = null; avisar("");
+    document.querySelectorAll(".e-pestanas button").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.c === c)));
+    document.querySelectorAll(".e-nombre").forEach(n => { n.textContent = "Cuadro " + c; });
+    pintarLista(); pintarBarra();
+    const dato = await traer(c);
+    if (cuadro !== c) return;
+    if (url) { URL.revokeObjectURL(url); url = null; }
+    if (!dato) { audio.removeAttribute("src"); audio.load(); mostrarReproductor(false); return; }
+    url = URL.createObjectURL(dato.blob);
+    audio.src = url; cuadroAudio = c;
+    audio.playbackRate = vel;
+    $("#e-archivo").textContent = "Audio guardado: " + dato.nombre;
+    mostrarReproductor(true); pintarEstado(); pintarPlay();
+  }
+
+  function saltar(i, tocar) {
+    if (cuadroAudio !== cuadro) { entrada.click(); return; }
+    audio.currentTime = temas()[i][1];
+    pintarEstado();
+    if (tocar && audio.paused) audio.play().catch(() => {});
+  }
+  function anterior() {
+    const t = audio.currentTime, i = temaEn(t);
+    saltar(t - temas()[i][1] > 3 || i === 0 ? i : i - 1, false);
+  }
+  function siguiente() { const i = temaEn(audio.currentTime); if (i + 1 < temas().length) saltar(i + 1, false); }
+  const mover = s => { audio.currentTime = Math.min(dura(), Math.max(0, audio.currentTime + s)); pintarEstado(); };
+
+  // Lee la duración del archivo elegido para reconocer a qué cuadro pertenece.
+  const duracionDe = blob => new Promise(ok => {
+    const a = new Audio(), u = URL.createObjectURL(blob);
+    const fin = d => { URL.revokeObjectURL(u); ok(d); };
+    a.preload = "metadata";
+    a.onloadedmetadata = () => fin(a.duration);
+    a.onerror = () => fin(NaN);
+    setTimeout(() => fin(NaN), 8000);
+    a.src = u;
+  });
+  entrada.addEventListener("change", async () => {
+    let f = entrada.files[0]; entrada.value = "";
+    if (!f) return;
+    // Algunos celulares no informan el tipo (por ejemplo con ".MP3" en mayúsculas): se lo ponemos según la extensión.
+    if (!/^audio\//.test(f.type)) {
+      const ext = (f.name.split(".").pop() || "").toLowerCase();
+      f = new File([f], f.name, { type: { m4a: "audio/mp4", aac: "audio/aac", ogg: "audio/ogg", opus: "audio/ogg", wav: "audio/wav" }[ext] || "audio/mpeg" });
+    }
+    const d = await duracionDe(f);
+    let destino = cuadro, aviso = "";
+    if (isFinite(d)) {
+      const cerca = Object.keys(CUADROS).map(Number).find(c => Math.abs(CUADROS[c].dura - d) < 4);
+      if (cerca && cerca !== cuadro) { destino = cerca; aviso = `Ese audio es el del Cuadro ${cerca} (dura ${mmss(d)}), así que lo guardé ahí.`; }
+      else if (!cerca) aviso = `Este audio dura ${mmss(d)} y el enganchado final del Cuadro ${cuadro} dura ${mmss(CUADROS[cuadro].dura)}. Si es otra versión, los saltos pueden no caer justo al inicio de cada canción.`;
+    }
+    try { await guardar(destino, { blob: f, nombre: f.name, d }); }
+    catch (e) { avisar("No se pudo guardar el audio en el celular. Podés usarlo igual, pero vas a tener que elegirlo de nuevo la próxima vez."); }
+    if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
+    await abrirCuadro(destino);
+    if (cuadroAudio !== destino) {
+      url = URL.createObjectURL(f); audio.src = url; cuadroAudio = destino;
+      $("#e-archivo").textContent = "Audio: " + f.name; mostrarReproductor(true);
+    }
+    if (aviso) avisar(aviso);
+  });
+
+  document.querySelectorAll(".e-pestanas button").forEach(b => b.addEventListener("click", () => abrirCuadro(+b.dataset.c)));
+  $("#e-elegir").addEventListener("click", () => entrada.click());
+  $("#e-cambiar").addEventListener("click", () => entrada.click());
+  $("#e-play").addEventListener("click", () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); });
+  $("#e-ant").addEventListener("click", anterior);
+  $("#e-sig").addEventListener("click", siguiente);
+  $("#e-menos").addEventListener("click", () => mover(-5));
+  $("#e-mas").addEventListener("click", () => mover(5));
+  $("#e-pos").addEventListener("input", e => { audio.currentTime = e.target.value / 1000 * dura(); pintarEstado(); });
+  $("#e-repetir").addEventListener("click", e => { repetir = !repetir; e.currentTarget.setAttribute("aria-pressed", String(repetir)); });
+  $("#e-vel").addEventListener("click", e => {
+    vel = { 1: 0.9, 0.9: 0.75, 0.75: 1 }[vel];
+    audio.playbackRate = vel;
+    e.currentTarget.textContent = "Velocidad " + String(vel).replace(".", ",") + "x";
+    e.currentTarget.setAttribute("aria-pressed", String(vel !== 1));
+  });
+
+  // Mientras suena: actualizar la pantalla y, con "Repetir", volver al inicio de la canción antes del repaso.
+  let pedido = 0;
+  function cuadroAnim() {
+    if (repetir) {
+      const i = temaEn(audio.currentTime);
+      if (audio.currentTime >= finTema(i) - 0.15) audio.currentTime = temas()[i][1];
+    }
+    pintarEstado();
+    pedido = audio.paused ? 0 : requestAnimationFrame(cuadroAnim);
+  }
+  audio.addEventListener("play", () => { pintarPlay(); if (!pedido) pedido = requestAnimationFrame(cuadroAnim); });
+  audio.addEventListener("pause", () => { pintarPlay(); pintarEstado(); });
+  audio.addEventListener("timeupdate", () => { if (!pedido) { if (repetir && !audio.paused) cuadroAnim(); else pintarEstado(); } });
+  audio.addEventListener("ended", () => {
+    if (repetir) { audio.currentTime = temas()[temas().length - 1][1]; audio.play().catch(() => {}); }
+    pintarPlay();
+  });
+  audio.addEventListener("error", () => { if (audio.getAttribute("src")) avisar("El celular no pudo abrir este archivo. Probá con el MP3 original del cuadro."); });
+  audio.addEventListener("loadedmetadata", () => {
+    pintarBarra(); pintarEstado();
+    if (Math.abs(audio.duration - CUADROS[cuadro].dura) >= 4 && !$("#e-aviso").textContent)
+      avisar(`Este audio dura ${mmss(audio.duration)} y el enganchado final del Cuadro ${cuadro} dura ${mmss(CUADROS[cuadro].dura)}. Si es otra versión, los saltos pueden no caer justo.`);
+  });
+
+  // Controles de la pantalla bloqueada y los auriculares: anterior y siguiente saltan de canción.
+  if ("mediaSession" in navigator) {
+    const ms = navigator.mediaSession, accion = (a, f) => { try { ms.setActionHandler(a, f); } catch (e) {} };
+    accion("play", () => audio.play());
+    accion("pause", () => audio.pause());
+    accion("previoustrack", anterior);
+    accion("nexttrack", siguiente);
+    accion("seekbackward", () => mover(-5));
+    accion("seekforward", () => mover(5));
+    accion("seekto", d => { audio.currentTime = d.seekTime; pintarEstado(); });
+  }
+  abrirCuadro(cuadro);
 
   // ---------- Lugares ----------
   function activar(n, desdeMapa) {
