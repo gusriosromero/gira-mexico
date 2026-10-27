@@ -659,7 +659,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       </div>
       <div class="e-aviso" id="e-aviso" hidden></div>
       <ol class="e-temas" id="e-temas"></ol>
-      <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p><button class="btn sec" type="button" id="e-cambiar">Usar otro audio</button></div>
+      <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p></div>
       <input type="file" id="e-archivo-input" accept="audio/*,.mp3,.mpeg,.m4a" hidden>
       <audio id="e-audio" preload="metadata"></audio>
     </div>
@@ -1269,7 +1269,6 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   document.querySelectorAll(".e-pestanas button").forEach(b => b.addEventListener("click", () => abrirCuadro(+b.dataset.c)));
   $("#e-elegir").addEventListener("click", () => entrada.click());
-  $("#e-cambiar").addEventListener("click", () => entrada.click());
   $("#e-play").addEventListener("click", () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); });
   $("#e-ant").addEventListener("click", anterior);
   $("#e-sig").addEventListener("click", siguiente);
