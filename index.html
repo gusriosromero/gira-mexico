@@ -1114,6 +1114,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     document.querySelectorAll(".e-nombre").forEach(n => { n.textContent = "Cuadro " + c; });
     $("#e-descargar").href = audioDe(c);
     $("#e-descargar").download = "Gira México - Cuadro " + c + ".mp3";
+    // Los audios viven junto a la app publicada; en otras copias de la página no hay qué descargar
+    $("#e-descargar").hidden = !/github\.io$/.test(location.hostname);
     pintarLista(); pintarBarra();
     let dato = await traer(c);
     if (dato && !dato.propio && (dato.v || 1) !== verDe(c)) dato = null;
