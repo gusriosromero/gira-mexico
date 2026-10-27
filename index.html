@@ -151,6 +151,8 @@ p{margin:0}
 .e-opciones{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .e-opciones button{border:1px solid var(--linea);background:var(--fondo);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer}
 .e-opciones button[aria-pressed="true"]{background:var(--ok-fondo);border-color:var(--ok);color:var(--ok)}
+.e-bajar{justify-self:start;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.e-bajar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .e-temas{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .e-temas button{width:100%;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;text-align:left;border:1px solid var(--linea);background:var(--fondo);border-radius:12px;padding:12px 14px;cursor:pointer}
 .e-temas .n{font-family:var(--titulo);font-size:18px;color:var(--suave)}
@@ -621,6 +623,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button role="tab" data-c="2" aria-selected="false">Cuadro 2</button>
         <button role="tab" data-c="3" aria-selected="false">Cuadro 3</button>
       </div>
+      <a class="btn sec e-bajar" id="e-descargar" href="audio/cuadro-1.mp3" download="Gira México - Cuadro 1.mp3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Descargar <span class="e-nombre">Cuadro 1</span></span></a>
     </div>
     <div class="ensayo" id="ensayo">
       <div class="e-cargar" id="e-cargar">
@@ -1109,6 +1112,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     cuadro = c; escribir("ensayo-cuadro", c); cuadroAudio = null; avisar("");
     document.querySelectorAll(".e-pestanas button").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.c === c)));
     document.querySelectorAll(".e-nombre").forEach(n => { n.textContent = "Cuadro " + c; });
+    $("#e-descargar").href = audioDe(c);
+    $("#e-descargar").download = "Gira México - Cuadro " + c + ".mp3";
     pintarLista(); pintarBarra();
     let dato = await traer(c);
     if (dato && !dato.propio && (dato.v || 1) !== verDe(c)) dato = null;
