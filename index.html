@@ -128,7 +128,7 @@ p{margin:0}
 .nota{color:var(--suave);font-size:13px}
 /* Repertorio: reproductor de ensayo */
 .e-pestanas{display:flex;gap:8px;flex-wrap:wrap}
-.e-pestanas button{border:1px solid var(--linea);background:var(--fondo);border-radius:999px;padding:8px 16px;font-weight:700;cursor:pointer}
+.e-pestanas button{border:1px solid var(--linea);background:var(--fondo);border-radius:999px;padding:8px 12px;white-space:nowrap;font-weight:700;cursor:pointer}
 .e-pestanas button[aria-selected="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
 .ensayo{border:1px solid var(--linea);border-radius:var(--radio);padding:16px;display:grid;gap:14px;background:var(--superficie)}
 .e-cargar{display:grid;gap:10px;justify-items:start}
@@ -151,6 +151,13 @@ p{margin:0}
 .e-opciones{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
 .e-opciones button{border:1px solid var(--linea);background:var(--fondo);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer}
 .e-opciones button[aria-pressed="true"]{background:var(--ok-fondo);border-color:var(--ok);color:var(--ok)}
+.e-guardar{display:grid;gap:8px}
+.e-prog{display:grid;gap:4px}
+.e-prog-barra{height:10px;border-radius:99px;background:var(--linea);overflow:hidden}
+.e-prog-barra i{display:block;height:100%;width:0;background:var(--amarillo);border-radius:99px;transition:width .2s}
+.e-pestanas .ok{color:var(--ok)}
+.e-pestanas button[aria-selected="true"] .ok{color:var(--amarillo)}
+.e-bajar:disabled{opacity:.7;cursor:default}
 .e-bajar{justify-self:start;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .e-bajar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .e-temas{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -623,7 +630,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button role="tab" data-c="2" aria-selected="false">Cuadro 2</button>
         <button role="tab" data-c="3" aria-selected="false">Cuadro 3</button>
       </div>
-      <a class="btn sec e-bajar" id="e-descargar" href="audio/cuadro-1.mp3" download="Gira México - Cuadro 1.mp3"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Descargar <span class="e-nombre">Cuadro 1</span></span></a>
+      <div class="e-guardar" id="e-guardar">
+        <button class="btn sec e-bajar" type="button" id="e-guardar-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span id="e-guardar-txt">Guardar los 3 para usar sin internet</span></button>
+        <div class="e-prog" id="e-prog" hidden><div class="e-prog-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="e-prog-barra"><i id="e-prog-i"></i></div><span class="nota" id="e-prog-txt"></span></div>
+      </div>
     </div>
     <div class="ensayo" id="ensayo">
       <div class="e-cargar" id="e-cargar">
@@ -1112,10 +1122,6 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     cuadro = c; escribir("ensayo-cuadro", c); cuadroAudio = null; avisar("");
     document.querySelectorAll(".e-pestanas button").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.c === c)));
     document.querySelectorAll(".e-nombre").forEach(n => { n.textContent = "Cuadro " + c; });
-    $("#e-descargar").href = audioDe(c);
-    $("#e-descargar").download = "Gira México - Cuadro " + c + ".mp3";
-    // Los audios viven junto a la app publicada; en otras copias de la página no hay qué descargar
-    $("#e-descargar").hidden = !/github\.io$/.test(location.hostname);
     pintarLista(); pintarBarra();
     let dato = await traer(c);
     if (dato && !dato.propio && (dato.v || 1) !== verDe(c)) dato = null;
@@ -1144,10 +1150,73 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       await guardar(c, { blob, nombre: "Cuadro " + c, d: CUADROS[c].dura, v: verDe(c) });
       if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
       if (cuadro === c) $("#e-archivo").textContent = "Audio guardado en el celular, funciona sin internet.";
+      marcarGuardados();
     } catch (e) {
       if (cuadro === c) $("#e-archivo").textContent = "No se pudo guardar para usar sin internet. Volvé a abrir este cuadro con wifi.";
     }
   }
+
+  // Guardar los tres cuadros de una vez, con barra de progreso, y marcar con ✓ los que ya están.
+  const estaGuardado = async c => { const d = await traer(c); return !!d && (d.propio || (d.v || 1) === verDe(c)); };
+  async function marcarGuardados() {
+    let todos = true;
+    for (const b of document.querySelectorAll(".e-pestanas button")) {
+      const ok = await estaGuardado(+b.dataset.c);
+      todos = todos && ok;
+      let m = b.querySelector(".ok");
+      if (ok && !m) b.append(m = el("span", { class: "ok", text: " ✓", "aria-label": "guardado" }));
+      if (!ok && m) m.remove();
+    }
+    if (!$("#e-prog").hidden && !guardandoTodos) $("#e-prog").hidden = true;
+    $("#e-guardar-btn").disabled = todos || guardandoTodos;
+    $("#e-guardar-txt").textContent = todos ? "Los 3 cuadros ya están guardados" : "Guardar los 3 para usar sin internet";
+  }
+  let guardandoTodos = false;
+  async function guardarTodos() {
+    const faltan = [];
+    for (const c of Object.keys(CUADROS).map(Number)) if (!(await estaGuardado(c))) faltan.push(c);
+    if (!faltan.length) return marcarGuardados();
+    guardandoTodos = true;
+    $("#e-guardar-btn").disabled = true;
+    $("#e-prog").hidden = false;
+    const pintar = (n, frac, c) => {
+      const pct = Math.round((n + frac) / faltan.length * 100);
+      $("#e-prog-i").style.width = pct + "%";
+      $("#e-prog-barra").setAttribute("aria-valuenow", pct);
+      $("#e-prog-txt").textContent = "Guardando Cuadro " + c + "… " + pct + "%";
+    };
+    try {
+      for (const [n, c] of faltan.entries()) {
+        pintar(n, 0, c);
+        const r = await fetch(audioDe(c));
+        if (!r.ok) throw new Error(r.status);
+        const total = +r.headers.get("content-length") || 0, partes = [];
+        let llevo = 0;
+        if (r.body && total) {
+          const lector = r.body.getReader();
+          for (;;) {
+            const { done, value } = await lector.read();
+            if (done) break;
+            partes.push(value); llevo += value.length;
+            pintar(n, Math.min(llevo / total, 1), c);
+          }
+        } else partes.push(await r.arrayBuffer());
+        await guardar(c, { blob: new Blob(partes, { type: "audio/mpeg" }), nombre: "Cuadro " + c, d: CUADROS[c].dura, v: verDe(c) });
+        pintar(n, 1, c);
+      }
+      if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
+      $("#e-prog-txt").textContent = "¡Listo! Los 3 cuadros funcionan sin internet.";
+      if (cuadroAudio && !(await traer(cuadro))?.propio && audio.paused) abrirCuadro(cuadro);
+    } catch (e) {
+      $("#e-prog-txt").textContent = "Se cortó la descarga. Revisá la conexión (mejor con wifi) y volvé a tocar el botón.";
+    }
+    guardandoTodos = false;
+    marcarGuardados();
+  }
+  $("#e-guardar-btn").addEventListener("click", guardarTodos);
+  // Los audios viven junto a la app publicada; en otras copias de la página no hay qué guardar
+  $("#e-guardar").hidden = !/github\.io$/.test(location.hostname);
+  marcarGuardados();
 
   function saltar(i, tocar) {
     if (cuadroAudio !== cuadro) { entrada.click(); return; }
