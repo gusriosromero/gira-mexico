@@ -1042,10 +1042,12 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   // Entre el fin de una canción y el inicio de la siguiente va la pausa + el repaso de 12 s (si lo hay).
   const CUADROS = {
     1: { dura: 679.6, temas: [["Tetagua Sapukai", 0, 76.2], ["Pájaro Campana", 88.7, 263.17], ["Carreta Guy", 275.67, 450.8], ["Tren Lechero", 463.3]] },
-    2: { dura: 736.9, temas: [["Virgen de Caacupé", 15.5, 315.25], ["Mamá Kumandá", 315.25, 404.9], ["Galopera", 417.4, 544.2], ["Musiqueada Che Amape", 556.7]] },
+    2: { dura: 722.3, v: 2, temas: [["Virgen de Caacupé", 0, 300.58], ["Mamá Kumandá", 300.58, 390.23], ["Galopera", 402.73, 529.53], ["Musiqueada Che Amape", 542.03]] },
     3: { dura: 762.8, temas: [["La Paraguaya", 0, 153.5], ["Pycasu Hovy", 166, 339.3], ["Nda Rekoi La Culpa", 351.8, 489.45], ["Gallito Cantor", 501.95]] },
   };
-  const audioDe = c => "audio/cuadro-" + c + ".mp3";
+  // "v" sube cada vez que se cambia el MP3 de un cuadro, para que los celulares bajen el nuevo.
+  const verDe = c => CUADROS[c].v || 1;
+  const audioDe = c => "audio/cuadro-" + c + ".mp3?v=" + verDe(c);
   const audio = $("#e-audio"), entrada = $("#e-archivo-input");
   let cuadro = leer("ensayo-cuadro", 1), url = null, repetir = false, vel = 1, cuadroAudio = null;
   if (!CUADROS[cuadro]) cuadro = 1;
@@ -1119,7 +1121,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     document.querySelectorAll(".e-pestanas button").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.c === c)));
     document.querySelectorAll(".e-nombre").forEach(n => { n.textContent = "Cuadro " + c; });
     pintarLista(); pintarBarra();
-    const dato = await traer(c);
+    let dato = await traer(c);
+    if (dato && !dato.propio && (dato.v || 1) !== verDe(c)) dato = null;
     if (cuadro !== c) return;
     if (url) { URL.revokeObjectURL(url); url = null; }
     if (dato) {
@@ -1142,7 +1145,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const r = await fetch(audioDe(c));
       if (!r.ok) throw new Error(r.status);
       const blob = await r.blob();
-      await guardar(c, { blob, nombre: "Cuadro " + c, d: CUADROS[c].dura });
+      await guardar(c, { blob, nombre: "Cuadro " + c, d: CUADROS[c].dura, v: verDe(c) });
       if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
       if (cuadro === c) $("#e-archivo").textContent = "Audio guardado en el celular, funciona sin internet.";
     } catch (e) {
