@@ -625,7 +625,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     </div>
     <div class="bloque">
       <h3>Reproductor de ensayo</h3>
-      <p class="nota">Tocá una canción para saltar directo a ella, sin retroceder a mano. Las rayitas de la barra son el repaso de 12 segundos entre tema y tema.</p>
+      <p class="nota">Tocá una canción para saltar directo a ella, sin retroceder a mano. Las rayitas de la barra son el repaso de 12 segundos entre tema y tema. Cada cuadro se baja una sola vez (unos 12 MB, mejor con wifi) y después funciona sin internet.</p>
       <div class="e-pestanas" role="tablist" aria-label="Cuadro">
         <button role="tab" data-c="1" aria-selected="true">Cuadro 1</button>
         <button role="tab" data-c="2" aria-selected="false">Cuadro 2</button>
@@ -634,7 +634,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     </div>
     <div class="ensayo" id="ensayo">
       <div class="e-cargar" id="e-cargar">
-        <p><b>Falta el audio de este cuadro.</b> Elegí el MP3 del <span class="e-nombre">Cuadro 1</span> que te llegó por WhatsApp (o el que bajaste de Drive). Queda guardado en la app y después funciona sin internet.</p>
+        <p><b>No se pudo cargar el audio.</b> La primera vez se baja solo y necesita internet. Si no tenés conexión, podés elegir el MP3 del <span class="e-nombre">Cuadro 1</span> que te llegó por WhatsApp.</p>
         <button class="btn" type="button" id="e-elegir">Elegir el audio</button>
         <p class="nota">En iPhone, primero guardá el audio en Archivos desde WhatsApp (Compartir, Guardar en Archivos).</p>
       </div>
@@ -656,7 +656,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       </div>
       <div class="e-aviso" id="e-aviso" hidden></div>
       <ol class="e-temas" id="e-temas"></ol>
-      <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p><button class="btn sec" type="button" id="e-cambiar">Cambiar audio</button></div>
+      <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p><button class="btn sec" type="button" id="e-cambiar">Usar otro audio</button></div>
       <input type="file" id="e-archivo-input" accept="audio/*,.mp3,.mpeg,.m4a" hidden>
       <audio id="e-audio" preload="metadata"></audio>
     </div>
@@ -1038,14 +1038,14 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   });
 
   // ---------- Reproductor de ensayo ----------
-  // Inicio de cada canción en segundos, tomado de los proyectos de CapCut de los enganchados finales.
-  // Entre tema y tema: 0,5 s de pausa + 12 s de repaso del tema que terminó.
+  // [canción, inicio, fin] en segundos, medidos sobre los MP3 finales de cada cuadro.
+  // Entre el fin de una canción y el inicio de la siguiente va la pausa + el repaso de 12 s (si lo hay).
   const CUADROS = {
-    1: { dura: 679.6, temas: [["Tetagua Sapukai", 0], ["Pájaro Campana", 88.7], ["Carreta Guy", 275.67], ["Tren Lechero", 463.3]] },
-    2: { dura: 702, temas: [["Virgen de Caacupé", 0], ["Mamá Kumandá", 278.9], ["Galopera", 381.03], ["Musiqueada Che Amape", 520.73]] },
-    3: { dura: 762.7, temas: [["La Paraguaya", 0], ["Pycasu Hovy", 165.9], ["Nda Rekoi La Culpa", 351.7], ["Gallito Cantor", 501.8]] },
+    1: { dura: 679.6, temas: [["Tetagua Sapukai", 0, 76.2], ["Pájaro Campana", 88.7, 263.17], ["Carreta Guy", 275.67, 450.8], ["Tren Lechero", 463.3]] },
+    2: { dura: 736.9, temas: [["Virgen de Caacupé", 15.5, 315.25], ["Mamá Kumandá", 315.25, 404.9], ["Galopera", 417.4, 544.2], ["Musiqueada Che Amape", 556.7]] },
+    3: { dura: 762.8, temas: [["La Paraguaya", 0, 153.5], ["Pycasu Hovy", 166, 339.3], ["Nda Rekoi La Culpa", 351.8, 489.45], ["Gallito Cantor", 501.95]] },
   };
-  const REPASO = 12.5;
+  const audioDe = c => "audio/cuadro-" + c + ".mp3";
   const audio = $("#e-audio"), entrada = $("#e-archivo-input");
   let cuadro = leer("ensayo-cuadro", 1), url = null, repetir = false, vel = 1, cuadroAudio = null;
   if (!CUADROS[cuadro]) cuadro = 1;
@@ -1053,7 +1053,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const mmss = t => { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"); };
   const dura = () => (isFinite(audio.duration) && audio.duration > 0) ? audio.duration : CUADROS[cuadro].dura;
   const temas = () => CUADROS[cuadro].temas;
-  const finTema = i => i + 1 < temas().length ? temas()[i + 1][1] - REPASO : dura();
+  const finTema = i => temas()[i][2] ?? dura();
+  const hayRepaso = i => i + 1 < temas().length && temas()[i + 1][1] - finTema(i) > 3;
   function temaEn(t) { let i = 0; temas().forEach(([, ini], k) => { if (t >= ini - 0.05) i = k; }); return i; }
 
   // Guardado del audio en el celular (IndexedDB), para no elegirlo cada vez y usarlo sin internet.
@@ -1086,7 +1087,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const d = dura(), segs = $("#e-segs"), pct = x => (x / d * 100) + "%";
     segs.replaceChildren(
       ...temas().map(([, ini], i) => el("div", { class: "e-seg", style: `left:${pct(ini)};width:${pct((i + 1 < temas().length ? temas()[i + 1][1] : d) - ini)}` })),
-      ...temas().slice(1).map(([, ini]) => el("div", { class: "e-rep", style: `left:${pct(ini - REPASO)};width:${pct(REPASO)}` })));
+      ...temas().map((_, i) => hayRepaso(i) ? el("div", { class: "e-rep", style: `left:${pct(finTema(i))};width:${pct(temas()[i + 1][1] - finTema(i))}` }) : null).filter(Boolean));
   }
   function pintarEstado() {
     const t = audio.currentTime || 0, d = dura(), i = temaEn(t);
@@ -1096,7 +1097,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#e-actual").textContent = mmss(t);
     $("#e-total").textContent = mmss(d);
     $("#e-tema").textContent = temas()[i][0];
-    $("#e-repaso").hidden = !(t >= finTema(i) && i + 1 < temas().length);
+    $("#e-repaso").hidden = !(t >= finTema(i) && hayRepaso(i));
     document.querySelectorAll("#e-temas button").forEach(b => b.classList.toggle("activo", +b.dataset.i === i));
     if ("mediaSession" in navigator && navigator.mediaSession.metadata?.title !== temas()[i][0] && window.MediaMetadata)
       navigator.mediaSession.metadata = new MediaMetadata({ title: temas()[i][0], artist: "Cuadro " + cuadro + " · Acuarela Mimbi", album: "Gira México 2026", artwork: [{ src: "icons/gira-icon-512.png", sizes: "512x512", type: "image/png" }] });
@@ -1121,12 +1122,32 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const dato = await traer(c);
     if (cuadro !== c) return;
     if (url) { URL.revokeObjectURL(url); url = null; }
-    if (!dato) { audio.removeAttribute("src"); audio.load(); mostrarReproductor(false); return; }
-    url = URL.createObjectURL(dato.blob);
-    audio.src = url; cuadroAudio = c;
+    if (dato) {
+      url = URL.createObjectURL(dato.blob);
+      audio.src = url;
+      $("#e-archivo").textContent = dato.propio ? "Audio elegido por vos: " + dato.nombre : "Audio guardado en el celular, funciona sin internet.";
+    } else {
+      // Primera vez: suena desde internet y en segundo plano se guarda en el celular para la próxima.
+      audio.src = audioDe(c);
+      $("#e-archivo").textContent = "Bajando el audio para que después funcione sin internet…";
+      bajarYGuardar(c);
+    }
+    cuadroAudio = c;
     audio.playbackRate = vel;
-    $("#e-archivo").textContent = "Audio guardado: " + dato.nombre;
     mostrarReproductor(true); pintarEstado(); pintarPlay();
+  }
+
+  async function bajarYGuardar(c) {
+    try {
+      const r = await fetch(audioDe(c));
+      if (!r.ok) throw new Error(r.status);
+      const blob = await r.blob();
+      await guardar(c, { blob, nombre: "Cuadro " + c, d: CUADROS[c].dura });
+      if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
+      if (cuadro === c) $("#e-archivo").textContent = "Audio guardado en el celular, funciona sin internet.";
+    } catch (e) {
+      if (cuadro === c) $("#e-archivo").textContent = "No se pudo guardar para usar sin internet. Volvé a abrir este cuadro con wifi.";
+    }
   }
 
   function saltar(i, tocar) {
@@ -1167,7 +1188,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (cerca && cerca !== cuadro) { destino = cerca; aviso = `Ese audio es el del Cuadro ${cerca} (dura ${mmss(d)}), así que lo guardé ahí.`; }
       else if (!cerca) aviso = `Este audio dura ${mmss(d)} y el enganchado final del Cuadro ${cuadro} dura ${mmss(CUADROS[cuadro].dura)}. Si es otra versión, los saltos pueden no caer justo al inicio de cada canción.`;
     }
-    try { await guardar(destino, { blob: f, nombre: f.name, d }); }
+    try { await guardar(destino, { blob: f, nombre: f.name, d, propio: true }); }
     catch (e) { avisar("No se pudo guardar el audio en el celular. Podés usarlo igual, pero vas a tener que elegirlo de nuevo la próxima vez."); }
     if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
     await abrirCuadro(destino);
@@ -1212,7 +1233,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     if (repetir) { audio.currentTime = temas()[temas().length - 1][1]; audio.play().catch(() => {}); }
     pintarPlay();
   });
-  audio.addEventListener("error", () => { if (audio.getAttribute("src")) avisar("El celular no pudo abrir este archivo. Probá con el MP3 original del cuadro."); });
+  audio.addEventListener("error", () => {
+    if (!audio.getAttribute("src")) return;
+    if (audio.getAttribute("src") === audioDe(cuadro)) { cuadroAudio = null; mostrarReproductor(false); }
+    else avisar("El celular no pudo abrir este archivo. Probá con el MP3 original del cuadro.");
+  });
   audio.addEventListener("loadedmetadata", () => {
     pintarBarra(); pintarEstado();
     if (Math.abs(audio.duration - CUADROS[cuadro].dura) >= 4 && !$("#e-aviso").textContent)

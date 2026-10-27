@@ -1,5 +1,5 @@
 // Cambiar VERSION en cada publicación para que los celulares bajen la versión nueva.
-const VERSION = "gira-2026-10-27-5";
+const VERSION = "gira-2026-10-27-6";
 const ARCHIVOS = ["./", "index.html", "manifest.webmanifest", "icons/gira-logo-2.png", "icons/gira-icon-192.png", "icons/gira-icon-512.png", "icons/gira-maskable-512.png", "icons/gira-apple-touch-icon.png", "fonts/anton.woff2", "fonts/great-vibes.woff2", "fonts/montserrat-400.woff2", "fonts/montserrat-500.woff2", "fonts/montserrat-600.woff2", "fonts/montserrat-700.woff2"];
 
 self.addEventListener("install", e => {
@@ -17,6 +17,8 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
+  // Los audios de ensayo los guarda la página en el celular; acá van directo a la red.
+  if (new URL(req.url).pathname.includes("/audio/")) return;
   if (req.mode === "navigate") {
     e.respondWith(fetch(req.url, { cache: "no-cache" })
       .then(r => { const copia = r.clone(); caches.open(VERSION).then(c => c.put("index.html", copia)); return r; })
