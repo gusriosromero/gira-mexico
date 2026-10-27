@@ -93,6 +93,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 section.vista:not(#vista-inicio) > .bloque:first-child > h2,
 section.vista:not(#vista-inicio) > .bloque:first-child > .etiqueta:not(.conservar){display:none}
 section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqueta))){display:none}
+.tema{flex:none;width:40px;height:40px;border-radius:50%;border:0;background:var(--superficie);color:var(--texto);display:grid;place-items:center;cursor:pointer}
+.tema svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.portada > .tema{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);right:max(12px,env(safe-area-inset-right,0px));z-index:2;background:var(--fondo);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.barra-seccion .tema{margin-left:auto}
 /* Inicio */
 .cab-inicio{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .modo{display:flex;gap:4px;background:var(--superficie);border-radius:999px;padding:4px}
@@ -292,6 +296,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 .btn{border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;background:var(--tinta);color:#fff}
 :root[data-theme="dark"] .btn{background:var(--amarillo);color:var(--tinta)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{background:var(--amarillo);color:var(--tinta)}}
+:root[data-theme="dark"] .btn{background:var(--amarillo);color:var(--tinta)}
+:root[data-theme="dark"] .item input:checked{background:var(--amarillo);border-color:var(--amarillo)}
+:root[data-theme="dark"] .item input:checked::after{border-color:var(--tinta)}
+:root[data-theme="light"]{color-scheme:light}
 .btn.sec{background:transparent;color:var(--texto);border:1px solid var(--linea)}
 
 /* Panel del grupo */
@@ -332,6 +340,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 </style>
 
 <header class="portada">
+  <button type="button" class="tema" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
   <div class="envoltura">
     <div class="marca">
       <img src="icons/gira-logo-2.png" alt="Acuarela Mimbi, Elenco Folklórico, Gira México 2026" width="240" height="225">
@@ -355,6 +364,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <a class="volver" href="#inicio" data-vista="inicio" aria-label="Volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></a>
     <a class="marca-mini" href="#inicio" tabindex="-1" aria-hidden="true"><img alt=""></a>
     <span class="tit-bloque"><small>Gira México 2026</small><span class="titulo-seccion" id="titulo-seccion"></span></span>
+    <button type="button" class="tema" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
   </div>
 </nav>
 
@@ -690,6 +700,30 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   };
   const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+  // ---------- Tema ----------
+  const ICONOS_TEMA = {
+    auto: ['<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>', "Tema: automático (como el celular)"],
+    claro: ['<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>', "Tema: claro"],
+    oscuro: ['<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>', "Tema: oscuro"],
+  };
+  const ORDEN_TEMA = ["auto", "claro", "oscuro"];
+  function aplicarTema(t) {
+    if (!ICONOS_TEMA[t]) t = "auto";
+    if (t === "auto") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = t === "claro" ? "light" : "dark";
+    document.querySelectorAll(".tema").forEach(b => {
+      b.querySelector("svg").innerHTML = ICONOS_TEMA[t][0];
+      b.setAttribute("aria-label", ICONOS_TEMA[t][1] + ". Tocá para cambiar.");
+      b.title = ICONOS_TEMA[t][1];
+    });
+    escribir("info-tema", t);
+  }
+  document.querySelectorAll(".tema").forEach(b => b.addEventListener("click", () => {
+    const t = leer("info-tema", "auto");
+    aplicarTema(ORDEN_TEMA[(ORDEN_TEMA.indexOf(t) + 1) % ORDEN_TEMA.length]);
+  }));
+  aplicarTema(leer("info-tema", "auto"));
 
   // ---------- Navegación ----------
   const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "emergencias", "instalar"];
