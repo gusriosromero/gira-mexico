@@ -158,6 +158,8 @@ p{margin:0}
 .e-pestanas .ok{color:var(--ok)}
 .e-pestanas button[aria-selected="true"] .ok{color:var(--amarillo)}
 .e-bajar:disabled{opacity:.7;cursor:default}
+.sueltos{display:grid;gap:14px}
+.s-player{display:grid;gap:10px;border:1px solid var(--linea);border-radius:var(--radio);padding:14px;background:var(--superficie)}
 .e-bajar{justify-self:start;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
 .e-bajar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .e-temas{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -629,6 +631,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button role="tab" data-c="1" aria-selected="true">Cuadro 1</button>
         <button role="tab" data-c="2" aria-selected="false">Cuadro 2</button>
         <button role="tab" data-c="3" aria-selected="false">Cuadro 3</button>
+        <button role="tab" data-s="1" aria-selected="false">Temas sueltos</button>
       </div>
       <div class="e-guardar" id="e-guardar">
         <button class="btn sec e-bajar" type="button" id="e-guardar-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span id="e-guardar-txt">Guardar los 3 para usar sin internet</span></button>
@@ -662,6 +665,23 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p></div>
       <input type="file" id="e-archivo-input" accept="audio/*,.mp3,.mpeg,.m4a" hidden>
       <audio id="e-audio" preload="metadata"></audio>
+    </div>
+    <div class="sueltos" id="sueltos" hidden>
+      <p class="nota">Los 12 temas en orden, cada uno por separado y sin el repaso entre canciones. Suenan desde los mismos audios de los cuadros, así que si los 3 cuadros están guardados (✓) también funcionan sin internet.</p>
+      <div class="s-player" id="s-player" hidden>
+        <div class="e-ahora"><small id="s-cuadro">Sonando</small><b id="s-tema">&nbsp;</b></div>
+        <div class="e-prog-barra"><i id="s-hecho"></i></div>
+        <div class="e-tiempos"><span id="s-actual">0:00</span><span id="s-total">0:00</span></div>
+        <div class="e-controles">
+          <button type="button" id="s-ant" aria-label="Tema anterior"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+          <button type="button" id="s-play" class="play" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <button type="button" id="s-sig" aria-label="Tema siguiente"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="e-opciones"><button type="button" id="s-repetir" aria-pressed="false">Repetir este tema</button></div>
+        <p class="nota" id="s-estado" hidden></p>
+      </div>
+      <ol class="e-temas" id="s-lista"></ol>
+      <audio id="s-audio" preload="metadata"></audio>
     </div>
   </section>
 
@@ -1120,6 +1140,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   async function abrirCuadro(c) {
     audio.pause();
     cuadro = c; escribir("ensayo-cuadro", c); cuadroAudio = null; avisar("");
+    verSueltos(false);
     document.querySelectorAll(".e-pestanas button").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.c === c)));
     document.querySelectorAll(".e-nombre").forEach(n => { n.textContent = "Cuadro " + c; });
     pintarLista(); pintarBarra();
@@ -1160,7 +1181,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const estaGuardado = async c => { const d = await traer(c); return !!d && (d.propio || (d.v || 1) === verDe(c)); };
   async function marcarGuardados() {
     let todos = true;
-    for (const b of document.querySelectorAll(".e-pestanas button")) {
+    for (const b of document.querySelectorAll(".e-pestanas button[data-c]")) {
       const ok = await estaGuardado(+b.dataset.c);
       todos = todos && ok;
       let m = b.querySelector(".ok");
@@ -1267,7 +1288,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     if (aviso) avisar(aviso);
   });
 
-  document.querySelectorAll(".e-pestanas button").forEach(b => b.addEventListener("click", () => abrirCuadro(+b.dataset.c)));
+  document.querySelectorAll(".e-pestanas button[data-c]").forEach(b => b.addEventListener("click", () => abrirCuadro(+b.dataset.c)));
   $("#e-elegir").addEventListener("click", () => entrada.click());
   $("#e-play").addEventListener("click", () => { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); });
   $("#e-ant").addEventListener("click", anterior);
@@ -1322,6 +1343,88 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     accion("seekforward", () => mover(5));
     accion("seekto", d => { audio.currentTime = d.seekTime; pintarEstado(); });
   }
+  // ---------- Temas sueltos: los 12 temas en orden, cada uno es su tramo dentro del audio de su cuadro ----------
+  const SUELTOS = [];
+  for (const c of Object.keys(CUADROS).map(Number))
+    CUADROS[c].temas.forEach(([nombre, ini, fin]) => SUELTOS.push({ c, nombre, ini, fin: fin ?? CUADROS[c].dura }));
+  const sAudio = $("#s-audio"), sUrls = {};
+  let sK = -1, sCuadro = null, sRepetir = false;
+
+  async function fuenteCuadro(c) {
+    if (sUrls[c]) return sUrls[c];
+    const dato = await traer(c);
+    if (dato && (dato.propio || (dato.v || 1) === verDe(c))) return (sUrls[c] = URL.createObjectURL(dato.blob));
+    return audioDe(c);
+  }
+  function verSueltos(si) {
+    $("#sueltos").hidden = !si;
+    $("#ensayo").hidden = si;
+    if (si) {
+      audio.pause();
+      document.querySelectorAll(".e-pestanas button").forEach(b => b.setAttribute("aria-selected", String(!!b.dataset.s)));
+      pintarSueltos();
+    } else sAudio.pause();
+  }
+  function pintarSueltos() {
+    $("#s-lista").replaceChildren(...SUELTOS.map((t, k) => el("li", {},
+      el("button", { type: "button", class: k === sK ? "activo" : "", onclick: () => tocarSuelto(k) },
+        el("span", { class: "n", text: k + 1 }), el("span", { text: t.nombre }), el("span", { class: "t", text: "Cuadro " + t.c + " · " + mmss(t.fin - t.ini) })))));
+  }
+  async function tocarSuelto(k) {
+    if (k < 0 || k >= SUELTOS.length) return;
+    const t = SUELTOS[k];
+    audio.pause();
+    sK = k;
+    if (sCuadro !== t.c) {
+      sCuadro = t.c;
+      sAudio.src = await fuenteCuadro(t.c);
+      await new Promise(ok => { if (sAudio.readyState >= 1) ok(); else sAudio.addEventListener("loadedmetadata", ok, { once: true }); });
+    }
+    sAudio.currentTime = t.ini;
+    $("#s-estado").hidden = true;
+    $("#s-cuadro").textContent = "Tema " + (k + 1) + " de " + SUELTOS.length + " · Cuadro " + t.c;
+    $("#s-tema").textContent = t.nombre;
+    $("#s-player").hidden = false;
+    sAudio.play().catch(() => {});
+    if ("mediaSession" in navigator && window.MediaMetadata)
+      navigator.mediaSession.metadata = new MediaMetadata({ title: t.nombre, artist: "Cuadro " + t.c + " · Acuarela Mimbi", album: "Gira México 2026", artwork: [{ src: "icons/gira-app-512.png", sizes: "512x512", type: "image/png" }] });
+    pintarSueltos(); pintarSuelto();
+  }
+  function pintarSuelto() {
+    if (sK < 0) return;
+    const t = SUELTOS[sK], d = t.fin - t.ini, pos = Math.min(Math.max(sAudio.currentTime - t.ini, 0), d);
+    $("#s-hecho").style.width = (pos / d * 100) + "%";
+    $("#s-actual").textContent = mmss(pos);
+    $("#s-total").textContent = mmss(d);
+    const sonando = !sAudio.paused;
+    $("#s-play").setAttribute("aria-label", sonando ? "Pausa" : "Reproducir");
+    $("#s-play").querySelector("svg").innerHTML = sonando ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+  }
+  sAudio.addEventListener("timeupdate", () => {
+    if (sK < 0) return;
+    const t = SUELTOS[sK];
+    if (sAudio.currentTime >= t.fin - 0.05 || sAudio.ended) {
+      if (sRepetir) { sAudio.currentTime = t.ini; sAudio.play().catch(() => {}); }
+      else if (sK + 1 < SUELTOS.length) tocarSuelto(sK + 1);
+      else { sAudio.pause(); sAudio.currentTime = t.ini; }
+    }
+    pintarSuelto();
+  });
+  ["play", "pause"].forEach(ev => sAudio.addEventListener(ev, pintarSuelto));
+  sAudio.addEventListener("play", () => audio.pause());
+  audio.addEventListener("play", () => sAudio.pause());
+  sAudio.addEventListener("error", () => {
+    if (!sAudio.src) return;
+    $("#s-estado").hidden = false;
+    $("#s-estado").textContent = "No se pudo cargar el Cuadro " + sCuadro + ". La primera vez necesita internet; después queda guardado.";
+    sCuadro = null;
+  });
+  $("#s-play").addEventListener("click", () => { if (sAudio.paused) sAudio.play().catch(() => {}); else sAudio.pause(); });
+  $("#s-ant").addEventListener("click", () => tocarSuelto(sAudio.currentTime - SUELTOS[sK].ini > 3 ? sK : sK - 1));
+  $("#s-sig").addEventListener("click", () => tocarSuelto(sK + 1));
+  $("#s-repetir").addEventListener("click", () => { sRepetir = !sRepetir; $("#s-repetir").setAttribute("aria-pressed", String(sRepetir)); });
+  document.querySelector(".e-pestanas button[data-s]").addEventListener("click", () => verSueltos(true));
+
   abrirCuadro(cuadro);
 
   // ---------- Lugares ----------
