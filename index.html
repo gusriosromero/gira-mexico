@@ -97,6 +97,8 @@ section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqu
 .tema svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .portada > .tema{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);right:max(12px,env(safe-area-inset-right,0px));z-index:2;background:var(--fondo);box-shadow:0 1px 4px rgba(0,0,0,.15)}
 .barra-seccion .tema{margin-left:auto}
+.aviso-version{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;width:min(calc(100% - 32px),460px);display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--tinta);color:#fff;border-radius:var(--radio);padding:10px 10px 10px 16px;box-shadow:0 6px 20px rgba(0,0,0,.25);font-weight:600;font-size:14px}
+.aviso-version .btn{background:var(--amarillo);color:var(--tinta)}
 /* Inicio */
 .cab-inicio{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .modo{display:flex;gap:4px;background:var(--superficie);border-radius:999px;padding:4px}
@@ -763,6 +765,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   </section>
 
   </main>
+
+<div class="aviso-version" id="aviso-version" role="status" hidden>
+  <span>Hay una versión nueva de la app</span>
+  <button type="button" class="btn" id="actualizar-app">Actualizar</button>
+</div>
 
 <script>
 (() => {
@@ -1433,7 +1440,23 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 })();
 </script>
 <script>
-if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+// Service worker: busca versión nueva al abrir y cada vez que se vuelve a la app, y avisa para actualizar.
+if ("serviceWorker" in navigator) addEventListener("load", async () => {
+  try {
+    const habia = !!navigator.serviceWorker.controller;
+    const reg = await navigator.serviceWorker.register("sw.js", { updateViaCache: "none" });
+    let avisado = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!habia || avisado) return;
+      avisado = true;
+      document.getElementById("aviso-version").hidden = false;
+    });
+    document.getElementById("actualizar-app").addEventListener("click", () => location.reload());
+    const revisar = () => reg.update().catch(() => {});
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") revisar(); });
+    setInterval(revisar, 30 * 60 * 1000);
+  } catch (e) {}
+});
 </script>
 </body>
 </html>
