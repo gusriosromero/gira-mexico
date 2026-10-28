@@ -184,6 +184,7 @@ p{margin:0}
 .ruta li:last-child .eje::before{bottom:calc(100% - 8px)}
 .ruta .eje::after{content:"";position:absolute;left:2px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--fondo);border:3px solid var(--celeste)}
 .ruta li.clave .eje::after{background:var(--amarillo);border-color:var(--tinta)}
+.ruta li.aeropuerto .eje::after{background:var(--alerta-fondo);border-color:var(--alerta)}
 .ruta li.duda .eje::after{border-style:dashed;border-color:var(--suave)}
 .ruta .lugar{padding-bottom:18px;min-width:0}
 .ruta .lugar b{display:block}
@@ -434,17 +435,19 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <span class="etiqueta">El viaje</span>
       <h2>Recorrido</h2>
-      <p class="nota">Las fechas con línea punteada todavía las confirma José con la organización.</p>
+      <p class="nota">Las fechas con línea punteada todavía las confirma el Director José con la organización.</p>
     </div>
     <ol class="ruta">
-      <li><div class="fecha">30 nov<small>06:31</small></div><div class="eje"></div><div class="lugar"><b>Salida de Asunción</b><span>Vuelo a Ciudad de Panamá. Estar en el aeropuerto a las 03:30.</span></div></li>
+      <li class="aeropuerto"><div class="fecha">30 nov<small>03:30</small></div><div class="eje"></div><div class="lugar"><b>En el aeropuerto Silvio Pettirossi</b><span>3 horas antes del vuelo, por ser internacional.</span></div></li>
+      <li><div class="fecha">30 nov<small>06:31</small></div><div class="eje"></div><div class="lugar"><b>Salida de Asunción</b><span>Vuelo a Ciudad de Panamá.</span></div></li>
       <li class="clave"><div class="fecha">30 nov<small>22:49</small></div><div class="eje"></div><div class="lugar"><b>Llegada a Guadalajara</b><span>Jalisco, México. Hora local, 3 horas menos que Paraguay.</span></div></li>
       <li class="duda"><div class="fecha">1 al 3 dic</div><div class="eje"></div><div class="lugar"><b>Días previos al festival <span class="chip duda">a confirmar</span></b><span>Itinerario y traslado a San Blas (unas 3 a 4 horas por tierra).</span></div></li>
       <li class="clave"><div class="fecha">4 dic<small>vie</small></div><div class="eje"></div><div class="lugar"><b>Llegada a San Blas, Nayarit</b><span>Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026.</span></div></li>
       <li><div class="fecha">4 al 13 dic</div><div class="eje"></div><div class="lugar"><b>Festival</b><span>Función todas las noches a las 19:30, en San Blas y pueblos cercanos. Desfile y honores a la bandera.</span></div></li>
       <li><div class="fecha">14 dic<small>lun</small></div><div class="eje"></div><div class="lugar"><b>Salida de San Blas</b><span>Temprano por la mañana.</span></div></li>
       <li class="duda"><div class="fecha">14 dic</div><div class="eje"></div><div class="lugar"><b>Puerto Vallarta <span class="chip duda">a confirmar</span></b><span>Playa y paseo antes de volver.</span></div></li>
-      <li><div class="fecha">15 dic<small>00:12</small></div><div class="eje"></div><div class="lugar"><b>Vuelo desde Guadalajara</b><span>Sale en la noche del 14 al 15. Estar en el aeropuerto a las 21:00 del 14. Escala en Panamá.</span></div></li>
+      <li class="aeropuerto"><div class="fecha">14 dic<small>21:00</small></div><div class="eje"></div><div class="lugar"><b>En el aeropuerto de Guadalajara</b><span>3 horas antes del vuelo.</span></div></li>
+      <li><div class="fecha">15 dic<small>00:12</small></div><div class="eje"></div><div class="lugar"><b>Vuelo desde Guadalajara</b><span>Sale en la noche del 14 al 15. Escala en Panamá.</span></div></li>
       <li class="clave"><div class="fecha">16 dic<small>00:02</small></div><div class="eje"></div><div class="lugar"><b>Llegada a Asunción</b><span>De vuelta en casa.</span></div></li>
     </ol>
 
@@ -692,7 +695,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <h3>Coordinación del grupo</h3>
       <div class="numeros">
-        <a class="numero" href="tel:+595992475418"><b>+595 992 475418</b><span>José Acosta · Director</span></a>
+        <a class="numero" href="tel:+595992475418"><b>+595 992 475418</b><span>Director José Acosta</span></a>
         <a class="numero" href="tel:+595971809171"><b>+595 971 809171</b><span>Vivi Casco · Dirección coreográfica</span></a>
       </div>
     </div>
@@ -992,7 +995,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     cont.append(el("div", { class: "resumen" },
       el("div", { class: "anillo", style: `--p:${pct}` }, el("span", { text: pct + "%" })),
       el("div", {}, el("div", { class: "rol", text: `${ok} de ${items.length} listos` }))));
-    cont.append(el("p", { class: "aviso alerta", text: "Lista de ejemplo. La lista definitiva de vestuario la confirman José y Vivi." }));
+    cont.append(el("p", { class: "aviso alerta", text: "Lista de ejemplo. La lista definitiva de vestuario la confirman el Director José y Vivi." }));
 
     for (const l of listas) {
       const okL = l.items.filter(it => hechos[it.id]).length;
