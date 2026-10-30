@@ -77,14 +77,19 @@ button{font:inherit;color:inherit}
 .oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cuenta{display:inline-block;background:var(--tinta);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
 .cuenta b{color:var(--amarillo)}
-.regresiva{background:var(--tinta);color:#fff;border-radius:var(--radio);padding:18px 16px 16px;margin:4px 0 20px;display:grid;gap:12px;justify-items:center;text-align:center}
-.regresiva .r-tit{font-family:var(--acento);font-size:28px;line-height:1;color:#fff}
+.regresiva{color:#fff;background:
+    radial-gradient(45% 55% at 0% 0%,#f5b301 0 35%,rgba(245,179,1,0) 70%),
+    radial-gradient(40% 60% at 100% 10%,#f06e96 0 30%,rgba(240,110,150,0) 70%),
+    radial-gradient(50% 60% at 100% 100%,#966edc 0 30%,rgba(150,110,220,0) 70%),
+    radial-gradient(40% 50% at 0% 100%,#f78c5a 0 25%,rgba(247,140,90,0) 70%),
+    #34ace6;border-radius:var(--radio);padding:18px 16px 16px;margin:4px 0 20px;display:grid;gap:12px;justify-items:center;text-align:center}
+.regresiva .r-tit{font-family:var(--acento);font-size:30px;line-height:1;color:#fff;text-shadow:0 2px 6px rgba(23,23,28,.25)}
 .regresiva .r-cajas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:420px}
-.regresiva .r-caja{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 4px 8px;display:grid;gap:2px}
-.regresiva .r-caja b{font-family:var(--titulo);font-weight:400;font-size:34px;line-height:1;color:var(--amarillo);font-variant-numeric:tabular-nums}
-.regresiva .r-caja small{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#c9ccda}
-.regresiva .r-sub{font-size:13px;color:#c9ccda;margin:0}
-.regresiva .btn{background:var(--amarillo);color:var(--tinta);display:inline-flex;gap:8px;align-items:center}
+.regresiva .r-caja{background:rgba(255,255,255,.9);color:var(--tinta);box-shadow:0 4px 12px rgba(23,23,28,.15);border-radius:12px;padding:10px 4px 8px;display:grid;gap:2px}
+.regresiva .r-caja b{font-family:var(--titulo);font-weight:400;font-size:34px;line-height:1;color:var(--tinta);font-variant-numeric:tabular-nums}
+.regresiva .r-caja small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4a4e60}
+.regresiva .r-sub{font-size:13px;font-weight:600;color:#fff;margin:0;text-shadow:0 1px 3px rgba(23,23,28,.3)}
+.regresiva .btn{background:var(--tinta);color:#fff;display:inline-flex;gap:8px;align-items:center}
 .regresiva .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Pestañas */
@@ -988,11 +993,13 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const W = 1080, H = 1920, cv = document.createElement("canvas");
     cv.width = W; cv.height = H;
     const g = cv.getContext("2d");
-    g.fillStyle = "#17171c"; g.fillRect(0, 0, W, H);
-    const mancha = (x, y, r, c) => { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, c); gr.addColorStop(1, "rgba(23,23,28,0)"); g.fillStyle = gr; g.fillRect(0, 0, W, H); };
-    mancha(160, 260, 520, "rgba(52,172,230,.45)");
-    mancha(960, 1650, 560, "rgba(245,179,1,.35)");
-    mancha(980, 420, 380, "rgba(240,128,160,.30)");
+    g.fillStyle = "#34ace6"; g.fillRect(0, 0, W, H);
+    const mancha = (x, y, r, rgb, a) => { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, `rgba(${rgb},${a})`); gr.addColorStop(.45, `rgba(${rgb},${a})`); gr.addColorStop(1, `rgba(${rgb},0)`); g.fillStyle = gr; g.fillRect(0, 0, W, H); };
+    mancha(40, 120, 520, "245,179,1", 1);
+    mancha(1080, 260, 480, "240,110,150", 1);
+    mancha(1060, 1860, 620, "150,110,220", 1);
+    mancha(0, 1760, 480, "247,140,90", 1);
+    mancha(560, 1050, 380, "255,255,255", .18);
     const logo = $(".portada img");
     if (logo && logo.complete && logo.naturalWidth) {
       const lw = 420, lh = lw * logo.naturalHeight / logo.naturalWidth;
@@ -1000,16 +1007,24 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     }
     const f = faltan();
     g.textAlign = "center"; g.textBaseline = "alphabetic";
+    g.shadowColor = "rgba(23,23,28,.25)"; g.shadowBlur = 18; g.shadowOffsetY = 6;
     g.fillStyle = "#fff"; g.font = "120px 'Great Vibes', cursive";
     g.fillText(f.d === 0 ? "¡Hoy" : "Faltan", W / 2, 800);
-    g.fillStyle = "#f5b301"; g.font = (f.d === 0 ? "300px" : "520px") + " Anton, Impact, sans-serif";
+    g.fillStyle = "#fff"; g.font = (f.d === 0 ? "300px" : "520px") + " Anton, Impact, sans-serif";
+    g.shadowColor = "#17171c"; g.shadowBlur = 0; g.shadowOffsetX = 14; g.shadowOffsetY = 14;
     g.fillText(f.d === 0 ? "SALIMOS!" : String(f.d), W / 2, f.d === 0 ? 1180 : 1320);
-    g.fillStyle = "#fff"; g.font = "140px Anton, Impact, sans-serif";
+    g.shadowOffsetX = 0; g.shadowOffsetY = 0;
+    g.fillStyle = "#17171c"; g.font = "140px Anton, Impact, sans-serif";
     if (f.d > 0) g.fillText(f.d === 1 ? "DÍA" : "DÍAS", W / 2, 1490);
-    g.font = "600 52px Montserrat, sans-serif"; g.fillStyle = "#c9ccda";
+    g.shadowColor = "transparent";
+    g.font = "700 52px Montserrat, sans-serif"; g.fillStyle = "#fff";
     g.fillText("para la Gira México 2026", W / 2, 1600);
-    g.font = "700 40px Montserrat, sans-serif"; g.fillStyle = "#34ace6";
-    g.fillText("ACUARELA MIMBI · SAN BLAS, NAYARIT", W / 2, 1760);
+    g.fillStyle = "#17171c";
+    g.font = "700 40px Montserrat, sans-serif";
+    const pill = g.measureText("ACUARELA MIMBI · SAN BLAS, NAYARIT").width + 110, py = 1700, ph = 100;
+    g.beginPath(); g.roundRect((W - pill) / 2, py, pill, ph, ph / 2); g.fill();
+    g.font = "700 40px Montserrat, sans-serif"; g.fillStyle = "#fff";
+    g.fillText("ACUARELA MIMBI · SAN BLAS, NAYARIT", W / 2, py + 64);
     return new Promise(res => cv.toBlob(res, "image/png"));
   }
   // En la vista de Claude no se pueden bajar archivos: el botón solo va en la app.
