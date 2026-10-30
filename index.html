@@ -77,6 +77,15 @@ button{font:inherit;color:inherit}
 .oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cuenta{display:inline-block;background:var(--tinta);color:#fff;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600}
 .cuenta b{color:var(--amarillo)}
+.regresiva{background:var(--tinta);color:#fff;border-radius:var(--radio);padding:18px 16px 16px;margin:4px 0 20px;display:grid;gap:12px;justify-items:center;text-align:center}
+.regresiva .r-tit{font-family:var(--acento);font-size:28px;line-height:1;color:#fff}
+.regresiva .r-cajas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:420px}
+.regresiva .r-caja{background:rgba(255,255,255,.08);border-radius:12px;padding:10px 4px 8px;display:grid;gap:2px}
+.regresiva .r-caja b{font-family:var(--titulo);font-weight:400;font-size:34px;line-height:1;color:var(--amarillo);font-variant-numeric:tabular-nums}
+.regresiva .r-caja small{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#c9ccda}
+.regresiva .r-sub{font-size:13px;color:#c9ccda;margin:0}
+.regresiva .btn{background:var(--amarillo);color:var(--tinta);display:inline-flex;gap:8px;align-items:center}
+.regresiva .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Pestañas */
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--fondo)}
@@ -415,6 +424,17 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   <!-- INICIO -->
   <section class="vista" id="vista-inicio">
+    <div class="regresiva" id="regresiva" hidden>
+      <span class="r-tit">Faltan</span>
+      <div class="r-cajas">
+        <div class="r-caja"><b id="r-d">--</b><small>días</small></div>
+        <div class="r-caja"><b id="r-h">--</b><small>horas</small></div>
+        <div class="r-caja"><b id="r-m">--</b><small>min</small></div>
+        <div class="r-caja"><b id="r-s">--</b><small>seg</small></div>
+      </div>
+      <p class="r-sub">Despegamos el lunes 30 de noviembre a las 06:31</p>
+      <button type="button" class="btn" id="r-compartir"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir imagen de hoy</button>
+    </div>
     <div class="cab-inicio">
       <h2>Secciones</h2>
       <div class="modo" role="group" aria-label="Forma de ver las secciones">
@@ -948,16 +968,75 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   }).catch(() => {});
 
   // ---------- Cuenta regresiva y relojes ----------
-  const salida = new Date("2026-11-30T06:00:00-03:00");
+  const salida = new Date("2026-11-30T06:31:00-03:00");
+  const faltan = () => {
+    const t = Math.max(0, salida - Date.now());
+    return { d: Math.floor(t / 864e5), h: Math.floor(t / 36e5) % 24, m: Math.floor(t / 6e4) % 60, s: Math.floor(t / 1e3) % 60, t };
+  };
+  const dos = n => String(n).padStart(2, "0");
+  function ticRegresiva() {
+    const f = faltan(), r = $("#regresiva");
+    r.hidden = f.t <= 0;
+    if (r.hidden) return;
+    $("#r-d").textContent = f.d; $("#r-h").textContent = dos(f.h); $("#r-m").textContent = dos(f.m); $("#r-s").textContent = dos(f.s);
+  }
+  ticRegresiva(); setInterval(ticRegresiva, 1000);
+
+  // Imagen vertical para estados y el grupo de WhatsApp
+  async function imagenRegresiva() {
+    try { await Promise.all(["40px Anton", "40px 'Great Vibes'", "700 40px Montserrat", "600 40px Montserrat"].map(x => document.fonts.load(x))); } catch (e) {}
+    const W = 1080, H = 1920, cv = document.createElement("canvas");
+    cv.width = W; cv.height = H;
+    const g = cv.getContext("2d");
+    g.fillStyle = "#17171c"; g.fillRect(0, 0, W, H);
+    const mancha = (x, y, r, c) => { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, c); gr.addColorStop(1, "rgba(23,23,28,0)"); g.fillStyle = gr; g.fillRect(0, 0, W, H); };
+    mancha(160, 260, 520, "rgba(52,172,230,.45)");
+    mancha(960, 1650, 560, "rgba(245,179,1,.35)");
+    mancha(980, 420, 380, "rgba(240,128,160,.30)");
+    const logo = $(".portada img");
+    if (logo && logo.complete && logo.naturalWidth) {
+      const lw = 420, lh = lw * logo.naturalHeight / logo.naturalWidth;
+      g.drawImage(logo, (W - lw) / 2, 170, lw, lh);
+    }
+    const f = faltan();
+    g.textAlign = "center"; g.textBaseline = "alphabetic";
+    g.fillStyle = "#fff"; g.font = "120px 'Great Vibes', cursive";
+    g.fillText(f.d === 0 ? "¡Hoy" : "Faltan", W / 2, 800);
+    g.fillStyle = "#f5b301"; g.font = (f.d === 0 ? "300px" : "520px") + " Anton, Impact, sans-serif";
+    g.fillText(f.d === 0 ? "SALIMOS!" : String(f.d), W / 2, f.d === 0 ? 1180 : 1320);
+    g.fillStyle = "#fff"; g.font = "140px Anton, Impact, sans-serif";
+    if (f.d > 0) g.fillText(f.d === 1 ? "DÍA" : "DÍAS", W / 2, 1490);
+    g.font = "600 52px Montserrat, sans-serif"; g.fillStyle = "#c9ccda";
+    g.fillText("para la Gira México 2026", W / 2, 1600);
+    g.font = "700 40px Montserrat, sans-serif"; g.fillStyle = "#34ace6";
+    g.fillText("ACUARELA MIMBI · SAN BLAS, NAYARIT", W / 2, 1760);
+    return new Promise(res => cv.toBlob(res, "image/png"));
+  }
+  // En la vista de Claude no se pueden bajar archivos: el botón solo va en la app.
+  if (!/github\.io$/.test(location.hostname) && location.protocol !== "file:") $("#r-compartir").hidden = true;
+  $("#r-compartir").addEventListener("click", async () => {
+    const b = await imagenRegresiva();
+    if (!b) return;
+    const nombre = "faltan-" + faltan().d + "-dias.png";
+    const arch = new File([b], nombre, { type: "image/png" });
+    if (navigator.canShare && navigator.canShare({ files: [arch] })) {
+      try { await navigator.share({ files: [arch] }); } catch (e) {}
+      return;
+    }
+    const a = el("a", { href: URL.createObjectURL(b), download: nombre });
+    document.body.append(a); a.click(); a.remove();
+  });
+
   function tic() {
-    const dias = Math.ceil((salida - Date.now()) / 864e5);
+    const dias = faltan().d;
     const c = $("#cuenta");
     c.textContent = "";
     const n = hoyCard();
     if (n) c.append("Día ", el("b", { text: String(n) }), " de 17");
     else if (Date.now() > new Date(2026, 11, 17)) c.textContent = "¡Gracias por la gira!";
     else if (dias > 1) c.append("Faltan ", el("b", { text: String(dias) }), " días");
-    else if (dias === 1) c.append(el("b", { text: "¡Mañana" }), " salimos!");
+    else if (dias === 1) c.append("Falta ", el("b", { text: "1" }), " día");
+    else if (salida - Date.now() > 0) c.append(el("b", { text: "¡Hoy" }), " salimos!");
     else c.textContent = "¡Estamos de gira!";
     $("#cuenta-mini").replaceChildren(...[...c.childNodes].map(n => n.cloneNode(true)));
     const fmt = tz => new Intl.DateTimeFormat("es-PY", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz }).format(new Date());
