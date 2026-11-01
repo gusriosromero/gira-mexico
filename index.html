@@ -1001,6 +1001,24 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#titulo-seccion").textContent = nombres[v] || "";
     window.scrollTo(0, 0);
     miniBarra();
+    contarVisita(v);
+  }
+  // Estadísticas de visitas (GoatCounter: sin cookies, sin datos personales). Solo en la app publicada.
+  const estadisticas = /github\.io$/.test(location.hostname);
+  let pendiente = null;
+  function contarVisita(v) {
+    if (!estadisticas) return;
+    const datos = { path: "/" + v, title: nombres[v] || "Inicio" };
+    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count(datos);
+    else pendiente = datos;
+  }
+  if (estadisticas) {
+    window.goatcounter = { no_onload: true };
+    const gc = document.createElement("script");
+    gc.async = true; gc.src = "https://gc.zgo.at/count.js";
+    gc.dataset.goatcounter = "https://giramexico.goatcounter.com/count";
+    gc.onload = () => { if (pendiente) { window.goatcounter.count(pendiente); pendiente = null; } };
+    document.head.appendChild(gc);
   }
   const portada = document.querySelector(".portada"), mini = $("#mini");
   mini.querySelector("img").src = portada.querySelector("img").src;
