@@ -336,6 +336,13 @@ p{margin:0}
 .fam-dias li{display:grid;grid-template-columns:88px 1fr;gap:10px;border-bottom:1px solid var(--linea);padding:8px 0;font-size:14px}
 .fam-dias b{font-weight:700}
 .fam-dias em{font-style:normal}
+.ruta-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ruta-chips span{background:var(--p-celeste);border-radius:999px;padding:5px 11px;font-weight:700;font-size:13px}
+.ruta-chips i{font-style:normal;color:var(--suave);font-size:13px}
+.seguir-hoy{border-radius:var(--radio);background:var(--p-lila);padding:18px;display:grid;gap:4px}
+.seguir-hoy small{font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11.5px;color:var(--suave)}
+.seguir-hoy b{font-family:var(--titulo);font-size:26px;line-height:1.1;font-weight:400}
+.seguir-hoy span{font-size:14px}
 .vuelos-vivo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .vuelo-vivo{display:grid;gap:2px;border:1px solid var(--linea);border-radius:var(--radio);padding:10px 12px;color:var(--texto);text-decoration:none}
 .vuelo-vivo b{font-family:var(--titulo);font-weight:400;font-size:22px}
@@ -491,6 +498,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="mosaico c-lila" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
       <a class="mosaico c-rosa" href="#elenco" data-vista="elenco"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.6.1 4.4 1.8 5 4.4"/></svg></span><span class="txt"><b>El elenco</b><small>Los 15 que viajamos</small></span></a>
       <a class="mosaico c-durazno" href="#familias" data-vista="familias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 18s-3-1.9-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.9-3 3.8-3 3.8z"/></svg></span><span class="txt"><b>Para las familias</b><small>Vuelos en vivo, horarios y contacto</small></span></a>
+      <a class="mosaico c-lila" href="#seguir" data-vista="seguir"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span><span class="txt"><b>Seguí la gira</b><small>Funciones, en vivo y redes</small></span></a>
       <a class="mosaico c-urgente" href="#emergencias" data-vista="emergencias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="txt"><b>Emergencias</b><small>Números útiles y tus datos</small></span></a>
       <a class="mosaico c-celeste" href="#instalar" data-vista="instalar"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span class="txt"><b>Instalar</b><small>Cómo instalar en Android y iPhone para usar la app sin internet</small></span></a>
     </div>
@@ -503,19 +511,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <h2>Recorrido</h2>
       <p class="nota">Las fechas con línea punteada todavía las confirma el Director José con la organización.</p>
     </div>
-    <ol class="ruta">
-      <li class="aeropuerto"><div class="fecha">30 nov<small>03:30</small></div><div class="eje"></div><div class="lugar"><b>En el aeropuerto Silvio Pettirossi</b><span>3 horas antes, para el check-in y la foto oficial de salida.</span></div></li>
-      <li><div class="fecha">30 nov<small>06:31</small></div><div class="eje"></div><div class="lugar"><b>Salida de Asunción</b><span>Vuelo a Ciudad de Panamá.</span></div></li>
-      <li class="clave"><div class="fecha">30 nov<small>22:49</small></div><div class="eje"></div><div class="lugar"><b>Llegada a Guadalajara</b><span>Jalisco, México. Hora local, 3 horas menos que Paraguay.</span></div></li>
-      <li class="duda"><div class="fecha">1 al 3 dic</div><div class="eje"></div><div class="lugar"><b>Días previos al festival <span class="chip duda">a confirmar</span></b><span>Itinerario y traslado a San Blas (unas 3 a 4 horas por tierra).</span></div></li>
-      <li class="clave"><div class="fecha">4 dic<small>vie</small></div><div class="eje"></div><div class="lugar"><b>Llegada a San Blas, Nayarit</b><span>Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026.</span></div></li>
-      <li><div class="fecha">4 al 13 dic</div><div class="eje"></div><div class="lugar"><b>Festival</b><span>Función todas las noches a las 19:30, en San Blas y pueblos cercanos. Desfile y honores a la bandera.</span></div></li>
-      <li><div class="fecha">14 dic<small>lun</small></div><div class="eje"></div><div class="lugar"><b>Salida de San Blas</b><span>Temprano por la mañana.</span></div></li>
-      <li class="duda"><div class="fecha">14 dic</div><div class="eje"></div><div class="lugar"><b>Puerto Vallarta <span class="chip duda">a confirmar</span></b><span>Playa y paseo antes de volver.</span></div></li>
-      <li class="aeropuerto"><div class="fecha">14 dic<small>21:00</small></div><div class="eje"></div><div class="lugar"><b>En el aeropuerto de Guadalajara</b><span>3 horas antes del vuelo.</span></div></li>
-      <li><div class="fecha">15 dic<small>00:12</small></div><div class="eje"></div><div class="lugar"><b>Vuelo desde Guadalajara</b><span>Sale en la noche del 14 al 15. Escala en Panamá.</span></div></li>
-      <li class="clave"><div class="fecha">16 dic<small>00:02</small></div><div class="eje"></div><div class="lugar"><b>Llegada a Asunción</b><span>De vuelta en casa.</span></div></li>
-    </ol>
+    <ol class="ruta" id="ruta"></ol>
 
     <div class="bloque">
       <span class="etiqueta">Copa Airlines</span>
@@ -787,13 +783,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     </div>
     <div class="bloque">
       <h3>Dónde estamos</h3>
-      <ol class="fam-dias">
-        <li><b>30 nov</b><span>Viaje: Asunción → Panamá → Guadalajara</span></li>
-        <li><b>1 al 3 dic</b><span>Guadalajara y traslado a San Blas <em class="chip duda">a confirmar</em></span></li>
-        <li><b>4 al 13 dic</b><span>Festival en San Blas, Nayarit. Función cada noche.</span></li>
-        <li><b>14 dic</b><span>Puerto Vallarta y vuelo de regreso esa noche <em class="chip duda">a confirmar</em></span></li>
-        <li><b>16 dic</b><span>Llegada a Asunción a las 00:02</span></li>
-      </ol>
+      <ol class="fam-dias" id="fam-dias"></ol>
     </div>
     <div class="bloque">
       <h3>Qué hora es allá</h3>
@@ -832,6 +822,45 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <h3>Dónde nos alojamos</h3>
       <p class="nota">En San Blas, Nayarit, con el festival. La dirección exacta la ponemos apenas la tengamos.</p>
+    </div>
+  </section>
+
+  <section class="vista" id="vista-seguir" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Acuarela Mimbi en México</span>
+      <h2>Seguí la gira</h2>
+      <p class="nota">Acompañanos desde donde estés. Del 30 de noviembre al 16 de diciembre llevamos la danza paraguaya a México.</p>
+      <button type="button" class="btn sec" id="compartir-seguir">Compartir con quien quiera seguirnos</button>
+    </div>
+    <div class="seguir-hoy" id="seguir-hoy"></div>
+    <div class="bloque">
+      <h3>El recorrido</h3>
+      <div class="ruta-chips" aria-label="Asunción, Panamá, Guadalajara, San Blas, Puerto Vallarta y regreso">
+        <span>Asunción</span><i>✈</i><span>Panamá</span><i>✈</i><span>Guadalajara</span><i>→</i><span>San Blas</span><i>→</i><span>Puerto Vallarta</span><i>✈</i><span>Asunción</span>
+      </div>
+      <ol class="fam-dias" id="seguir-dias"></ol>
+    </div>
+    <div class="bloque">
+      <h3>Las funciones</h3>
+      <p>5.º Festival Internacional de la Danza del Folklor San Blas 2026, en San Blas, Nayarit.</p>
+      <div class="tips">
+        <div class="tip"><h3>Todas las noches, del 4 al 13 de diciembre</h3><p>A las 19:30 de México, o sea 23:30 en Paraguay. En San Blas y pueblos cercanos.</p></div>
+        <div class="tip"><h3>Desfile y honores a la bandera</h3><p>Con todos los grupos del festival.</p></div>
+        <div class="tip"><h3>En vivo</h3><p>Si el festival transmite las funciones, el enlace va a aparecer acá.</p></div>
+      </div>
+    </div>
+    <div class="bloque">
+      <h3>Videos y fotos de cada día</h3>
+      <p class="nota">Subimos reels y fotos en nuestras redes. Seguinos para no perderte nada.</p>
+      <div class="redes">
+        <a class="btn" href="https://www.instagram.com/acuarela_mimbi.py" target="_blank" rel="noopener">Instagram</a>
+        <a class="btn" href="https://www.tiktok.com/@acuarela.mimbi" target="_blank" rel="noopener">TikTok</a>
+      </div>
+    </div>
+    <div class="bloque">
+      <h3>¿Quiénes viajan?</h3>
+      <p class="nota">15 integrantes de Acuarela Mimbi: dirección, bailarinas, bailarines y staff.</p>
+      <a class="btn sec" href="#elenco">Conocé al elenco</a>
     </div>
   </section>
 
@@ -995,7 +1024,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   aplicarTema(leer("info-tema", "auto"));
 
   // ---------- Navegación ----------
-  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "elenco", "fotos", "emergencias", "instalar"];
+  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "fotos", "emergencias", "instalar"];
   const nombres = {};
   document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
   function mostrar(v) {
@@ -1211,6 +1240,51 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     try { if (navigator.share) { await navigator.share(datos); return; } } catch (e) { return; }
     try { await navigator.clipboard.writeText(url); $("#compartir-familias").textContent = "¡Enlace copiado!"; } catch (e) {}
   });
+
+  // Enlace directo a "Seguí la gira"
+  $("#compartir-seguir").addEventListener("click", async () => {
+    const url = location.origin + location.pathname + "#seguir";
+    const datos = { title: "Seguí la gira · Acuarela Mimbi en México", text: "Acompañá a Acuarela Mimbi en su gira por México", url };
+    try { if (navigator.share) { await navigator.share(datos); return; } } catch (e) { return; }
+    try { await navigator.clipboard.writeText(url); $("#compartir-seguir").textContent = "¡Enlace copiado!"; } catch (e) {}
+  });
+
+  // ---------- Etapas de la gira: una sola lista para Recorrido, Familias y Seguí la gira ----------
+  // f: fecha, h: hora, t: título, d: detalle, c: clase (clave, duda, aeropuerto).
+  // r: texto corto para Familias y Seguí la gira (solo si la etapa va ahí). ini/fin: días que abarca, para "Hoy".
+  const ETAPAS = [
+    { f: "30 nov", h: "03:30", c: "aeropuerto", t: "En el aeropuerto Silvio Pettirossi", d: "3 horas antes, para el check-in y la foto oficial de salida." },
+    { f: "30 nov", h: "06:31", t: "Salida de Asunción", d: "Vuelo a Ciudad de Panamá.", r: "Viaje: Asunción → Panamá → Guadalajara", ini: "2026-11-30", fin: "2026-11-30", hoy: "De viaje a México", hoyD: "Asunción → Panamá → Guadalajara. Llegamos de noche." },
+    { f: "30 nov", h: "22:49", c: "clave", t: "Llegada a Guadalajara", d: "Jalisco, México. Hora local, 3 horas menos que Paraguay." },
+    { f: "1 al 3 dic", c: "duda", t: "Días previos al festival", d: "Itinerario y traslado a San Blas (unas 3 a 4 horas por tierra).", r: "Guadalajara y traslado a San Blas", ini: "2026-12-01", fin: "2026-12-03", hoy: "En Guadalajara", hoyD: "Preparándonos para el festival." },
+    { f: "4 dic", h: "vie", c: "clave", t: "Llegada a San Blas, Nayarit", d: "Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026." },
+    { f: "4 al 13 dic", t: "Festival", d: "Función todas las noches a las 19:30, en San Blas y pueblos cercanos. Desfile y honores a la bandera.", r: "Festival en San Blas, Nayarit. Función cada noche.", ini: "2026-12-04", fin: "2026-12-13", hoy: "Festival en San Blas", hoyD: "Función esta noche a las 19:30 de México (23:30 en Paraguay)." },
+    { f: "14 dic", h: "lun", t: "Salida de San Blas", d: "Temprano por la mañana." },
+    { f: "14 dic", c: "duda", t: "Puerto Vallarta", d: "Playa y paseo antes de volver.", r: "Puerto Vallarta y vuelo de regreso esa noche", ini: "2026-12-14", fin: "2026-12-15", hoy: "De regreso a casa", hoyD: "Puerto Vallarta y vuelo de vuelta, con escala en Panamá." },
+    { f: "14 dic", h: "21:00", c: "aeropuerto", t: "En el aeropuerto de Guadalajara", d: "3 horas antes del vuelo." },
+    { f: "15 dic", h: "00:12", t: "Vuelo desde Guadalajara", d: "Sale en la noche del 14 al 15. Escala en Panamá." },
+    { f: "16 dic", h: "00:02", c: "clave", t: "Llegada a Asunción", d: "De vuelta en casa.", r: "Llegada a Asunción a las 00:02", ini: "2026-12-16", fin: "2026-12-16", hoy: "¡De vuelta en casa!", hoyD: "Llegamos a Asunción a las 00:02." },
+  ];
+  const aConfirmar = () => el("span", { class: "chip duda", text: "a confirmar" });
+  $("#ruta").replaceChildren(...ETAPAS.map(e => el("li", e.c ? { class: e.c } : {},
+    el("div", { class: "fecha" }, e.f, e.h ? el("small", { text: e.h }) : null), el("div", { class: "eje" }),
+    el("div", { class: "lugar" }, el("b", {}, e.t, e.c === "duda" ? [" ", aConfirmar()] : null), el("span", { text: e.d })))));
+  const resumen = () => ETAPAS.filter(e => e.r).map(e => el("li", {}, el("b", { text: e.f }),
+    el("span", {}, e.r, e.c === "duda" ? [" ", el("em", { class: "chip duda", text: "a confirmar" })] : null)));
+  $("#fam-dias").replaceChildren(...resumen());
+  $("#seguir-dias").replaceChildren(...resumen());
+  function pintarSeguirHoy() {
+    const hoy = new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" });
+    const e = ETAPAS.find(x => x.ini && hoy >= x.ini && hoy <= x.fin);
+    let a, b, c;
+    if (e) { a = "Hoy"; b = e.hoy; c = e.hoyD; }
+    else if (hoy < "2026-11-30") {
+      const d = Math.max(0, Math.floor((new Date("2026-11-30T06:31:00-03:00") - Date.now()) / 864e5));
+      a = "Cuenta regresiva"; b = d === 0 ? "¡Ya casi salimos!" : d === 1 ? "Falta 1 día" : `Faltan ${d} días`; c = "Salimos de Asunción el lunes 30 de noviembre.";
+    } else { a = "La gira terminó"; b = "¡Gracias por acompañarnos!"; c = "Mirá los videos y fotos en nuestras redes."; }
+    $("#seguir-hoy").replaceChildren(el("small", { text: a }), el("b", { text: b }), el("span", { text: c }));
+  }
+  pintarSeguirHoy();
 
   // ---------- Cuenta regresiva y relojes ----------
   const salida = new Date("2026-11-30T06:31:00-03:00");
