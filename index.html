@@ -336,6 +336,18 @@ p{margin:0}
 .fam-dias li{display:grid;grid-template-columns:88px 1fr;gap:10px;border-bottom:1px solid var(--linea);padding:8px 0;font-size:14px}
 .fam-dias b{font-weight:700}
 .fam-dias em{font-style:normal}
+.clima{border:1px solid var(--linea);border-radius:var(--radio);background:var(--superficie);padding:14px 16px;display:grid;gap:10px}
+.clima .c-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.clima .c-ahora small{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--suave)}
+.clima .c-ahora b{font-family:var(--titulo);font-size:34px;font-weight:400;line-height:1.05}
+.clima .c-ahora span{display:block;font-size:13px;color:var(--suave)}
+.clima .c-dias{display:flex;gap:6px}
+.clima .c-dia{display:grid;justify-items:center;gap:1px;min-width:46px;padding:6px 4px;border-radius:10px;background:var(--fondo);font-size:12px}
+.clima .c-dia .e{font-size:20px;line-height:1.2}
+.clima .c-dia em{font-style:normal;font-weight:700;color:var(--suave);text-transform:capitalize}
+.clima .c-dia i{font-style:normal;color:var(--suave)}
+.clima .c-tip{margin:0;font-size:13.5px;font-weight:600;border-top:1px solid var(--linea);padding-top:9px}
+.clima .c-pie{font-size:11.5px;color:var(--suave)}
 .ruta-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .ruta-chips span{background:var(--p-celeste);border-radius:999px;padding:5px 11px;font-weight:700;font-size:13px}
 .ruta-chips i{font-style:normal;color:var(--suave);font-size:13px}
@@ -481,6 +493,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <p class="r-sub">Despegamos el lunes 30 de noviembre a las 06:31</p>
       <button type="button" class="btn" id="r-compartir"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir imagen de hoy</button>
     </div>
+    <div class="clima" data-clima hidden></div>
     <div class="cab-inicio">
       <h2>Secciones</h2>
       <div class="modo" role="group" aria-label="Forma de ver las secciones">
@@ -833,6 +846,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <button type="button" class="btn sec" id="compartir-seguir">Compartir con quien quiera seguirnos</button>
     </div>
     <div class="seguir-hoy" id="seguir-hoy"></div>
+    <div class="clima" data-clima hidden></div>
     <div class="bloque">
       <h3>El recorrido</h3>
       <div class="ruta-chips" aria-label="Asunción, Panamá, Guadalajara, San Blas, Puerto Vallarta y regreso">
@@ -1285,6 +1299,71 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#seguir-hoy").replaceChildren(el("small", { text: a }), el("b", { text: b }), el("span", { text: c }));
   }
   pintarSeguirHoy();
+
+  // ---------- Clima de San Blas (Open-Meteo, gratis y sin cuenta). Guarda el último pronóstico para usar sin internet. ----------
+  const CLIMA_URL = "https://api.open-meteo.com/v1/forecast?latitude=21.54&longitude=-105.29&current=temperature_2m,apparent_temperature,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max&timezone=America%2FMazatlan&forecast_days=4";
+  function cielo(c) {
+    if (c === 0) return ["☀️", "Despejado"];
+    if (c === 1) return ["🌤️", "Casi despejado"];
+    if (c === 2) return ["⛅", "Algo nublado"];
+    if (c === 3) return ["☁️", "Nublado"];
+    if (c === 45 || c === 48) return ["🌫️", "Neblina"];
+    if (c >= 51 && c <= 57) return ["🌦️", "Llovizna"];
+    if (c >= 61 && c <= 67) return ["🌧️", "Lluvia"];
+    if (c >= 80 && c <= 82) return ["🌦️", "Chaparrones"];
+    if (c >= 95) return ["⛈️", "Tormenta"];
+    return ["🌡️", ""];
+  }
+  function consejoClima(d) {
+    const max = d.temperature_2m_max[0], min = d.temperature_2m_min[0], lluvia = d.precipitation_probability_max[0], uv = d.uv_index_max[0];
+    if (lluvia >= 50) return "☔ Puede llover. Llevá paraguas o una campera liviana.";
+    if (max >= 32) return "💧 Hace mucho calor. Tomá bastante agua y usá protector.";
+    if (uv >= 8) return "🧴 Sol fuerte. Protector solar y gorra.";
+    if (min <= 16) return "🧥 Refresca a la noche. Llevá un abrigo para después de la función.";
+    return "😎 Lindo día. ¡A disfrutar!";
+  }
+  function pintarClima() {
+    const g = leer("info-clima", null);
+    if (!g || !g.datos || !g.datos.current) return;
+    const { current: a, daily: d } = g.datos;
+    const [ico, txt] = cielo(a.weather_code);
+    const hoy = new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" });
+    const enGira = hoy >= "2026-11-30" && hoy <= "2026-12-15";
+    const dias = () => d.time.slice(1, 4).map((t, i) => {
+      const k = i + 1, nom = new Date(t + "T12:00:00").toLocaleDateString("es", { weekday: "short" }).replace(".", "");
+      return el("div", { class: "c-dia" }, el("em", { text: nom }), el("span", { class: "e", text: cielo(d.weather_code[k])[0] }),
+        el("b", { text: Math.round(d.temperature_2m_max[k]) + "°" }), el("i", { text: Math.round(d.temperature_2m_min[k]) + "°" }));
+    });
+    const hace = Math.round((Date.now() - g.cuando) / 60000);
+    const pie = !navigator.onLine || hace > 90
+      ? "Último pronóstico guardado: " + new Date(g.cuando).toLocaleString("es", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
+      : "Fuente: Open-Meteo";
+    document.querySelectorAll("[data-clima]").forEach(c => {
+      c.replaceChildren(
+        el("div", { class: "c-top" },
+          el("div", { class: "c-ahora" }, el("small", { text: enGira ? "San Blas ahora" : "Así está San Blas hoy" }),
+            el("b", { text: `${ico} ${Math.round(a.temperature_2m)}°` }),
+            el("span", { text: `${txt} · Máx ${Math.round(d.temperature_2m_max[0])}° Mín ${Math.round(d.temperature_2m_min[0])}°` })),
+          el("div", { class: "c-dias" }, dias())),
+        ...(enGira ? [el("p", { class: "c-tip", text: consejoClima(d) })] : []),
+        el("span", { class: "c-pie", text: pie }));
+      c.hidden = false;
+    });
+  }
+  async function traerClima() {
+    const g = leer("info-clima", null);
+    if (g && Date.now() - g.cuando < 30 * 60000) return;
+    try {
+      const r = await fetch(CLIMA_URL, { cache: "no-store" });
+      if (!r.ok) return;
+      const datos = await r.json();
+      if (!datos.current || !datos.daily) return;
+      escribir("info-clima", { cuando: Date.now(), datos });
+      pintarClima();
+    } catch (e) {}
+  }
+  pintarClima(); traerClima();
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") traerClima(); });
 
   // ---------- Cuenta regresiva y relojes ----------
   const salida = new Date("2026-11-30T06:31:00-03:00");
