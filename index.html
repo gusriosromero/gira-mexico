@@ -317,6 +317,12 @@ p{margin:0}
 .tip p{font-size:14px;color:var(--suave)}
 .tip.importante{background:var(--alerta-fondo)}
 .tip.importante p{color:var(--texto)}
+.elenco{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.elenco li{display:flex;align-items:center;gap:10px;border:1px solid var(--linea);border-radius:14px;padding:8px 10px}
+.elenco .ini{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:#17171c;font-family:var(--titulo);font-size:20px}
+.elenco b{display:block;font-size:15px}
+.elenco small{display:block;font-size:12px;color:var(--suave)}
+.cnt-elenco{font-size:13px;font-weight:600;color:var(--suave);margin-left:4px}
 .fotos-qr{display:grid;justify-items:center;gap:10px;background:#fff;border:1px solid var(--linea);border-radius:var(--radio);padding:18px;margin:0 0 18px}
 .fotos-qr .qr-svg{width:min(220px,60vw);height:auto;display:block}
 .fotos-qr small{color:#55596b;font-size:13px}
@@ -461,6 +467,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="mosaico c-rosa" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Conversor de moneda</b><small>Pesos mexicanos, guaraníes y dólares</small></span></a>
       <a class="mosaico c-durazno" href="#mi-lista" data-vista="mi-lista"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span><span class="txt"><b>Qué llevar</b><small>Tu lista de equipaje</small></span></a>
       <a class="mosaico c-celeste" href="#repertorio" data-vista="repertorio"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="txt"><b>Repertorio</b><small>Cuadros y música del espectáculo</small></span></a>
+      <a class="mosaico c-celeste" href="#elenco" data-vista="elenco"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.6.1 4.4 1.8 5 4.4"/></svg></span><span class="txt"><b>El elenco</b><small>Los 15 que viajamos</small></span></a>
       <a class="mosaico c-rosa" href="#fotos" data-vista="fotos"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="txt"><b>Fotos y videos</b><small>Subí y bajá los del grupo</small></span></a>
       <a class="mosaico c-alerta" href="#emergencias" data-vista="emergencias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="txt"><b>Emergencias</b><small>Números útiles y tus datos</small></span></a>
       <a class="mosaico c-lila" href="#instalar" data-vista="instalar"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span class="txt"><b>Instalar</b><small>Cómo instalar en Android y iPhone para usar la app sin internet</small></span></a>
@@ -749,6 +756,18 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   </section>
 
   <!-- EMERGENCIAS -->
+  <section class="vista" id="vista-elenco" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Somos 15</span>
+      <h2>El elenco</h2>
+      <p class="nota">Los 15 que viajamos a México.</p>
+    </div>
+    <div class="bloque"><h3>Dirección <span class="cnt-elenco">2</span></h3><ul class="elenco"><li><span class="ini c-durazno">J</span><span><b>Director José</b><small>Director y bailarín</small></span></li><li><span class="ini c-celeste">V</span><span><b>Vivi</b><small>Dirección coreográfica y bailarina</small></span></li></ul></div>
+    <div class="bloque"><h3>Bailarinas <span class="cnt-elenco">7</span></h3><ul class="elenco"><li><span class="ini c-lila">C</span><span><b>Caro</b><small>Bailarina</small></span></li><li><span class="ini c-rosa">C</span><span><b>Carmen</b><small>Bailarina</small></span></li><li><span class="ini c-durazno">F</span><span><b>Flavia</b><small>Bailarina</small></span></li><li><span class="ini c-celeste">K</span><span><b>Kari</b><small>Bailarina</small></span></li><li><span class="ini c-lila">K</span><span><b>Katy</b><small>Bailarina</small></span></li><li><span class="ini c-rosa">N</span><span><b>Nahomi</b><small>Bailarina</small></span></li><li><span class="ini c-durazno">S</span><span><b>Samira</b><small>Bailarina</small></span></li></ul></div>
+    <div class="bloque"><h3>Bailarines <span class="cnt-elenco">5</span></h3><ul class="elenco"><li><span class="ini c-celeste">C</span><span><b>Carlitos</b><small>Bailarín</small></span></li><li><span class="ini c-lila">E</span><span><b>Edu</b><small>Bailarín</small></span></li><li><span class="ini c-rosa">J</span><span><b>Joel</b><small>Bailarín</small></span></li><li><span class="ini c-durazno">S</span><span><b>Santi</b><small>Bailarín</small></span></li><li><span class="ini c-celeste">T</span><span><b>Tima</b><small>Bailarín</small></span></li></ul></div>
+    <div class="bloque"><h3>Staff <span class="cnt-elenco">1</span></h3><ul class="elenco"><li><span class="ini c-lila">G</span><span><b>Gustavo</b><small>Staff · técnica y logística</small></span></li></ul></div>
+  </section>
+
   <section class="vista" id="vista-fotos" hidden>
     <div class="bloque">
       <span class="etiqueta">Para todos</span>
@@ -897,7 +916,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   aplicarTema(leer("info-tema", "auto"));
 
   // ---------- Navegación ----------
-  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "fotos", "emergencias", "instalar"];
+  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "elenco", "fotos", "emergencias", "instalar"];
   const nombres = {};
   document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
   function mostrar(v) {
