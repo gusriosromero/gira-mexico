@@ -1003,22 +1003,93 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     miniBarra();
     contarVisita(v);
   }
-  // Estadísticas de visitas (GoatCounter: sin cookies, sin datos personales). Solo en la app publicada.
+  // ---------- Estadísticas (GoatCounter: sin cookies, sin datos personales). Solo en la app publicada. ----------
+  // Cuenta secciones abiertas y botones tocados. Nunca manda lo que la persona escribe ni sus contactos.
   const estadisticas = /github\.io$/.test(location.hostname);
-  let pendiente = null;
-  function contarVisita(v) {
+  let vistaActual = "inicio", tLectura = null;
+  const COLA = "gc-cola";
+  function enviar(d) {
     if (!estadisticas) return;
-    const datos = { path: "/" + v, title: nombres[v] || "Inicio" };
-    if (window.goatcounter && window.goatcounter.count) window.goatcounter.count(datos);
-    else pendiente = datos;
+    if (navigator.onLine && window.goatcounter && window.goatcounter.count) {
+      try { window.goatcounter.count(d); return; } catch (e) {}
+    }
+    const c = leer(COLA, []); if (c.length < 300) { c.push(d); escribir(COLA, c); }
+  }
+  function vaciarCola() {
+    if (!navigator.onLine || !window.goatcounter || !window.goatcounter.count) return;
+    const c = leer(COLA, []); if (!c.length) return;
+    escribir(COLA, []);
+    c.forEach(d => { try { window.goatcounter.count(d); } catch (e) {} });
+  }
+  function evento(accion, vista) {
+    const v = vista || vistaActual, sec = nombres[v] || "Inicio";
+    const a = String(accion).replace(/\s+/g, " ").trim().slice(0, 60);
+    enviar({ path: (v + " › " + a).toLowerCase(), title: sec + " › " + a, event: true });
+  }
+  function contarVisita(v) {
+    vistaActual = v;
+    enviar({ path: "/" + v, title: nombres[v] || "Inicio" });
+    clearTimeout(tLectura);
+    // Si se queda 20 segundos o más, la sección le sirvió para leer algo.
+    tLectura = setTimeout(() => { if (vistaActual === v && document.visibilityState === "visible") evento("se quedó 20 s o más", v); }, 20000);
+  }
+  function nombreDe(b) {
+    if (b.closest("#contactos")) return b.tagName === "A" ? "Llamó a un contacto propio" : "Quitó un contacto propio";
+    if (b.closest("#form-contacto")) return "Agregó un contacto propio";
+    if (b.dataset.ev) return b.dataset.ev;
+    if (b.closest(".e-temas")) return "Tema: " + (b.children[1] ? b.children[1].textContent : b.textContent);
+    let t = (b.getAttribute("aria-label") || b.textContent || "").replace(/\s+/g, " ").trim();
+    if (b.tagName === "A") {
+      const h = b.getAttribute("href") || "";
+      const caja = b.closest("li, .tip, .contacto-coord, .tarjeta, .lugar, .vuelo");
+      const titulo = caja && caja.querySelector("h3, b, strong");
+      const ctx = titulo && titulo.textContent.trim() !== t ? titulo.textContent.trim() + " · " : "";
+      const coord = b.closest(".contacto-coord"), sp = coord && coord.querySelector(".numero span");
+      const quien = sp ? sp.textContent.split(" · ")[0] : "";
+      if (/^tel:/.test(h)) { const n = b.querySelector("b"), d = b.querySelector("span"); t = "Llamar · " + (quien || (n && d ? n.textContent + " · " + d.textContent : ctx + t)); }
+      else if (/wa\.me/.test(h)) t = "WhatsApp · " + (quien || ctx);
+      else if (/flightradar/.test(h)) t = "Seguir vuelo " + h.split("/").pop().toUpperCase();
+      else if (/google\.com\/maps/.test(h)) t = "Mapa · " + (ctx || t);
+      else t = (t || new URL(h, location.href).hostname) + " ↗";
+    }
+    return t || "botón";
   }
   if (estadisticas) {
     window.goatcounter = { no_onload: true };
     const gc = document.createElement("script");
     gc.async = true; gc.src = "https://gc.zgo.at/count.js";
     gc.dataset.goatcounter = "https://giramexico.goatcounter.com/count";
-    gc.onload = () => { if (pendiente) { window.goatcounter.count(pendiente); pendiente = null; } };
+    gc.onload = vaciarCola;
     document.head.appendChild(gc);
+    window.addEventListener("online", vaciarCola);
+    // Una vez por apertura: ¿la usan instalada o en el navegador? ¿con o sin internet?
+    setTimeout(() => {
+      const inst = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+      evento(inst ? "abierta como app instalada" : "abierta en el navegador", "inicio");
+      if (!navigator.onLine) evento("abierta sin internet", "inicio");
+    }, 0);
+    // Botones y enlaces externos (los enlaces internos ya se cuentan como sección abierta).
+    document.addEventListener("click", e => {
+      const b = e.target.closest("button, a[href]");
+      if (!b || (b.tagName === "A" && b.getAttribute("href").startsWith("#"))) return;
+      evento(nombreDe(b));
+    }, true);
+    // Listas para marcar: cuenta en qué lista marcan, no qué escribió nadie.
+    document.addEventListener("change", e => {
+      const t = e.target;
+      if (t.type !== "checkbox" || !t.checked) return;
+      const g = t.closest(".grupo-lista"), h = g && g.querySelector("h3");
+      evento("marcó en " + (h ? h.textContent : "lista"));
+    }, true);
+    // Campos para escribir: solo avisa que se usó el campo, una vez por apertura, sin el contenido.
+    const usados = new Set();
+    document.addEventListener("input", e => {
+      const t = e.target; if (!t.matches("input, textarea") || t.type === "checkbox" || t.type === "range") return;
+      if (t.closest("#form-contacto")) return;
+      const lab = t.closest("label"), cab = lab && lab.querySelector("b");
+      const n = t.closest("#vista-plata") ? "usó el conversor" + (cab ? " · " + cab.textContent : "") : "completó un campo propio";
+      if (usados.has(n)) return; usados.add(n); evento(n);
+    }, true);
   }
   const portada = document.querySelector(".portada"), mini = $("#mini");
   mini.querySelector("img").src = portada.querySelector("img").src;
