@@ -1051,10 +1051,12 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   // ---------- Navegación ----------
   const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "fotos", "emergencias", "instalar"];
+  const BLOQUEADAS = ["seguir", "familias"];
   const nombres = {};
   document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
   function mostrar(v) {
-    if (!vistas.includes(v)) v = "inicio";
+    // Secciones guardadas pero cerradas por pedido del grupo: el enlace directo lleva al Inicio.
+    if (!vistas.includes(v) || BLOQUEADAS.includes(v)) v = "inicio";
     for (const x of vistas) $("#vista-" + x).hidden = x !== v;
     const enInicio = v === "inicio";
     document.querySelector(".portada").hidden = !enInicio;
@@ -1334,7 +1336,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     if (min <= 16) return "🧥 Refresca a la noche. Llevá un abrigo para después de la función.";
     return "😎 Lindo día. ¡A disfrutar!";
   }
+  // El clima aparece solo desde una semana antes de la salida.
+  const CLIMA_DESDE = "2026-11-23";
+  const climaActivo = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" }) >= CLIMA_DESDE;
   function pintarClima() {
+    if (!climaActivo()) return;
     const g = leer("info-clima", null);
     if (!g || !g.datos || !g.datos.current) return;
     const { current: a, daily: d } = g.datos;
@@ -1363,6 +1369,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     });
   }
   async function traerClima() {
+    if (!climaActivo()) return;
     const g = leer("info-clima", null);
     if (g && Date.now() - g.cuando < 30 * 60000) return;
     try {
