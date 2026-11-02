@@ -1139,14 +1139,14 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
           el("div", { class: "opc" },
             el("button", { type: "button", "data-ev": "¿te sirvió? 👍 sí", "aria-pressed": String(r === "si"), onclick: () => { votos[v] = "si"; escribir("info-sirvio", votos); pintar(); } }, "👍 Sí"),
             el("button", { type: "button", "data-ev": "¿te sirvió? 👎 no", "aria-pressed": String(r === "no" || (r || "").startsWith("no:")), onclick: () => { votos[v] = "no"; escribir("info-sirvio", votos); pintar(); } }, "👎 No")));
-        if (r === "no") caja.append(el("p", { class: "gracias", text: "¿Qué le pasa? (opcional)" }),
-          el("div", { class: "opc" }, MOTIVOS.map(m => el("button", { type: "button", "data-ev": "👎 " + m.toLowerCase(), onclick: () => { votos[v] = "no:" + m; escribir("info-sirvio", votos); pintar(); } }, m))));
-        if (r === "si" || (r || "").startsWith("no:")) caja.append(el("span", { class: "gracias", text: "¡Gracias! Nos ayuda a mejorar la app." }));
         if (r && WA_SUGERENCIAS) {
           const motivo = r.startsWith("no:") ? " (" + r.slice(3).toLowerCase() + ")" : r === "si" ? " (me sirvió)" : "";
           const texto = `Hola Gustavo, sugerencia para la app, sección ${nombres[v] || v}${motivo}: `;
           caja.append(el("a", { class: "btn wa-sug", href: `https://wa.me/${WA_SUGERENCIAS}?text=${encodeURIComponent(texto)}`, target: "_blank", rel: "noopener", "data-ev": "💬 sugerencia por WhatsApp" }, "💬 Contame más por WhatsApp"));
         }
+        if (r === "no") caja.append(el("p", { class: "gracias", text: "¿Qué le pasa? (opcional)" }),
+          el("div", { class: "opc" }, MOTIVOS.map(m => el("button", { type: "button", "data-ev": "👎 " + m.toLowerCase(), onclick: () => { votos[v] = "no:" + m; escribir("info-sirvio", votos); pintar(); } }, m))));
+        if (r === "si" || (r || "").startsWith("no:")) caja.append(el("span", { class: "gracias", text: "¡Gracias! Nos ayuda a mejorar la app." }));
       };
       pintar();
       $("#vista-" + v).append(caja);
