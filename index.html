@@ -151,6 +151,7 @@ p{margin:0}
 .sirvio .opc{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .sirvio button{border:1px solid var(--linea);background:var(--fondo);color:var(--texto);border-radius:999px;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer}
 .sirvio button[aria-pressed="true"]{border-color:var(--celeste);box-shadow:inset 0 0 0 1px var(--celeste)}
+.sirvio .wa-sug{background:#128c4a;color:#fff;text-decoration:none;font-size:14px}
 .sirvio .gracias{color:var(--suave);font-size:13px;font-weight:600}
 /* Repertorio: reproductor de ensayo */
 .e-pestanas{display:flex;gap:8px;flex-wrap:wrap}
@@ -1126,6 +1127,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     document.head.appendChild(gc);
     window.addEventListener("online", vaciarCola);
     // "¿Te sirvió?" al final de cada sección. La respuesta queda en el celular para no preguntar de nuevo.
+    const WA_SUGERENCIAS = "595981616321";  // número de Gustavo para sugerencias, con 595 adelante
     const MOTIVOS = ["Le falta información", "No se entiende", "No lo necesito", "Algo no funciona"];
     const votos = leer("info-sirvio", {});
     for (const v of vistas) {
@@ -1140,6 +1142,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         if (r === "no") caja.append(el("p", { class: "gracias", text: "¿Qué le pasa? (opcional)" }),
           el("div", { class: "opc" }, MOTIVOS.map(m => el("button", { type: "button", "data-ev": "👎 " + m.toLowerCase(), onclick: () => { votos[v] = "no:" + m; escribir("info-sirvio", votos); pintar(); } }, m))));
         if (r === "si" || (r || "").startsWith("no:")) caja.append(el("span", { class: "gracias", text: "¡Gracias! Nos ayuda a mejorar la app." }));
+        if (r && WA_SUGERENCIAS) {
+          const motivo = r.startsWith("no:") ? " (" + r.slice(3).toLowerCase() + ")" : r === "si" ? " (me sirvió)" : "";
+          const texto = `Hola Gustavo, sugerencia para la app, sección ${nombres[v] || v}${motivo}: `;
+          caja.append(el("a", { class: "btn wa-sug", href: `https://wa.me/${WA_SUGERENCIAS}?text=${encodeURIComponent(texto)}`, target: "_blank", rel: "noopener", "data-ev": "💬 sugerencia por WhatsApp" }, "💬 Contame más por WhatsApp"));
+        }
       };
       pintar();
       $("#vista-" + v).append(caja);
