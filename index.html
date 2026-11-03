@@ -783,7 +783,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <audio id="e-audio" preload="metadata"></audio>
     </div>
     <div class="sueltos" id="sueltos" hidden>
-      <p class="nota">Los 12 temas en orden, uno por uno.</p>
+      <p class="nota">Los 13 temas en orden, uno por uno.</p>
       <div class="s-player" id="s-player" hidden>
         <div class="e-ahora"><small id="s-cuadro">Sonando</small><b id="s-tema">&nbsp;</b></div>
         <div class="e-prog-barra"><i id="s-hecho"></i></div>
@@ -1609,7 +1609,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const CUADROS = {
     1: { dura: 679.6, temas: [["Tetagua Sapukai", 0, 76.2], ["Pájaro Campana", 88.7, 263.17], ["Carreta Guy", 275.67, 450.8], ["Tren Lechero", 463.3]] },
     2: { dura: 722.3, v: 2, temas: [["Virgen de Caacupé", 0, 300.58], ["Mamá Kumandá", 300.58, 390.23], ["Galopera", 402.73, 529.53], ["Musiqueada Che Amape", 542.03]] },
-    3: { dura: 762.8, temas: [["La Paraguaya", 0, 153.5], ["Pycasu Hovy", 166, 339.3], ["Nda Rekoi La Culpa", 351.8, 489.45], ["Gallito Cantor", 501.95]] },
+    3: { dura: 860.0, v: 2, temas: [["Acuarela Paraguaya (Opening)", 0, 96.87], ["La Paraguaya", 97.17, 250.57], ["Pycasu Hovy", 263.07, 436.37], ["Nda Rekoi La Culpa", 448.87, 586.53], ["Gallito Cantor", 599.03]] },
   };
   // "v" sube cada vez que se cambia el MP3 de un cuadro, para que los celulares bajen el nuevo.
   const verDe = c => CUADROS[c].v || 1;
@@ -1887,7 +1887,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     accion("seekforward", () => mover(5));
     accion("seekto", d => { audio.currentTime = d.seekTime; pintarEstado(); });
   }
-  // ---------- Temas sueltos: los 12 temas en orden, cada uno es su tramo dentro del audio de su cuadro ----------
+  // ---------- Temas sueltos: los 13 temas en orden, cada uno es su tramo dentro del audio de su cuadro ----------
   const SUELTOS = [];
   for (const c of Object.keys(CUADROS).map(Number))
     CUADROS[c].temas.forEach(([nombre, ini, fin]) => SUELTOS.push({ c, nombre, ini, fin: fin ?? CUADROS[c].dura }));
