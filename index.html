@@ -197,6 +197,9 @@ p{margin:0}
 .e-aviso{background:var(--alerta-fondo);color:var(--alerta);border-radius:10px;padding:10px 12px;font-size:13px}
 .e-pie{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .e-pie .nota{flex:1 1 200px}
+.e-mp3{display:grid;gap:8px;border-top:1px solid var(--linea);padding-top:14px}
+.e-mp3-btns{display:flex;gap:8px;flex-wrap:wrap}
+.e-mp3-btns .btn{flex:1 1 150px}
 :root[data-theme="dark"] .e-pestanas button[aria-selected="true"],:root[data-theme="dark"] .e-controles .play{background:var(--amarillo);border-color:var(--amarillo);color:var(--tinta)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .e-pestanas button[aria-selected="true"],:root:not([data-theme="light"]) .e-controles .play{background:var(--amarillo);border-color:var(--amarillo);color:var(--tinta)}}
 
@@ -808,6 +811,14 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <div class="e-aviso" id="e-aviso" hidden></div>
       <ol class="e-temas" id="e-temas"></ol>
       <div class="e-pie" id="e-pie" hidden><p class="nota" id="e-archivo"></p></div>
+      <div class="e-mp3" id="e-mp3" hidden>
+        <p class="nota">¿Necesitás pasarle el audio a alguien? Por ejemplo, al sonidista o a los organizadores.</p>
+        <div class="e-mp3-btns">
+          <button class="btn sec" type="button" id="e-mp3-compartir" data-ev="compartir MP3 del cuadro" hidden>Compartir el MP3</button>
+          <button class="btn sec" type="button" id="e-mp3-bajar" data-ev="descargar MP3 del cuadro">Descargar el MP3</button>
+        </div>
+        <p class="nota" id="e-mp3-estado" aria-live="polite"></p>
+      </div>
       <input type="file" id="e-archivo-input" accept="audio/*,.mp3,.mpeg,.m4a" hidden>
       <audio id="e-audio" preload="metadata"></audio>
     </div>
@@ -1707,6 +1718,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   function mostrarReproductor(hay) {
     $("#e-cargar").hidden = hay;
     ["#e-reproductor", "#e-barra", "#e-tiempos", "#e-controles", "#e-opciones", "#e-pie"].forEach(s => { $(s).hidden = !hay; });
+    $("#e-mp3").hidden = !hay || !/github\.io$/.test(location.hostname);
+    $("#e-mp3-estado").textContent = "";
   }
   function avisar(txt) { $("#e-aviso").hidden = !txt; $("#e-aviso").textContent = txt || ""; }
 
@@ -1808,6 +1821,44 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     marcarGuardados();
   }
   $("#e-guardar-btn").addEventListener("click", guardarTodos);
+
+  // ---------- Compartir o descargar el MP3 del cuadro (para el sonidista o los organizadores) ----------
+  const mp3Listos = {};
+  async function archivoMp3(c) {
+    if (mp3Listos[c]) return mp3Listos[c];
+    let dato = await traer(c);
+    if (dato && (dato.propio || (dato.v || 1) !== verDe(c))) dato = null;
+    let blob = dato && dato.blob;
+    if (!blob) {
+      $("#e-mp3-estado").textContent = "Preparando el audio…";
+      const r = await fetch(audioDe(c));
+      if (!r.ok) throw new Error("red");
+      blob = await r.blob();
+    }
+    return mp3Listos[c] = new File([blob], "Acuarela Mimbi - Gira Mexico - Cuadro " + c + ".mp3", { type: "audio/mpeg" });
+  }
+  const puedeCompartirArchivos = (() => { try { return !!navigator.canShare && navigator.canShare({ files: [new File([""], "a.mp3", { type: "audio/mpeg" })] }); } catch (e) { return false; } })();
+  $("#e-mp3-compartir").hidden = !puedeCompartirArchivos;
+  $("#e-mp3-bajar").addEventListener("click", async () => {
+    const c = cuadro, est = $("#e-mp3-estado");
+    try {
+      const f = await archivoMp3(c), u = URL.createObjectURL(f);
+      const a = el("a", { href: u, download: f.name }); document.body.append(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(u), 60000);
+      est.textContent = "Listo. Buscalo en Descargas: " + f.name;
+    } catch (e) { est.textContent = "No se pudo preparar el audio. Probá de nuevo con internet."; }
+  });
+  $("#e-mp3-compartir").addEventListener("click", async () => {
+    const c = cuadro, est = $("#e-mp3-estado");
+    let f;
+    try { f = await archivoMp3(c); } catch (e) { est.textContent = "No se pudo preparar el audio. Probá de nuevo con internet."; return; }
+    try { await navigator.share({ files: [f], title: "Cuadro " + c + " · Acuarela Mimbi" }); est.textContent = ""; }
+    catch (e) {
+      if (e && e.name === "AbortError") { est.textContent = ""; return; }
+      // Si tardó en bajar, el celular pide tocar de nuevo para abrir el menú de compartir.
+      est.textContent = "Audio listo. Tocá otra vez “Compartir el MP3”.";
+    }
+  });
   // Los audios viven junto a la app publicada; en otras copias de la página no hay qué guardar
   $("#e-guardar").hidden = !/github\.io$/.test(location.hostname);
   marcarGuardados();
