@@ -361,6 +361,30 @@ p{margin:0}
 .clima-tabla small{font-size:12.5px;color:var(--suave)}
 .firma{margin:28px 0 8px;text-align:center;font-size:12.5px;color:var(--suave)}
 .firma a{color:inherit;font-weight:700;text-decoration:none;border-bottom:1px solid var(--linea)}
+.j-opc{display:flex;flex-wrap:wrap;gap:6px}
+.j-opc button{border:1px solid var(--linea);background:var(--fondo);color:var(--texto);border-radius:999px;padding:8px 14px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.j-opc button[aria-pressed="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+.j-marcador{display:flex;gap:8px;font-size:12.5px;color:var(--suave)}
+.j-marcador span{flex:1;background:var(--superficie);border-radius:12px;padding:8px 10px;display:grid;gap:1px;text-align:center}
+.j-marcador b{font-family:var(--titulo);font-weight:400;font-size:20px;color:var(--texto);font-variant-numeric:tabular-nums}
+.j-tablero{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:440px;width:100%;margin:0 auto}
+.j-carta{position:relative;aspect-ratio:3/4;border:0;padding:0;background:none;cursor:pointer;perspective:600px;-webkit-tap-highlight-color:transparent}
+.j-carta .cara{position:absolute;inset:0;border-radius:12px;display:grid;place-items:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.j-carta .dorso{background:var(--celeste);color:#fff;box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}
+.j-carta .dorso svg{width:78%;height:78%}
+.j-carta .frente{background:var(--c,var(--superficie));color:#17171c;transform:rotateY(180deg);align-content:center;gap:2px;padding:4px;box-shadow:inset 0 0 0 2px var(--linea)}
+.j-carta .frente .e{font-size:clamp(26px,9vw,40px);line-height:1.1}
+.j-carta .frente .ini{font-family:var(--titulo);font-size:clamp(26px,9vw,40px);line-height:1.1}
+.j-carta .frente small{font-size:clamp(9.5px,2.9vw,12px);font-weight:700;line-height:1.15;text-align:center}
+.j-carta .giro{position:absolute;inset:0;transform-style:preserve-3d}
+.j-carta.vista .giro,.j-carta.hecha .giro{transform:rotateY(180deg)}
+.j-carta.hecha .frente{box-shadow:inset 0 0 0 3px var(--ok)}
+.j-carta.hecha{cursor:default}
+.j-tablero.n12 .j-carta .frente small{font-size:clamp(9px,2.6vw,11px)}
+.j-fin{border-radius:var(--radio);background:var(--ok-fondo);color:#17171c;padding:16px;display:grid;gap:2px;text-align:center}
+.j-fin b{font-family:var(--titulo);font-weight:400;font-size:28px}
+#j-nuevo{justify-self:center}
+@media (prefers-reduced-motion:no-preference){.j-carta .giro{transition:transform .35s ease}}
 .ruta-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .ruta-chips span{background:var(--p-celeste);border-radius:999px;padding:5px 11px;font-weight:700;font-size:13px}
 .ruta-chips i{font-style:normal;color:var(--suave);font-size:13px}
@@ -523,6 +547,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="mosaico c-celeste" href="#lugares" data-vista="lugares"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span class="txt"><b>Lugares</b><small>Los 9 pueblos de la gira y San Blas</small></span></a>
       <a class="mosaico c-lila" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
       <a class="mosaico c-rosa" href="#elenco" data-vista="elenco"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.6.1 4.4 1.8 5 4.4"/></svg></span><span class="txt"><b>El elenco</b><small>Los 15 que viajamos</small></span></a>
+      <a class="mosaico c-celeste" href="#juego" data-vista="juego"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="8" height="11" rx="1.5"/><rect x="13" y="9" width="8" height="11" rx="1.5"/><path d="M7 8v3M17 13v3"/></svg></span><span class="txt"><b>Juegos</b><small>Memoria de ñandutí, para jugar en el viaje</small></span></a>
       <a class="mosaico c-durazno oculto" href="#familias" data-vista="familias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 18s-3-1.9-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.9-3 3.8-3 3.8z"/></svg></span><span class="txt"><b>Para las familias</b><small>Vuelos en vivo, horarios y contacto</small></span></a>
       <a class="mosaico c-lila oculto" href="#seguir" data-vista="seguir"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span><span class="txt"><b>Seguí la gira</b><small>Funciones, en vivo y redes</small></span></a>
       <a class="mosaico c-urgente" href="#emergencias" data-vista="emergencias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="txt"><b>Emergencias</b><small>Números útiles y tus datos</small></span></a>
@@ -945,6 +970,38 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque"><h3>Staff <span class="cnt-elenco">1</span></h3><ul class="elenco"><li><span class="ini c-lila">G</span><span><b>Gustavo</b><small>Staff · técnica y logística</small></span></li></ul></div>
   </section>
 
+  <section class="vista" id="vista-juego" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Juegos · para el viaje</span>
+      <h2>Memoria de ñandutí</h2>
+      <p class="nota">Dá vuelta dos cartas y buscá las parejas. Funciona sin internet.</p>
+    </div>
+    <div class="j-opc" role="group" aria-label="Cartas">
+      <button type="button" data-tema="todo" aria-pressed="true">Todo mezclado</button>
+      <button type="button" data-tema="elenco" aria-pressed="false">El elenco</button>
+      <button type="button" data-tema="comidas" aria-pressed="false">Comidas</button>
+      <button type="button" data-tema="simbolos" aria-pressed="false">Paraguay y México</button>
+    </div>
+    <div class="j-opc" role="group" aria-label="Dificultad">
+      <button type="button" data-nivel="6" aria-pressed="false">Fácil</button>
+      <button type="button" data-nivel="8" aria-pressed="true">Normal</button>
+      <button type="button" data-nivel="12" aria-pressed="false">Difícil</button>
+    </div>
+    <div class="j-marcador"><span>Movimientos <b id="j-mov">0</b></span><span>Tiempo <b id="j-tiempo">0:00</b></span><span>Tu mejor <b id="j-mejor">–</b></span></div>
+    <div class="j-tablero" id="j-tablero" data-sin-ev></div>
+    <div class="j-fin" id="j-fin" hidden>
+      <b id="j-fin-tit">¡Ganaste!</b>
+      <span id="j-fin-txt"></span>
+    </div>
+    <button type="button" class="btn" id="j-nuevo" data-ev="memoria: jugar de nuevo">Jugar de nuevo</button>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="nanduti" viewBox="0 0 100 100">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <circle cx="50" cy="50" r="44" stroke-width="2.5"/><circle cx="50" cy="50" r="33" stroke-width="1.5"/><circle cx="50" cy="50" r="21" stroke-width="1.5"/><circle cx="50" cy="50" r="8" stroke-width="2.5"/>
+        <g stroke-width="1.2"><path d="M50 6v88M6 50h88M18.9 18.9l62.2 62.2M81.1 18.9 18.9 81.1M33.2 9.3l33.6 81.4M66.8 9.3 33.2 90.7M9.3 33.2l81.4 33.6M9.3 66.8l81.4-33.6"/></g>
+        <g stroke-width="2"><path d="M50 6q7 6 0 11q-7-5 0-11M94 50q-6 7-11 0q5-7 11 0M50 94q-7-6 0-11q7 5 0 11M6 50q6-7 11 0q-5 7-11 0M81.1 18.9q-1 9-7.8 7.8q-1.200-6.800 7.800-7.800M81.1 81.1q-9-1-7.800-7.800q6.800-1.200 7.800 7.800M18.900 81.100q1-9 7.800-7.800q1.200 6.800-7.800 7.800M18.900 18.900q9 1 7.800 7.800q-6.800 1.200-7.800-7.800"/></g>
+      </g></symbol></defs></svg>
+  </section>
+
   <section class="vista" id="vista-fotos" hidden>
     <div class="bloque">
       <span class="etiqueta">Para todos</span>
@@ -1093,7 +1150,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   aplicarTema(leer("info-tema", "auto"));
 
   // ---------- Navegación ----------
-  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "fotos", "emergencias", "instalar"];
+  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "juego", "fotos", "emergencias", "instalar"];
   const BLOQUEADAS = ["seguir", "familias"];
   const nombres = {};
   document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
@@ -1202,6 +1259,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     // Botones y enlaces externos (los enlaces internos ya se cuentan como sección abierta).
     document.addEventListener("click", e => {
       const b = e.target.closest("button, a[href]");
+      if (b && b.closest("[data-sin-ev]")) return;
       if (!b || (b.tagName === "A" && b.getAttribute("href").startsWith("#"))) return;
       evento(nombreDe(b));
     }, true);
@@ -1432,6 +1490,86 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   }
   pintarClima(); traerClima();
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") traerClima(); });
+
+  // ---------- Memoria de ñandutí: juego individual, sin internet ----------
+  (() => {
+    const PASTEL = ["var(--p-durazno)", "var(--p-rosa)", "var(--p-lila)", "var(--p-celeste)"];
+    const CARTAS = {
+      elenco: ["Director José", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Katy", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"]
+        .map((n, i) => ({ id: "p-" + n, ini: n === "Director José" ? "J" : n[0], txt: n, c: PASTEL[i % 4] })),
+      comidas: [["🧉", "Tereré"], ["🧀", "Chipa"], ["🥧", "Sopa paraguaya"], ["🥩", "Asado"], ["🥟", "Empanada"], ["🍠", "Mandioca"], ["🫓", "Mbeju"],
+        ["🌮", "Tacos"], ["🫔", "Tamales"], ["🥑", "Guacamole"], ["🌽", "Elote"], ["🌶️", "Chile"], ["🍲", "Pozole"], ["🍤", "Camarones"]]
+        .map(([e, t]) => ({ id: "c-" + t, e, txt: t })),
+      simbolos: [["🇵🇾", "Paraguay"], ["🇲🇽", "México"], ["🏺", "Cántaro"], ["🍾", "Botella"], ["🐦", "Pájaro campana"], ["🌸", "Lapacho"], ["👒", "Sombrero piri"],
+        ["🎺", "Mariachi"], ["🌵", "Nopal"], ["🪅", "Piñata"], ["💀", "Calaverita"], ["✈️", "El viaje"], ["🏖️", "San Blas"], ["💃", "La danza"]]
+        .map(([e, t]) => ({ id: "s-" + t, e, txt: t })),
+    };
+    const tablero = $("#j-tablero");
+    let tema = leer("juego-tema", "todo"), nivel = leer("juego-nivel", 8);
+    if (!["todo", "elenco", "comidas", "simbolos"].includes(tema)) tema = "todo";
+    if (![6, 8, 12].includes(nivel)) nivel = 8;
+    let abiertas = [], hechas = 0, mov = 0, t0 = 0, reloj = null, bloqueo = false;
+    const mezclar = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+    const mmssJ = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    const claveMejor = () => "juego-mejor-" + nivel;
+    function pintarMejor() { const m = leer(claveMejor(), null); $("#j-mejor").textContent = m ? m.mov + " mov." : "–"; }
+    function pararReloj() { clearInterval(reloj); reloj = null; }
+    function carta(d) {
+      const frente = el("span", { class: "cara frente", style: d.c ? "--c:" + d.c : null },
+        d.e ? el("span", { class: "e", text: d.e }) : el("span", { class: "ini", text: d.ini }), el("small", { text: d.txt }));
+      const dorso = el("span", { class: "cara dorso" });
+      dorso.innerHTML = '<svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nanduti"/></svg>';
+      const b = el("button", { type: "button", class: "j-carta", "aria-label": "Carta tapada" }, el("span", { class: "giro" }, dorso, frente));
+      b.addEventListener("click", () => tocar(b, d));
+      return b;
+    }
+    function nueva() {
+      pararReloj(); abiertas = []; hechas = 0; mov = 0; t0 = 0; bloqueo = false;
+      $("#j-mov").textContent = "0"; $("#j-tiempo").textContent = "0:00"; $("#j-fin").hidden = true;
+      document.querySelectorAll("#vista-juego [data-tema]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.tema === tema)));
+      document.querySelectorAll("#vista-juego [data-nivel]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.nivel === nivel)));
+      const mazo = tema === "todo" ? [...CARTAS.elenco, ...CARTAS.comidas, ...CARTAS.simbolos] : CARTAS[tema];
+      const elegidas = mezclar([...mazo]).slice(0, nivel);
+      tablero.className = "j-tablero n" + nivel;
+      tablero.style.gridTemplateColumns = "repeat(" + (nivel === 6 ? 3 : 4) + ",1fr)";
+      tablero.replaceChildren(...mezclar([...elegidas, ...elegidas]).map(carta));
+      pintarMejor();
+    }
+    function tocar(b, d) {
+      if (bloqueo || b.classList.contains("vista") || b.classList.contains("hecha")) return;
+      if (!t0) {
+        t0 = Date.now();
+        reloj = setInterval(() => { $("#j-tiempo").textContent = mmssJ(Math.floor((Date.now() - t0) / 1000)); }, 1000);
+        evento("memoria: empezó una partida (" + tema + ", " + nivel + " parejas)", "juego");
+      }
+      b.classList.add("vista"); b.setAttribute("aria-label", d.txt);
+      abiertas.push({ b, d });
+      if (abiertas.length < 2) return;
+      mov++; $("#j-mov").textContent = mov;
+      const [x, y] = abiertas; abiertas = [];
+      if (x.d.id === y.d.id) {
+        [x.b, y.b].forEach(c => { c.classList.remove("vista"); c.classList.add("hecha"); c.disabled = true; });
+        if (++hechas === nivel) ganar();
+      } else {
+        bloqueo = true;
+        setTimeout(() => { [x.b, y.b].forEach(c => { c.classList.remove("vista"); c.setAttribute("aria-label", "Carta tapada"); }); bloqueo = false; }, 900);
+      }
+    }
+    function ganar() {
+      pararReloj();
+      const seg = Math.floor((Date.now() - t0) / 1000), antes = leer(claveMejor(), null);
+      const record = !antes || mov < antes.mov || (mov === antes.mov && seg < antes.seg);
+      if (record) escribir(claveMejor(), { mov, seg });
+      $("#j-fin-tit").textContent = record && antes ? "¡Nuevo récord!" : "¡Ganaste!";
+      $("#j-fin-txt").textContent = "Encontraste las " + nivel + " parejas en " + mov + " movimientos y " + mmssJ(seg) + ".";
+      $("#j-fin").hidden = false; pintarMejor();
+      evento("memoria: ganó (" + nivel + " parejas)", "juego");
+    }
+    document.querySelectorAll("#vista-juego [data-tema]").forEach(b => b.addEventListener("click", () => { tema = b.dataset.tema; escribir("juego-tema", tema); nueva(); }));
+    document.querySelectorAll("#vista-juego [data-nivel]").forEach(b => b.addEventListener("click", () => { nivel = +b.dataset.nivel; escribir("juego-nivel", nivel); nueva(); }));
+    $("#j-nuevo").addEventListener("click", nueva);
+    nueva();
+  })();
 
   // ---------- Cuenta regresiva y relojes ----------
   const salida = new Date("2026-11-30T06:31:00-03:00");
