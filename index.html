@@ -2683,7 +2683,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   // [canción, inicio, fin] en segundos, medidos sobre los MP3 finales de cada cuadro.
   // Entre el fin de una canción y el inicio de la siguiente va la pausa + el repaso de 12 s (si lo hay).
   const CUADROS = {
-    1: { dura: 679.6, v: 3, temas: [["Tetagua Sapukai", 0, 76.2], ["Pájaro Campana", 88.7, 263.17], ["Carreta Guy", 275.67, 450.8], ["Tren Lechero", 463.3]] },
+    1: { dura: 717.04, v: 4, temas: [["Tetagua Sapukai", 0, 76.2], ["Pájaro Campana", 88.7, 263.17], ["Carreta Guy", 275.67, 450.8], ["Tren Lechero", 463.3, 679.57], ["Cierre: Tetagua Sapukai", 680.07]] },
     2: { dura: 743.26, v: 3, temas: [["Virgen de Caacupé", 0, 307.03], ["Mamá Kumandá", 308.97, 398.6], ["Galopera", 417.23, 544.43], ["Musiqueada Che Amape", 544.43, 724.77]] },
     3: { dura: 860.0, v: 2, temas: [["Acuarela Paraguaya", 0, 96.87], ["La Paraguaya", 97.17, 250.57], ["Pycasu Hovy", 263.07, 436.37], ["Nda Rekoi La Culpa", 448.87, 586.53], ["Gallito Cantor", 599.03]] },
   };
@@ -3006,7 +3006,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   // ---------- Temas sueltos: los 13 temas en orden, cada uno es su tramo dentro del audio de su cuadro ----------
   const SUELTOS = [];
   for (const c of Object.keys(CUADROS).map(Number))
-    CUADROS[c].temas.forEach(([nombre, ini, fin]) => SUELTOS.push({ c, nombre, ini, fin: fin ?? CUADROS[c].dura }));
+    CUADROS[c].temas.forEach(([nombre, ini, fin]) => { if (!nombre.startsWith("Cierre:")) SUELTOS.push({ c, nombre, ini, fin: fin ?? CUADROS[c].dura }); });
   const sAudio = $("#s-audio"), sUrls = {};
   let sK = -1, sCuadro = null, sRepetir = false;
 
