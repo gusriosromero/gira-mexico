@@ -407,7 +407,12 @@ p{margin:0}
 .lu-dado:not(:disabled){animation:lu-pulso 1.2s ease-in-out infinite}
 @keyframes lu-pulso{50%{transform:scale(1.07)}}
 @media (prefers-reduced-motion:reduce){.lu-dado{animation:none!important}}
-.lu-msj{margin:0;min-height:1.5em;text-align:center;font-weight:600}
+.lu-msj{margin:0;min-height:3em;text-align:center;font-weight:600}
+.lu-nombres{display:grid;gap:8px}.lu-nombres[hidden]{display:none}
+.lu-nom-tit{margin:0;font-weight:700;font-size:14px}
+.lu-nom{display:grid;grid-template-columns:34px 92px 1fr;align-items:center;gap:8px;background:var(--s);border-left:6px solid var(--c);border-radius:12px;padding:6px 8px;color:#17171c}
+.lu-nom-ico{font-size:22px;text-align:center}.lu-nom-lugar{font-size:12.5px;font-weight:700}
+.lu-nom input{font:inherit;font-size:16px;padding:8px 10px;border:1px solid rgba(0,0,0,.15);border-radius:10px;background:#fff;color:#17171c;min-width:0}
 .lu-caja{max-width:460px;width:100%;margin:0 auto}
 .lu-caja canvas{display:block;width:100%;aspect-ratio:1;border-radius:12px;box-shadow:0 0 0 1px var(--linea);touch-action:manipulation}
 .vb-caja{position:relative;max-width:420px;width:100%;margin:0 auto}
@@ -1044,7 +1049,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
         <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
         <button type="button" class="j-juego c4" id="j-abrir-vibora" data-ev="juegos: abrió Viborita viajera"><span class="j-letras" aria-hidden="true">🧳</span><span><b>Viborita viajera</b><small>Juntá las cosas del viaje sin chocarte</small></span></button>
-        <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>De 2 a 4 pasándose el teléfono, o contra el teléfono</small></span></button>
+        <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>De Villa Elisa al escenario de San Blas. De 2 a 4, o contra el teléfono</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1132,7 +1137,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <span class="etiqueta">Juegos · para el viaje</span>
       <h2>Ludo</h2>
-      <p class="nota">De 2 a 4 jugadores pasándose el teléfono, o vos contra el teléfono. Sacá un 6 para salir, comé las fichas de los demás y llegá al centro con las 4. Las casillas con estrella son seguras. Funciona sin internet.</p>
+      <p class="nota">De 2 a 4 jugadores pasándose el teléfono, o vos contra el teléfono. Cada uno sale de su lugar (Villa Elisa, Panamá, Guadalajara o San Blas) y hay que llegar con las 4 fichas al escenario del festival, en el centro. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
     </div>
     <div id="lu-config" class="lu-config">
       <div class="j-opc" role="group" aria-label="Jugadores">
@@ -1141,6 +1146,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button type="button" data-lmodo="3" aria-pressed="false">De a 3</button>
         <button type="button" data-lmodo="4" aria-pressed="false">De a 4</button>
       </div>
+      <div class="lu-nombres" id="lu-nombres" hidden></div>
       <button type="button" class="btn" id="lu-empezar" data-ev="ludo: empezar partida nueva">Empezar partida nueva</button>
       <button type="button" class="btn sec" id="lu-seguir" data-ev="ludo: siguió la partida guardada" hidden>Seguir la partida guardada</button>
     </div>
@@ -1880,10 +1886,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   (() => {
     const N = 15, lienzo = $("#lu-lienzo"), g = lienzo.getContext("2d"), C = lienzo.width / N, FIN = 56;
     const COL = [
-      { nom: "Rojo", f: "#e04f4f", s: "#f9d0d0", base: [0, 0], ini: 0, casa: i => [1 + i, 7], meta: [6.55, 7.5] },
-      { nom: "Verde", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.55] },
-      { nom: "Amarillo", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.45, 7.5] },
-      { nom: "Azul", f: "#2e7fd9", s: "#cfe2f7", base: [0, 9], ini: 39, casa: i => [7, 13 - i], meta: [7.5, 8.45] },
+      { nom: "Rojo", lugar: "Villa Elisa", ico: "🏺", f: "#e04f4f", s: "#f9d0d0", base: [0, 0], ini: 0, casa: i => [1 + i, 7], meta: [6.55, 7.5] },
+      { nom: "Verde", lugar: "Panamá", ico: "🍾", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.55] },
+      { nom: "Amarillo", lugar: "Guadalajara", ico: "👒", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.45, 7.5] },
+      { nom: "Azul", lugar: "San Blas", ico: "🎺", f: "#2e7fd9", s: "#cfe2f7", base: [0, 9], ini: 39, casa: i => [7, 13 - i], meta: [7.5, 8.45] },
     ];
     // Recorrido de 52 casillas, empezando en la salida del Rojo y yendo a favor del reloj.
     const PISTA = [];
@@ -1901,7 +1907,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     let E = null, espera = null, anim = null, hits = [];
     const visible = () => !$("#vista-juego").hidden && !$("#j-ludo").hidden;
     const programar = (fn, ms) => { clearTimeout(espera); espera = setTimeout(() => { espera = null; if (visible()) fn(); }, ms); };
-    const nombreJ = j => E.modo === "telefono" ? (j.bot ? "El teléfono" : (nombreJugador() || "Vos")) : COL[j.c].nom;
+    const nombreJ = j => E.modo === "telefono" ? (j.bot ? "El teléfono" : (nombreJugador() || "Vos")) : (j.n || COL[j.c].nom);
+    const FRASES_COMER = ["¡Volvé a Villa Elisa!", "¡Te quedaste sin pasaje!", "¡A hacer la valija de nuevo!", "¡Volvé a la fila de migraciones!"];
+    const alAzar = a => a[Math.floor(Math.random() * a.length)];
     const msj = t => { $("#lu-msj").textContent = t || ""; };
     const guardar = () => { if (E && E.fase !== "fin") escribir("ludo-partida", E); };
 
@@ -1943,6 +1951,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         if (g.roundRect) g.roundRect(bx * C + C * .7, by * C + C * .7, C * 4.6, C * 4.6, C * .7); else g.rect(bx * C + C * .7, by * C + C * .7, C * 4.6, C * 4.6);
         g.fill();
         for (let i = 0; i < 4; i++) { const [x, y] = posicion(c, i, -1); circulo(x, y, .62, activo ? K.s : "#f1f2f6"); }
+        // Nombre del lugar en la franja de color de cada esquina
+        g.fillStyle = activo ? "#ffffff" : "#a3a8ba"; g.font = "700 " + Math.round(C * .4) + "px Montserrat, Arial, sans-serif";
+        g.textAlign = "center"; g.textBaseline = "middle";
+        g.fillText(K.lugar.toUpperCase(), (bx + 3) * C, (by === 0 ? by + .36 : by + 5.64) * C);
       });
       const tri = (pts, color) => { g.fillStyle = color; g.beginPath(); pts.forEach(([x, y], k) => k ? g.lineTo(x * C, y * C) : g.moveTo(x * C, y * C)); g.closePath(); g.fill(); };
       tri([[6, 6], [6, 9], [7.5, 7.5]], COL[0].f); tri([[6, 6], [9, 6], [7.5, 7.5]], COL[1].f);
@@ -1960,18 +1972,21 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       Object.values(grupos).forEach(gr => gr.forEach((t, n) => {
         const meta = t.p >= FIN, off = gr.length > 1 ? (n - (gr.length - 1) / 2) * (meta ? .3 : .2) : 0;
         const vertical = meta && (t.c === 0 || t.c === 2);
-        const x = t.x + (vertical ? 0 : off), y = t.y + (vertical ? off : (meta ? 0 : -off * .5)), r = meta ? .2 : .34;
+        const x = t.x + (vertical ? 0 : off), y = t.y + (vertical ? off : (meta ? 0 : -off * .5)), r = meta ? .2 : .45;
         const mia = t.c === turno.c && marcar.includes(t.i);
         if (mia) circulo(x, y, r + .18, "rgba(255,255,255,.9)", "#17171c", 3);
-        circulo(x, y + .05, r, "rgba(0,0,0,.18)");
-        circulo(x, y, r, COL[t.c].f, "#ffffff", 3);
-        circulo(x, y, r * .42, "rgba(255,255,255,.55)");
+        circulo(x, y + .06, r, "rgba(0,0,0,.2)");
+        circulo(x, y, r, "#ffffff", COL[t.c].f, meta ? 3 : 5);
+        if (!meta) {
+          g.font = Math.round(C * r * 1.4) + "px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+          g.fillText(COL[t.c].ico, x * C, y * C + C * .03);
+        }
         hits.push({ c: t.c, i: t.i, x, y, mia });
       }));
     }
     function pintarTurno() {
       const j = E.jug[E.t], K = COL[j.c], dado = $("#lu-dado"), turno = $("#lu-turno");
-      turno.textContent = E.fase === "fin" ? "Partida terminada" : "Turno: " + nombreJ(j) + (E.modo === "telefono" ? " (" + K.nom.toLowerCase() + ")" : "");
+      turno.textContent = E.fase === "fin" ? "Partida terminada" : K.ico + " Turno: " + nombreJ(j);
       turno.style.background = K.s; turno.style.borderLeftColor = K.f;
       dado.style.background = K.f;
       if (E.fase !== "tirando") dado.textContent = E.dado || "🎲";
@@ -1990,12 +2005,12 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const j = E.jug[E.t], c = j.c, d = 1 + Math.floor(Math.random() * 6);
       E.dado = d; E.tiros++; E.seis = d === 6 ? E.seis + 1 : 0;
       if (E.seis === 3) {
-        msj("Tres seis seguidos: pierde el turno.");
+        msj("¡Perdiste el vuelo! Tres 6 seguidos: pierde el turno.");
         E.fase = "anim"; E.sigue = "pasar"; pintarTurno(); guardar(); return programar(resolver, 1200);
       }
       E.movs = movibles(c, d);
       if (!E.movs.length) {
-        msj(d === 6 ? "No hay ficha para mover. Tira de nuevo." : "Salió " + d + ": no hay ficha para mover.");
+        msj(d === 6 ? "No hay ficha para mover. Tira de nuevo." : E.f[c].every(p => p < 0) ? "Salió " + d + ". Sin un 6 no se sale de " + COL[c].lugar + "." : "Salió " + d + ": no hay ficha para mover.");
         E.fase = "anim"; E.sigue = d === 6 ? "mismo" : "pasar"; pintarTurno(); guardar(); return programar(resolver, 1100);
       }
       E.fase = "mover"; guardar(); pintarTurno(); dibujar();
@@ -2016,7 +2031,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const gano = E.f[c].every(p => p === FIN);
       E.sigue = gano ? "fin" : (d === 6 || comio || hasta === FIN) ? "mismo" : "pasar";
       E.fase = "anim"; E.movs = []; guardar(); pintarTurno();
-      const aviso = comio ? "¡Comió " + (comio > 1 ? comio + " fichas" : "una ficha") + "! Tira de nuevo." : hasta === FIN && !gano ? "¡Una ficha llegó a la meta! Tira de nuevo." : d === 6 && !gano ? "Sacó 6: tira de nuevo." : "";
+      const aviso = comio ? alAzar(FRASES_COMER) + " " + nombreJ(E.jug[E.t]) + " comió " + (comio > 1 ? comio + " fichas" : "una ficha") + ". Tira de nuevo."
+        : hasta === FIN && !gano ? "¡Al escenario! Una ficha llegó al festival. Tira de nuevo."
+        : desde < 0 ? "¡Salió de " + COL[c].lugar + "! Tira de nuevo."
+        : d === 6 && !gano ? "¡Seis! Tira de nuevo." : "";
       anim = { c, i, p: desde }; let k = 0;
       const paso = () => {
         if (!anim) return;
@@ -2036,7 +2054,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       }
       E.t = (E.t + 1) % E.jug.length; E.seis = 0; E.dado = null; E.fase = "tirar"; guardar(); pintarTurno(); dibujar();
       const j = E.jug[E.t];
-      msj(j.bot ? "" : E.modo === "telefono" ? "Te toca: tocá el dado." : "Pasale el teléfono a " + COL[j.c].nom + ".");
+      msj(j.bot ? "" : E.modo === "telefono" ? "Te toca: tocá el dado." : "Pasale el teléfono a " + nombreJ(j) + ".");
       if (j.bot) programar(tirar, 800);
     }
     function elegirBot(c, d) {
@@ -2064,9 +2082,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const j = E.jug[E.t], K = COL[j.c];
       E.fase = "fin"; escribir("ludo-partida", null); pintarTurno(); dibujar(); msj("");
       const tel = E.modo === "telefono", gane = tel && !j.bot, quien = nombreJugador();
-      $("#lu-fin-tit").textContent = tel ? (gane ? "¡Le ganaste al teléfono!" : "Ganó el teléfono") : "¡Ganó " + K.nom + "!";
-      $("#lu-fin-txt").textContent = tel ? (gane ? "Llegaste con las 4 fichas a la meta." : "Esta vez te ganó. ¿La revancha?") : "Llegó primero con las 4 fichas a la meta.";
-      const grande = tel ? "Le gané al teléfono" : "Ganó " + K.nom;
+      $("#lu-fin-tit").textContent = tel ? (gane ? "¡Le ganaste al teléfono!" : "Ganó el teléfono") : "¡Ganó " + nombreJ(j) + "!";
+      $("#lu-fin-txt").textContent = tel ? (gane ? "Llegaste primero al escenario del festival con las 4 fichas." : "Esta vez llegó primero al escenario. ¿La revancha?") : "Llegó primero al escenario del festival con las 4 fichas.";
+      const grande = tel ? "Le gané al teléfono" : "Ganó " + nombreJ(j);
       const texto = "Ludo · Gira México 2026\n" + MODOS[E.modo].nom + "\n" + grande + " después de " + E.tiros + " tiradas.\n" +
         (tel ? "¿Quién me gana?" : "¿La revancha?") + "\nhttps://gusriosromero.github.io/gira-mexico/#juego";
       $("#lu-compartir").hidden = tel && !gane;
@@ -2076,8 +2094,20 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       void quien;
     }
     function verPartida(si) { $("#lu-config").hidden = si; $("#lu-juego").hidden = !si; $("#lu-fin").hidden = true; }
+    function pintarNombres() {
+      const guardados = leer("ludo-nombres", []), cont = $("#lu-nombres");
+      if (modo === "telefono") { cont.hidden = true; return; }
+      cont.hidden = false;
+      cont.replaceChildren(el("p", { class: "lu-nom-tit", text: "¿Quiénes juegan? (opcional)" }), ...MODOS[modo].jug.map(([c]) => {
+        const K = COL[c], inp = el("input", { type: "text", maxlength: "14", placeholder: K.nom, "data-c": String(c) });
+        inp.value = guardados[c] != null ? guardados[c] : (c === 0 ? nombreJugador() : "");
+        inp.addEventListener("change", () => { const n = leer("ludo-nombres", []); n[c] = inp.value.trim().slice(0, 14); escribir("ludo-nombres", n); });
+        return el("label", { class: "lu-nom", style: "--c:" + K.f + ";--s:" + K.s }, el("span", { class: "lu-nom-ico", text: K.ico }), el("span", { class: "lu-nom-lugar", text: K.lugar }), inp);
+      }));
+    }
     function pintarConfig() {
       document.querySelectorAll("#vista-juego [data-lmodo]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lmodo === modo)));
+      pintarNombres();
       const g0 = leer("ludo-partida", null); $("#lu-seguir").hidden = !(g0 && g0.f && g0.jug);
     }
     function reanudar() {
@@ -2087,15 +2117,18 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const j = E.jug[E.t];
       if (E.fase === "anim") return programar(resolver, 300);
       if (j.bot) { if (E.fase === "tirar") programar(tirar, 700); else if (E.fase === "mover") programar(() => mover(elegirBot(j.c, E.dado)), 600); }
-      else msj(E.fase === "mover" ? "Tocá la ficha que querés mover." : E.modo === "telefono" ? "Te toca: tocá el dado." : "Turno de " + COL[j.c].nom + ": tocá el dado.");
+      else msj(E.fase === "mover" ? "Tocá la ficha que querés mover." : E.modo === "telefono" ? "Te toca: tocá el dado." : "Turno de " + nombreJ(j) + ": tocá el dado.");
     }
     function empezar() {
       clearTimeout(espera); anim = null;
-      E = { modo, jug: MODOS[modo].jug.map(([c, bot]) => ({ c, bot })), t: 0, f: [0, 1, 2, 3].map(() => [-1, -1, -1, -1]),
+      const noms = leer("ludo-nombres", []);
+      document.querySelectorAll("#lu-nombres input").forEach(i => { noms[+i.dataset.c] = i.value.trim().slice(0, 14); });
+      escribir("ludo-nombres", noms);
+      E = { modo, jug: MODOS[modo].jug.map(([c, bot]) => ({ c, bot, n: modo === "telefono" ? "" : (noms[c] || "") })), t: 0, f: [0, 1, 2, 3].map(() => [-1, -1, -1, -1]),
         dado: null, fase: "tirar", seis: 0, tiros: 0, sigue: null, movs: [] };
       $("#lu-salir").textContent = "Pausar (la partida queda guardada)";
       verPartida(true); guardar(); pintarTurno(); dibujar();
-      msj(E.modo === "telefono" ? "Vos sos el rojo. Tocá el dado para empezar." : "Empieza Rojo: tocá el dado.");
+      msj(E.modo === "telefono" ? "Vos salís de Villa Elisa con los cántaros 🏺. Llegá primero al escenario del festival." : "Empieza " + nombreJ(E.jug[0]) + ": tocá el dado.");
       evento("ludo: empezó una partida (" + modo + ")", "juego");
     }
     document.querySelectorAll("#vista-juego [data-lmodo]").forEach(b => b.addEventListener("click", () => { modo = b.dataset.lmodo; escribir("ludo-modo", modo); pintarConfig(); }));
