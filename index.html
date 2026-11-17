@@ -1960,6 +1960,14 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         g.fillStyle = activo ? "#ffffff" : "#a3a8ba"; g.font = "700 " + Math.round(C * .4) + "px Montserrat, Arial, sans-serif";
         g.textAlign = "center"; g.textBaseline = "middle";
         g.fillText(K.lugar.toUpperCase(), (bx + 3) * C, (by === 0 ? by + .36 : by + 5.64) * C);
+        // Nombre de quien juega, en el medio de su ciudad (entre los 4 lugares de las fichas)
+        const quien = E && E.jug.find(j => j.c === c);
+        if (quien) {
+          const t = quien.bot ? "📱 " + "Teléfono" : nombreJ(quien);
+          let px = Math.round(C * .5); g.font = "700 " + px + "px Montserrat, Arial, sans-serif";
+          while (g.measureText(t).width > C * 4.2 && px > C * .3) { px--; g.font = "700 " + px + "px Montserrat, Arial, sans-serif"; }
+          g.fillStyle = K.f; g.fillText(t, (bx + 3) * C, (by + 3) * C);
+        }
       });
       const tri = (pts, color) => { g.fillStyle = color; g.beginPath(); pts.forEach(([x, y], k) => k ? g.lineTo(x * C, y * C) : g.moveTo(x * C, y * C)); g.closePath(); g.fill(); };
       tri([[6, 6], [6, 9], [7.5, 7.5]], COL[0].f); tri([[6, 6], [9, 6], [7.5, 7.5]], COL[1].f);
