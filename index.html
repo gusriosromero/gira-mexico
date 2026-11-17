@@ -382,6 +382,13 @@ p{margin:0}
 .j-carta.hecha{cursor:default}
 .j-tablero.n12 .j-carta .frente small{font-size:clamp(9px,2.6vw,11px)}
 .j-fin{border-radius:var(--radio);background:var(--ok-fondo);color:#17171c;padding:16px;display:grid;gap:2px;text-align:center}
+.j-juegos{display:grid;gap:10px}
+.j-juego{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:var(--radio);background:var(--p-celeste);color:#17171c;padding:14px;font:inherit;cursor:pointer}
+.j-juego svg{width:46px;height:46px;flex:none}
+.j-juego b{display:block;font-size:16px;line-height:1.25}.j-juego small{display:block;font-size:13px;line-height:1.35;opacity:.8}
+.j-juego.pronto{background:transparent;border:1.5px dashed var(--suave);color:var(--suave);cursor:default}
+.j-volver{border:0;background:none;color:inherit;font:inherit;font-weight:700;font-size:14px;padding:4px 0;justify-self:start;cursor:pointer}
+#j-partida{display:grid;gap:inherit}#j-partida[hidden]{display:none}
 .j-fin .wa{margin-top:10px}
 .j-fin b{font-family:var(--titulo);font-weight:400;font-size:28px}
 #j-nuevo{justify-self:center}
@@ -972,6 +979,19 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   </section>
 
   <section class="vista" id="vista-juego" hidden>
+    <div id="j-menu">
+      <div class="bloque">
+        <span class="etiqueta">Para el viaje</span>
+        <h2>Juegos</h2>
+        <p class="nota">Para pasar el rato en el avión o en el colectivo. Funcionan sin internet.</p>
+      </div>
+      <div class="j-juegos">
+        <button type="button" class="j-juego" id="j-abrir-memoria" data-ev="juegos: abrió Memoria de ñandutí"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nanduti"/></svg><span><b>Memoria de ñandutí</b><small>Dá vuelta las cartas y buscá las parejas</small></span></button>
+        <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
+      </div>
+    </div>
+    <div id="j-partida" hidden>
+    <button type="button" class="j-volver" id="j-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
     <div class="bloque">
       <span class="etiqueta">Juegos · para el viaje</span>
       <h2>Memoria de ñandutí</h2>
@@ -996,6 +1016,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="wa" id="j-compartir" href="#" target="_blank" rel="noopener" data-ev="memoria: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
     </div>
     <button type="button" class="btn" id="j-nuevo" data-ev="memoria: jugar de nuevo">Jugar de nuevo</button>
+    </div>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="nanduti" viewBox="0 0 100 100">
       <g fill="none" stroke="currentColor" stroke-linecap="round">
         <circle cx="50" cy="50" r="44" stroke-width="2.5"/><circle cx="50" cy="50" r="33" stroke-width="1.5"/><circle cx="50" cy="50" r="21" stroke-width="1.5"/><circle cx="50" cy="50" r="8" stroke-width="2.5"/>
@@ -1575,6 +1596,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     document.querySelectorAll("#vista-juego [data-tema]").forEach(b => b.addEventListener("click", () => { tema = b.dataset.tema; escribir("juego-tema", tema); nueva(); }));
     document.querySelectorAll("#vista-juego [data-nivel]").forEach(b => b.addEventListener("click", () => { nivel = +b.dataset.nivel; escribir("juego-nivel", nivel); nueva(); }));
     $("#j-nuevo").addEventListener("click", nueva);
+    // Menú de juegos: al entrar a la sección se ve la lista; cada juego se abre desde ahí.
+    const verMenu = si => { $("#j-menu").hidden = !si; $("#j-partida").hidden = si; pararReloj(); if (!si) nueva(); window.scrollTo(0, 0); };
+    $("#j-abrir-memoria").addEventListener("click", () => verMenu(false));
+    $("#j-volver").addEventListener("click", () => verMenu(true));
+    window.addEventListener("hashchange", () => { if (location.hash === "#juego") verMenu(true); });
     nueva();
   })();
 
