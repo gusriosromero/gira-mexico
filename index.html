@@ -1627,6 +1627,67 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   pintarClima(); traerClima();
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") traerClima(); });
 
+  // ---------- Compartir el resultado de un juego como imagen (tarjeta con el logo). Si el teléfono no puede, queda el texto por WhatsApp. ----------
+  const TARJETAS = {};
+  function nandutiDibujo(g, cx, cy, r, color, alfa) {
+    g.save(); g.globalAlpha = alfa; g.strokeStyle = color; g.lineCap = "round";
+    [1, .75, .48, .18].forEach((k, i) => { g.lineWidth = i % 3 ? r * .02 : r * .035; g.beginPath(); g.arc(cx, cy, r * k, 0, Math.PI * 2); g.stroke(); });
+    g.lineWidth = r * .015;
+    for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8; g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r); g.stroke(); }
+    g.lineWidth = r * .03;
+    for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4, x = cx + Math.cos(a) * r * .87, y = cy + Math.sin(a) * r * .87; g.beginPath(); g.arc(x, y, r * .08, 0, Math.PI * 2); g.stroke(); }
+    g.restore();
+  }
+  function textoAjustado(g, t, x, y, peso, tam, familia, ancho) {
+    let px = tam; do { g.font = peso + " " + px + "px " + familia; px -= 4; } while (g.measureText(t).width > ancho && px > 20);
+    g.fillText(t, x, y);
+  }
+  async function tarjetaResultado(id, d) {
+    const a = $("#" + id);
+    TARJETAS[id] = null; a.textContent = "Compartir mi resultado por WhatsApp";
+    if (!navigator.canShare || !window.File) return;
+    try {
+      await Promise.all([document.fonts.load("120px Anton"), document.fonts.load("700 40px Montserrat"), document.fonts.load("500 40px Montserrat")]).catch(() => {});
+      const W = 1080, H = 1350, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      const g = cv.getContext("2d");
+      g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
+      [["#f9c9b0", 120, 160, 520], ["#f3b7d0", 980, 330, 480], ["#d2c4f0", 90, 1180, 560], ["#bde6f2", 1000, 1230, 520]].forEach(([c, x, y, r]) => {
+        const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, c); gr.addColorStop(1, c + "00");
+        g.fillStyle = gr; g.fillRect(0, 0, W, H);
+      });
+      nandutiDibujo(g, 1010, 90, 230, "#7a5ca8", .18); nandutiDibujo(g, 70, 1290, 260, "#2e7fd9", .16);
+      const logo = document.querySelector('img[src*="gira-logo"], img[src^="data:image/webp"]');
+      let y = 90;
+      if (logo && logo.complete && logo.naturalWidth) {
+        const lw = 330, lh = lw * logo.naturalHeight / logo.naturalWidth;
+        g.drawImage(logo, (W - lw) / 2, y, lw, lh); y += lh + 50;
+      } else y += 120;
+      g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillStyle = "#55596b";
+      g.font = "700 34px Montserrat, Arial, sans-serif"; g.fillText("GIRA MÉXICO 2026 · JUEGOS", W / 2, y); y += 130;
+      g.fillStyle = "#17171c"; textoAjustado(g, d.juego.toUpperCase(), W / 2, y, "", 96, "Anton, Impact, sans-serif", W - 140); y += 70;
+      g.fillStyle = "#55596b"; textoAjustado(g, d.detalle, W / 2, y, "500", 38, "Montserrat, Arial, sans-serif", W - 160); y += 70;
+      const cajaH = 330; g.fillStyle = "rgba(255,255,255,.82)";
+      g.beginPath(); if (g.roundRect) g.roundRect(90, y, W - 180, cajaH, 40); else g.rect(90, y, W - 180, cajaH); g.fill();
+      g.fillStyle = "#17171c"; textoAjustado(g, d.grande, W / 2, y + 185, "", 150, "Anton, Impact, sans-serif", W - 260);
+      g.fillStyle = "#55596b"; textoAjustado(g, d.chico, W / 2, y + 265, "600", 42, "Montserrat, Arial, sans-serif", W - 260);
+      y += cajaH + 120;
+      g.fillStyle = "#17171c"; g.font = "120px Anton, Impact, sans-serif"; g.fillText("¿QUIÉN ME GANA?", W / 2, Math.min(y, H - 170));
+      g.fillStyle = "#55596b"; g.font = "600 32px Montserrat, Arial, sans-serif";
+      g.fillText("Acuarela Mimbi · jugá en la app de la gira", W / 2, H - 70);
+      const blob = await new Promise(r => cv.toBlob(r, "image/png"));
+      if (!blob) return;
+      const file = new File([blob], "Gira-Mexico-2026-" + d.juego.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z]+/g, "-") + ".png", { type: "image/png" });
+      if (navigator.canShare({ files: [file] })) { TARJETAS[id] = { file, texto: d.texto }; a.textContent = "Compartir mi resultado (imagen)"; }
+    } catch (e) {}
+  }
+  document.addEventListener("click", e => {
+    const a = e.target.closest("#j-compartir, #a-compartir, #s-compartir, #vb-compartir");
+    const t = a && TARJETAS[a.id];
+    if (!t) return;
+    e.preventDefault();
+    navigator.share({ files: [t.file], text: t.texto }).catch(() => {});
+  });
+
   // ---------- Memoria de ñandutí: juego individual, sin internet ----------
   (() => {
     const PASTEL = ["var(--p-durazno)", "var(--p-rosa)", "var(--p-lila)", "var(--p-celeste)"];
@@ -1703,6 +1764,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const msj = "Memoria de ñandutí · Gira México 2026\n" + NOM_NIVEL[nivel] + " (" + nivel + " parejas) · " + NOM_TEMA[tema] + "\n" +
         "Lo hice en " + mov + " movimientos y " + mmssJ(seg) + ".\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
       $("#j-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      tarjetaResultado("j-compartir", { juego: "Memoria de ñandutí", detalle: NOM_NIVEL[nivel] + " · " + NOM_TEMA[tema], grande: mov + " movimientos", chico: "en " + mmssJ(seg) + " · " + nivel + " parejas", texto: msj });
       $("#j-fin").hidden = false; pintarMejor();
       evento("memoria: ganó (" + nivel + " parejas)", "juego");
     }
@@ -1781,6 +1843,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const msj = "Viborita viajera · Gira México 2026\n" + NIVELES[nivel].nom + "\nJunté " + puntos + (puntos === 1 ? " cosa" : " cosas") +
         " para el viaje.\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
       $("#vb-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      tarjetaResultado("vb-compartir", { juego: "Viborita viajera", detalle: NIVELES[nivel].nom, grande: puntos + (puntos === 1 ? " cosa" : " cosas"), chico: "juntadas para el viaje", texto: msj });
       $("#vb-fin").hidden = false; $("#vb-empezar").textContent = "Jugar de nuevo"; $("#vb-empezar").hidden = false;
       pintarMarcador();
       evento("viborita: terminó una partida (" + nivel + ")", "juego");
@@ -1916,6 +1979,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const msj = "Sopa de letras · Gira México 2026\n" + NIVELES[nivel].nom + " · " + NOM[tema] + "\nLa terminé en " + mmss(seg) +
         ".\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
       $("#s-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      tarjetaResultado("s-compartir", { juego: "Sopa de letras", detalle: NIVELES[nivel].nom + " · " + NOM[tema], grande: mmss(seg), chico: palabras.length + " palabras encontradas", texto: msj });
       $("#s-fin").hidden = false; pintarMejor();
       evento("sopa: terminó una sopa (" + nivel + ")", "juego");
     }
@@ -1989,6 +2053,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const msj = "Ahorcado · Gira México 2026\n" + NOM[tema] + "\n" + (gano ? "Llevo " : "Llegué a ") + total + (total === 1 ? " palabra seguida" : " palabras seguidas") +
         " sin perder.\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
       $("#a-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      tarjetaResultado("a-compartir", { juego: "Ahorcado", detalle: NOM[tema], grande: total + (total === 1 ? " palabra" : " palabras"), chico: total === 1 ? "adivinada sin perder" : "seguidas sin perder", texto: msj });
       $("#a-compartir").hidden = !total;
       if (!gano) racha = 0;
       $("#a-fin").hidden = false; pintar();
