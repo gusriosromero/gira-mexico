@@ -388,7 +388,22 @@ p{margin:0}
 .j-juego b{display:block;font-size:16px;line-height:1.25}.j-juego small{display:block;font-size:13px;line-height:1.35;opacity:.8}
 .j-juego.pronto{background:transparent;border:1.5px dashed var(--suave);color:var(--suave);cursor:default}
 .j-volver{border:0;background:none;color:inherit;font:inherit;font-weight:700;font-size:14px;padding:4px 0;justify-self:start;cursor:pointer}
-#j-partida{display:grid;gap:inherit}#j-partida[hidden]{display:none}
+#j-partida,#j-ahorcado{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden]{display:none}
+.j-juego.c2{background:var(--p-durazno)}
+.j-letras{flex:none;width:46px;font-family:var(--titulo);font-size:22px;letter-spacing:1px;text-align:center}
+.a-vidas{display:flex;justify-content:center;gap:8px;color:var(--tinta)}
+.a-vidas svg{width:34px;height:34px;transition:opacity .3s,transform .3s}
+.a-vidas svg.perdida{opacity:.15;transform:scale(.8)}
+.a-pista{margin:0;text-align:center;color:var(--suave);font-size:14px}.a-pista b{color:var(--texto)}
+.a-palabra{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;min-height:44px}
+.a-palabra .pal{display:flex;gap:4px}
+.a-palabra .l{width:22px;height:38px;border-bottom:3px solid var(--texto);display:grid;place-items:center;font-family:var(--titulo);font-size:26px;line-height:1;text-transform:uppercase}
+.a-palabra .l.falto{color:#c62f34}
+.a-teclas{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.a-teclas button{min-height:44px;border:1px solid var(--linea);border-radius:10px;background:var(--fondo);color:var(--texto);font:inherit;font-weight:700;font-size:16px;cursor:pointer;padding:0}
+.a-teclas button.si{background:var(--ok-fondo);border-color:transparent;color:#17171c}
+.a-teclas button.no{background:var(--superficie);border-color:transparent;color:var(--suave);opacity:.55}
+.a-teclas button:disabled{cursor:default}
 .j-fin .wa{margin-top:10px}
 .j-fin b{font-family:var(--titulo);font-weight:400;font-size:28px}
 #j-nuevo{justify-self:center}
@@ -987,8 +1002,35 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       </div>
       <div class="j-juegos">
         <button type="button" class="j-juego" id="j-abrir-memoria" data-ev="juegos: abrió Memoria de ñandutí"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nanduti"/></svg><span><b>Memoria de ñandutí</b><small>Dá vuelta las cartas y buscá las parejas</small></span></button>
+        <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
+    </div>
+    <div id="j-ahorcado" hidden>
+    <button type="button" class="j-volver" id="a-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
+    <div class="bloque">
+      <span class="etiqueta">Juegos · para el viaje</span>
+      <h2>Ahorcado</h2>
+      <p class="nota">Adiviná la palabra tocando las letras. Tenés 6 intentos. Funciona sin internet.</p>
+    </div>
+    <div class="j-opc" role="group" aria-label="Palabras">
+      <button type="button" data-atema="musicas" aria-pressed="true">Las músicas</button>
+      <button type="button" data-atema="todo" aria-pressed="false">Todo mezclado</button>
+      <button type="button" data-atema="paraguay" aria-pressed="false">Paraguay</button>
+      <button type="button" data-atema="mexico" aria-pressed="false">México</button>
+      <button type="button" data-atema="gira" aria-pressed="false">La gira</button>
+    </div>
+    <div class="j-marcador"><span>Seguidas <b id="a-racha">0</b></span><span>Intentos <b id="a-int">6</b></span><span>Tu mejor <b id="a-mejor">–</b></span></div>
+    <div class="a-vidas" id="a-vidas" aria-hidden="true"></div>
+    <p class="a-pista">Pista: <b id="a-pista"></b></p>
+    <div class="a-palabra" id="a-palabra" aria-live="polite"></div>
+    <div class="a-teclas" id="a-teclas" data-sin-ev></div>
+    <div class="j-fin" id="a-fin" hidden>
+      <b id="a-fin-tit"></b>
+      <span id="a-fin-txt"></span>
+      <a class="wa" id="a-compartir" href="#" target="_blank" rel="noopener" data-ev="ahorcado: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
+    </div>
+    <button type="button" class="btn" id="a-nueva" data-ev="ahorcado: otra palabra">Otra palabra</button>
     </div>
     <div id="j-partida" hidden>
     <button type="button" class="j-volver" id="j-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
@@ -1597,11 +1639,106 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     document.querySelectorAll("#vista-juego [data-nivel]").forEach(b => b.addEventListener("click", () => { nivel = +b.dataset.nivel; escribir("juego-nivel", nivel); nueva(); }));
     $("#j-nuevo").addEventListener("click", nueva);
     // Menú de juegos: al entrar a la sección se ve la lista; cada juego se abre desde ahí.
-    const verMenu = si => { $("#j-menu").hidden = !si; $("#j-partida").hidden = si; pararReloj(); if (!si) nueva(); window.scrollTo(0, 0); };
-    $("#j-abrir-memoria").addEventListener("click", () => verMenu(false));
-    $("#j-volver").addEventListener("click", () => verMenu(true));
-    window.addEventListener("hashchange", () => { if (location.hash === "#juego") verMenu(true); });
+    const verJuego = cual => {
+      $("#j-menu").hidden = !!cual; $("#j-partida").hidden = cual !== "memoria"; $("#j-ahorcado").hidden = cual !== "ahorcado";
+      pararReloj(); if (cual === "memoria") nueva();
+      if (cual === "ahorcado") document.dispatchEvent(new Event("ahorcado-abrir"));
+      window.scrollTo(0, 0);
+    };
+    $("#j-abrir-memoria").addEventListener("click", () => verJuego("memoria"));
+    $("#j-abrir-ahorcado").addEventListener("click", () => verJuego("ahorcado"));
+    $("#j-volver").addEventListener("click", () => verJuego(null));
+    $("#a-volver").addEventListener("click", () => verJuego(null));
+    window.addEventListener("hashchange", () => { if (location.hash === "#juego") verJuego(null); });
     nueva();
+  })();
+
+  // ---------- Ahorcado: palabras de la gira, sin internet. En vez de horca, se van apagando 6 ñandutíes. ----------
+  (() => {
+    const P = (pista, ...ps) => ps.map(p => ({ p, pista }));
+    const PALABRAS = {
+      paraguay: [
+        ...P("Comida o bebida paraguaya", "Tereré", "Chipa", "Sopa paraguaya", "Mbeju", "Mandioca"),
+        ...P("Artesanía paraguaya", "Ñandutí"), ...P("Árbol del Paraguay", "Lapacho"), ...P("Idioma del Paraguay", "Guaraní"),
+        ...P("Nuestra ciudad", "Villa Elisa"), ...P("Capital del Paraguay", "Asunción"), ...P("Instrumento paraguayo", "Arpa"), ...P("Música paraguaya", "Polca"),
+      ],
+      musicas: [
+        ...P("Música del cuadro 1", "Tetagua Sapukai", "Pájaro Campana", "Carreta Guy", "Tren Lechero"),
+        ...P("Música del cuadro 2", "Virgen de Caacupé", "Mamá Kumandá", "Galopera", "Musiqueada Che Amape"),
+        ...P("Música del cuadro 3", "Acuarela Paraguaya", "La Paraguaya", "Pycasu Hovy", "Nda Rekoi La Culpa", "Gallito Cantor"),
+      ],
+      mexico: [
+        ...P("Donde es el festival", "San Blas"), ...P("Estado de México", "Nayarit", "Jalisco"), ...P("Ciudad de México a la que llegamos", "Guadalajara"),
+        ...P("Música mexicana", "Mariachi"), ...P("Comida mexicana", "Tacos", "Tamales", "Guacamole", "Pozole", "Elote"),
+        ...P("Se rompe en las fiestas", "Piñata"), ...P("Va en la cabeza", "Sombrero"), ...P("Planta de México", "Nopal"), ...P("Playa cerca de San Blas", "Matanchén"),
+      ],
+      gira: [
+        ...P("Para el viaje", "Pasaporte", "Avión", "Aeropuerto", "Valija"), ...P("Ahí hacemos escala", "Panamá"),
+        ...P("Vamos a uno en México", "Festival"), ...P("Ahí bailamos", "Escenario"), ...P("Antes de cada función", "Ensayo"), ...P("Lo que hacemos", "Danza", "Folklore"),
+        ...P("Nuestro grupo", "Acuarela Mimbi"), ...P("Se baila con ella en la cabeza", "Botella"), ...P("Lo llevan las bailarinas", "Cántaro"),
+        ...P("Alguien del elenco", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Katy", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"),
+      ],
+    };
+    const NOM = { musicas: "Las músicas", todo: "Todo mezclado", paraguay: "Paraguay", mexico: "México", gira: "La gira" };
+    const LETRAS = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split(""), MAX = 6;
+    // Sin tildes para comparar, pero la Ñ sigue siendo Ñ.
+    const norm = t => t.toUpperCase().normalize("NFD").replace(/N\u0303/g, "Ñ").replace(/[\u0300-\u036f]/g, "");
+    let tema = leer("ahorcado-tema", "musicas"); if (!NOM[tema]) tema = "musicas";
+    let actual = null, usadas = new Set(), errores = 0, racha = 0, fin = false, vistas = [];
+    const mazo = () => tema === "todo" ? [...PALABRAS.musicas, ...PALABRAS.paraguay, ...PALABRAS.mexico, ...PALABRAS.gira] : PALABRAS[tema];
+    function pintar() {
+      $("#a-racha").textContent = racha; $("#a-int").textContent = MAX - errores;
+      const m = leer("ahorcado-mejor", 0); $("#a-mejor").textContent = m ? m : "–";
+      [...$("#a-vidas").children].forEach((v, i) => v.classList.toggle("perdida", i >= MAX - errores));
+      $("#a-palabra").replaceChildren(...actual.p.split(" ").map(pal => el("span", { class: "pal" },
+        ...[...pal].map(ch => { const ok = usadas.has(norm(ch)); return el("span", { class: "l" + (fin && !ok ? " falto" : ""), text: ok || fin ? ch : "" }); }))));
+      document.querySelectorAll("#a-teclas button").forEach(b => {
+        const L = b.textContent, u = usadas.has(L), esta = norm(actual.p).includes(L);
+        b.disabled = u || fin; b.className = u ? (esta ? "si" : "no") : "";
+      });
+    }
+    function nueva() {
+      if (actual && !fin && usadas.size) racha = 0;   // dejar una palabra a medias corta la seguidilla
+      const m = mazo(); let libres = m.filter(x => !vistas.includes(x.p));
+      if (!libres.length) { vistas = []; libres = m; }
+      actual = libres[Math.floor(Math.random() * libres.length)]; vistas.push(actual.p);
+      usadas = new Set(); errores = 0; fin = false;
+      $("#a-pista").textContent = actual.pista; $("#a-fin").hidden = true;
+      document.querySelectorAll("#vista-juego [data-atema]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.atema === tema)));
+      pintar();
+    }
+    function terminar(gano) {
+      fin = true;
+      const total = gano ? ++racha : racha;
+      if (total > leer("ahorcado-mejor", 0)) escribir("ahorcado-mejor", total);
+      $("#a-fin-tit").textContent = gano ? "¡Bien ahí!" : "Era: " + actual.p;
+      $("#a-fin-txt").textContent = gano ? "Llevás " + total + (total === 1 ? " palabra seguida." : " palabras seguidas.")
+        : (total ? "Llegaste a " + total + (total === 1 ? " palabra seguida." : " palabras seguidas.") : "Probá con otra palabra.");
+      const msj = "Ahorcado · Gira México 2026\n" + NOM[tema] + "\n" + (gano ? "Llevo " : "Llegué a ") + total + (total === 1 ? " palabra seguida" : " palabras seguidas") +
+        " sin perder.\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#a-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      $("#a-compartir").hidden = !total;
+      if (!gano) racha = 0;
+      $("#a-fin").hidden = false; pintar();
+      evento("ahorcado: " + (gano ? "adivinó" : "no adivinó") + " una palabra (" + tema + ")", "juego");
+    }
+    function probar(L) {
+      if (fin || !actual || usadas.has(L)) return;
+      usadas.add(L);
+      const palabra = norm(actual.p);
+      if (!palabra.includes(L)) { if (++errores >= MAX) return terminar(false); }
+      else if ([...palabra].every(ch => ch === " " || usadas.has(ch))) return terminar(true);
+      pintar();
+    }
+    $("#a-vidas").innerHTML = '<svg viewBox="0 0 100 100"><use href="#nanduti"/></svg>'.repeat(MAX);
+    $("#a-teclas").replaceChildren(...LETRAS.map(L => { const b = el("button", { type: "button", text: L }); b.addEventListener("click", () => probar(L)); return b; }));
+    document.addEventListener("keydown", e => {
+      if ($("#vista-juego").hidden || $("#j-ahorcado").hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+      const L = norm(e.key); if (LETRAS.includes(L)) probar(L);
+    });
+    document.querySelectorAll("#vista-juego [data-atema]").forEach(b => b.addEventListener("click", () => { tema = b.dataset.atema; escribir("ahorcado-tema", tema); vistas = []; nueva(); }));
+    $("#a-nueva").addEventListener("click", nueva);
+    document.addEventListener("ahorcado-abrir", () => { if (!actual || fin) nueva(); else pintar(); });
   })();
 
   // ---------- Cuenta regresiva y relojes ----------
