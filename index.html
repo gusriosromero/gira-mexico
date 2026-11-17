@@ -388,7 +388,14 @@ p{margin:0}
 .j-juego b{display:block;font-size:16px;line-height:1.25}.j-juego small{display:block;font-size:13px;line-height:1.35;opacity:.8}
 .j-juego.pronto{background:transparent;border:1.5px dashed var(--suave);color:var(--suave);cursor:default}
 .j-volver{border:0;background:none;color:inherit;font:inherit;font-weight:700;font-size:14px;padding:4px 0;justify-self:start;cursor:pointer}
-#j-partida,#j-ahorcado,#j-sopa{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden],#j-sopa[hidden]{display:none}
+#j-partida,#j-ahorcado,#j-sopa,#j-vibora{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden],#j-sopa[hidden],#j-vibora[hidden]{display:none}
+.j-juego.c4{background:var(--p-rosa)}
+.vb-caja{position:relative;max-width:420px;width:100%;margin:0 auto}
+.vb-caja canvas{display:block;width:100%;aspect-ratio:1;border-radius:var(--radio);background:var(--superficie);touch-action:none}
+.vb-caja .btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:16px;padding:12px 26px}
+.vb-flechas{display:grid;grid-template-columns:repeat(3,64px);grid-template-areas:". a ." "i b d";gap:8px;justify-content:center}
+.vb-flechas button{height:54px;border:1px solid var(--linea);border-radius:14px;background:var(--fondo);color:var(--texto);font-size:20px;cursor:pointer;touch-action:manipulation}
+.vb-flechas button:nth-child(1){grid-area:a}.vb-flechas button:nth-child(2){grid-area:i}.vb-flechas button:nth-child(3){grid-area:b}.vb-flechas button:nth-child(4){grid-area:d}
 .j-juego.c3{background:var(--p-lila)}
 .s-grilla{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .s-grilla button{aspect-ratio:1;border:0;border-radius:7px;background:var(--superficie);color:var(--texto);font:inherit;font-weight:700;font-size:16px;padding:0;cursor:pointer}
@@ -1012,6 +1019,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button type="button" class="j-juego" id="j-abrir-memoria" data-ev="juegos: abrió Memoria de ñandutí"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nanduti"/></svg><span><b>Memoria de ñandutí</b><small>Dá vuelta las cartas y buscá las parejas</small></span></button>
         <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
         <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
+        <button type="button" class="j-juego c4" id="j-abrir-vibora" data-ev="juegos: abrió Viborita viajera"><span class="j-letras" aria-hidden="true">🧳</span><span><b>Viborita viajera</b><small>Juntá las cosas del viaje sin chocarte</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1067,6 +1075,32 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="wa" id="s-compartir" href="#" target="_blank" rel="noopener" data-ev="sopa: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
     </div>
     <button type="button" class="btn" id="s-nueva" data-ev="sopa: otra sopa">Otra sopa</button>
+    </div>
+    <div id="j-vibora" hidden>
+    <button type="button" class="j-volver" id="vb-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
+    <div class="bloque">
+      <span class="etiqueta">Juegos · para el viaje</span>
+      <h2>Viborita viajera</h2>
+      <p class="nota">Deslizá el dedo sobre el tablero o usá las flechas. Juntá las cosas del viaje sin chocarte con tu propia fila. Funciona sin internet.</p>
+    </div>
+    <div class="j-opc" role="group" aria-label="Velocidad">
+      <button type="button" data-vnivel="tranqui" aria-pressed="true">Tranquilo</button>
+      <button type="button" data-vnivel="rapido" aria-pressed="false">Rápido, con paredes</button>
+    </div>
+    <div class="j-marcador"><span>Juntaste <b id="vb-puntos">0</b></span><span>Tu mejor <b id="vb-mejor">–</b></span></div>
+    <div class="vb-caja"><canvas id="vb-lienzo" width="600" height="600" aria-label="Tablero de la viborita"></canvas>
+      <button type="button" class="btn" id="vb-empezar" data-ev="viborita: empezó a jugar">Empezar</button></div>
+    <div class="vb-flechas" id="vb-flechas" data-sin-ev>
+      <button type="button" data-dir="0,-1" aria-label="Arriba">▲</button>
+      <button type="button" data-dir="-1,0" aria-label="Izquierda">◀</button>
+      <button type="button" data-dir="0,1" aria-label="Abajo">▼</button>
+      <button type="button" data-dir="1,0" aria-label="Derecha">▶</button>
+    </div>
+    <div class="j-fin" id="vb-fin" hidden>
+      <b id="vb-fin-tit"></b>
+      <span id="vb-fin-txt"></span>
+      <a class="wa" id="vb-compartir" href="#" target="_blank" rel="noopener" data-ev="viborita: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
+    </div>
     </div>
     <div id="j-partida" hidden>
     <button type="button" class="j-volver" id="j-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
@@ -1678,6 +1712,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const verJuego = cual => {
       $("#j-menu").hidden = !!cual; $("#j-partida").hidden = cual !== "memoria"; $("#j-ahorcado").hidden = cual !== "ahorcado"; $("#j-sopa").hidden = cual !== "sopa";
       document.dispatchEvent(new CustomEvent("sopa-ver", { detail: cual === "sopa" }));
+      $("#j-vibora").hidden = cual !== "vibora"; document.dispatchEvent(new CustomEvent("vibora-ver", { detail: cual === "vibora" }));
       pararReloj(); if (cual === "memoria") nueva();
       if (cual === "ahorcado") document.dispatchEvent(new Event("ahorcado-abrir"));
       window.scrollTo(0, 0);
@@ -1687,9 +1722,111 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#j-volver").addEventListener("click", () => verJuego(null));
     $("#a-volver").addEventListener("click", () => verJuego(null));
     $("#j-abrir-sopa").addEventListener("click", () => verJuego("sopa"));
+    $("#j-abrir-vibora").addEventListener("click", () => verJuego("vibora"));
+    $("#vb-volver").addEventListener("click", () => verJuego(null));
     $("#s-volver").addEventListener("click", () => verJuego(null));
     window.addEventListener("hashchange", () => { if (location.hash === "#juego") verJuego(null); });
     nueva();
+  })();
+
+  // ---------- Viborita viajera: la fila crece con cada cosa del viaje que junta ----------
+  (() => {
+    const N = 15, lienzo = $("#vb-lienzo"), ctx = lienzo.getContext("2d"), C = lienzo.width / N;
+    const COSAS = ["🧳", "🎫", "🧉", "🥟", "🌮", "💃", "🏺", "🌵", "🎺", "✈️", "👒", "🪅"];
+    const COLORES = ["#f6c9a8", "#f4b8cf", "#cdbdf0", "#b5dcf2"];
+    const NIVELES = { tranqui: { nom: "Tranquilo", ms: 210, paredes: false }, rapido: { nom: "Rápido, con paredes", ms: 130, paredes: true } };
+    let nivel = leer("vibora-nivel", "tranqui"); if (!NIVELES[nivel]) nivel = "tranqui";
+    let fila = [], dir = [1, 0], cola = [], cosa = null, puntos = 0, reloj = null, jugando = false;
+    const clave = () => "vibora-mejor-" + nivel;
+    function pintarMarcador() {
+      $("#vb-puntos").textContent = puntos; const m = leer(clave(), 0); $("#vb-mejor").textContent = m ? m : "–";
+      document.querySelectorAll("#vista-juego [data-vnivel]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.vnivel === nivel)));
+    }
+    function ponerCosa() {
+      const libres = []; for (let i = 0; i < N * N; i++) if (!fila.some(([x, y]) => x === i % N && y === Math.floor(i / N))) libres.push(i);
+      if (!libres.length) { cosa = null; return; }
+      const i = libres[Math.floor(Math.random() * libres.length)];
+      cosa = { x: i % N, y: Math.floor(i / N), e: COSAS[Math.floor(Math.random() * COSAS.length)] };
+    }
+    function redondo(x, y, r, color) {
+      const m = C * .08; ctx.fillStyle = color; ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x * C + m, y * C + m, C - 2 * m, C - 2 * m, r); else ctx.rect(x * C + m, y * C + m, C - 2 * m, C - 2 * m);
+      ctx.fill();
+    }
+    function dibujar() {
+      ctx.clearRect(0, 0, lienzo.width, lienzo.height);
+      if (NIVELES[nivel].paredes) { ctx.strokeStyle = "#c62f34"; ctx.lineWidth = 6; ctx.strokeRect(3, 3, lienzo.width - 6, lienzo.height - 6); }
+      if (cosa) { ctx.font = Math.round(C * .78) + "px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(cosa.e, cosa.x * C + C / 2, cosa.y * C + C / 2 + C * .06); }
+      for (let i = fila.length - 1; i >= 0; i--) redondo(fila[i][0], fila[i][1], C * .3, i ? COLORES[i % 4] : "#2e7fd9");
+      if (fila.length) {   // ojitos en la cabeza
+        const [hx, hy] = fila[0], cx = hx * C + C / 2, cy = hy * C + C / 2, [dx, dy] = dir;
+        ctx.fillStyle = "#fff";
+        [[-1, 1], [1, 1]].forEach(([l]) => { ctx.beginPath(); ctx.arc(cx + dx * C * .16 + (dy ? l : 0) * C * .18, cy + dy * C * .16 + (dx ? l : 0) * C * .18, C * .1, 0, 7); ctx.fill(); });
+      }
+    }
+    function parar() { clearInterval(reloj); reloj = null; }
+    function empezar() {
+      parar(); fila = [[4, 7], [3, 7], [2, 7]]; dir = [1, 0]; cola = []; puntos = 0; jugando = true;
+      $("#vb-fin").hidden = true; $("#vb-empezar").hidden = true;
+      ponerCosa(); pintarMarcador(); dibujar();
+      reloj = setInterval(paso, NIVELES[nivel].ms);
+    }
+    function perder() {
+      parar(); jugando = false;
+      const antes = leer(clave(), 0), record = puntos > antes;
+      if (record) escribir(clave(), puntos);
+      $("#vb-fin-tit").textContent = record && antes ? "¡Nuevo récord!" : "¡Se terminó!";
+      $("#vb-fin-txt").textContent = "Juntaste " + puntos + (puntos === 1 ? " cosa" : " cosas") + " para el viaje.";
+      const msj = "Viborita viajera · Gira México 2026\n" + NIVELES[nivel].nom + "\nJunté " + puntos + (puntos === 1 ? " cosa" : " cosas") +
+        " para el viaje.\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#vb-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      $("#vb-fin").hidden = false; $("#vb-empezar").textContent = "Jugar de nuevo"; $("#vb-empezar").hidden = false;
+      pintarMarcador();
+      evento("viborita: terminó una partida (" + nivel + ")", "juego");
+    }
+    function paso() {
+      if ($("#vista-juego").hidden || $("#j-vibora").hidden) { parar(); jugando = false; $("#vb-empezar").hidden = false; return; }
+      if (cola.length) dir = cola.shift();
+      let x = fila[0][0] + dir[0], y = fila[0][1] + dir[1];
+      if (NIVELES[nivel].paredes) { if (x < 0 || y < 0 || x >= N || y >= N) return perder(); }
+      else { x = (x + N) % N; y = (y + N) % N; }
+      const come = cosa && cosa.x === x && cosa.y === y;
+      if (!come) fila.pop();
+      if (fila.some(([a, b]) => a === x && b === y)) return perder();
+      fila.unshift([x, y]);
+      if (come) { puntos++; $("#vb-puntos").textContent = puntos; ponerCosa(); }
+      dibujar();
+    }
+    function girar(dx, dy) {
+      if (!jugando) return;
+      const [ux, uy] = cola.length ? cola[cola.length - 1] : dir;
+      if ((ux === dx && uy === dy) || (ux === -dx && uy === -dy) || cola.length > 2) return;
+      cola.push([dx, dy]);
+    }
+    document.querySelectorAll("#vb-flechas button").forEach(b => b.addEventListener("click", () => { const [dx, dy] = b.dataset.dir.split(",").map(Number); girar(dx, dy); }));
+    document.addEventListener("keydown", e => {
+      if ($("#vista-juego").hidden || $("#j-vibora").hidden) return;
+      const d = { ArrowUp: [0, -1], ArrowDown: [0, 1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] }[e.key];
+      if (d) { e.preventDefault(); girar(d[0], d[1]); }
+    });
+    let toque = null;
+    lienzo.addEventListener("touchstart", e => { const t = e.touches[0]; toque = [t.clientX, t.clientY]; }, { passive: true });
+    lienzo.addEventListener("touchmove", e => {
+      if (!toque) return; e.preventDefault();
+      const t = e.touches[0], dx = t.clientX - toque[0], dy = t.clientY - toque[1];
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 18) return;
+      if (Math.abs(dx) > Math.abs(dy)) girar(Math.sign(dx), 0); else girar(0, Math.sign(dy));
+      toque = [t.clientX, t.clientY];
+    }, { passive: false });
+    $("#vb-empezar").addEventListener("click", empezar);
+    document.querySelectorAll("#vista-juego [data-vnivel]").forEach(b => b.addEventListener("click", () => {
+      nivel = b.dataset.vnivel; escribir("vibora-nivel", nivel); parar(); jugando = false; fila = []; cosa = null; puntos = 0;
+      $("#vb-fin").hidden = true; $("#vb-empezar").textContent = "Empezar"; $("#vb-empezar").hidden = false; pintarMarcador(); dibujar();
+    }));
+    document.addEventListener("vibora-ver", e => {
+      if (!e.detail) { if (jugando) { parar(); jugando = false; $("#vb-empezar").textContent = "Empezar"; $("#vb-empezar").hidden = false; } return; }
+      pintarMarcador(); dibujar();
+    });
   })();
 
   // ---------- Sopa de letras: grilla de 10 x 10, se marca tocando la primera y la última letra ----------
