@@ -410,8 +410,16 @@ p{margin:0}
 .lu-msj{margin:0;min-height:3em;text-align:center;font-weight:600}
 .lu-nombres{display:grid;gap:8px}.lu-nombres[hidden]{display:none}
 .lu-nom-tit{margin:0;font-weight:700;font-size:14px}
-.lu-nom{display:grid;grid-template-columns:34px 92px 1fr;align-items:center;gap:8px;background:var(--s);border-left:6px solid var(--c);border-radius:12px;padding:6px 8px;color:#17171c}
-.lu-nom-ico{font-size:22px;text-align:center}.lu-nom-lugar{font-size:12.5px;font-weight:700}
+.lu-nom{display:grid;grid-template-columns:30px 1fr;align-items:center;gap:6px 8px;background:var(--s);border-left:6px solid var(--c);border-radius:12px;padding:8px 10px;color:#17171c}
+.lu-nom.fuera{background:var(--superficie);border-left-color:var(--linea);color:var(--suave)}
+.lu-nom .lu-tipos,.lu-nom input{grid-column:1/-1}
+.lu-tipos{display:flex;gap:4px}
+.lu-tipos button{flex:1;border:1px solid rgba(0,0,0,.15);background:#fff;color:#17171c;border-radius:999px;padding:7px 4px;font:inherit;font-weight:700;font-size:13px;cursor:pointer}
+.lu-tipos button[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#fff}
+.lu-nom.fuera .lu-tipos button[aria-pressed="true"]{background:var(--suave);border-color:var(--suave)}
+.lu-aviso{margin:0;color:#c62f34;font-weight:700;text-align:center}.lu-aviso[hidden]{display:none}
+.lu-nom-ico{font-size:22px;text-align:center}.lu-nom-lugar{font-size:15px;font-weight:700}
+.lu-nom input[hidden]{display:none}
 .lu-nom input{font:inherit;font-size:16px;padding:8px 10px;border:1px solid rgba(0,0,0,.15);border-radius:10px;background:#fff;color:#17171c;min-width:0}
 .lu-caja{max-width:460px;width:100%;margin:0 auto}
 .lu-caja canvas{display:block;width:100%;aspect-ratio:1;border-radius:12px;box-shadow:0 0 0 1px var(--linea);touch-action:manipulation}
@@ -1049,7 +1057,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
         <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
         <button type="button" class="j-juego c4" id="j-abrir-vibora" data-ev="juegos: abrió Viborita viajera"><span class="j-letras" aria-hidden="true">🧳</span><span><b>Viborita viajera</b><small>Juntá las cosas del viaje sin chocarte</small></span></button>
-        <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>De Villa Elisa al escenario de San Blas. De 2 a 4, o contra el teléfono</small></span></button>
+        <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>De Villa Elisa al escenario de San Blas. De 2 a 4, personas o el teléfono</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1137,24 +1145,19 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <span class="etiqueta">Juegos · para el viaje</span>
       <h2>Ludo</h2>
-      <p class="nota">De 2 a 4 jugadores pasándose el teléfono, o vos contra el teléfono. Cada uno sale de su lugar (Villa Elisa, Panamá, Guadalajara o San Blas) y hay que llegar con las 4 fichas al escenario del festival, en el centro. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
+      <p class="nota">De 2 a 4 jugadores: en cada ciudad elegís si juega una persona (pasándose el teléfono) o el teléfono. Cada uno sale de su lugar (Villa Elisa, Panamá, Guadalajara o San Blas) y hay que llegar con las 4 fichas al escenario del festival, en el centro. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
     </div>
     <div id="lu-config" class="lu-config">
-      <div class="j-opc" role="group" aria-label="Jugadores">
-        <button type="button" data-lmodo="telefono" aria-pressed="true">Contra el teléfono</button>
-        <button type="button" data-lmodo="2" aria-pressed="false">De a 2</button>
-        <button type="button" data-lmodo="3" aria-pressed="false">De a 3</button>
-        <button type="button" data-lmodo="4" aria-pressed="false">De a 4</button>
-      </div>
-      <div class="lu-nombres" id="lu-nombres" hidden></div>
+      <button type="button" class="btn" id="lu-seguir" data-ev="ludo: siguió la partida guardada" hidden>▶ Seguir la partida guardada</button>
+      <div class="lu-nombres" id="lu-nombres" data-sin-ev></div>
+      <p class="lu-aviso" id="lu-aviso" hidden></p>
       <button type="button" class="btn" id="lu-empezar" data-ev="ludo: empezar partida nueva">Empezar partida nueva</button>
-      <button type="button" class="btn sec" id="lu-seguir" data-ev="ludo: siguió la partida guardada" hidden>Seguir la partida guardada</button>
     </div>
     <div id="lu-juego" class="lu-juego" hidden data-sin-ev>
       <div class="lu-barra"><span class="lu-turno" id="lu-turno"></span><button type="button" class="lu-dado" id="lu-dado" aria-label="Tirar el dado">🎲</button></div>
       <p class="lu-msj" id="lu-msj" aria-live="polite"></p>
       <div class="lu-caja"><canvas id="lu-lienzo" width="600" height="600" aria-label="Tablero de ludo"></canvas></div>
-      <button type="button" class="btn sec" id="lu-salir">Pausar (la partida queda guardada)</button>
+      <button type="button" class="btn sec" id="lu-salir">Pausar o cambiar jugadores</button>
     </div>
     <div class="j-fin" id="lu-fin" hidden>
       <b id="lu-fin-tit"></b>
@@ -1897,17 +1900,19 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     tramo(1, 6, 1, 0, 5); tramo(6, 5, 0, -1, 6); tramo(7, 0, 1, 0, 2); tramo(8, 1, 0, 1, 5); tramo(9, 6, 1, 0, 6); tramo(14, 7, 0, 1, 2);
     tramo(13, 8, -1, 0, 5); tramo(8, 9, 0, 1, 6); tramo(7, 14, -1, 0, 2); tramo(6, 13, 0, -1, 5); tramo(5, 8, -1, 0, 6); tramo(0, 7, 0, -1, 2);
     const SEGUROS = new Set([0, 8, 13, 21, 26, 34, 39, 47]);
-    const MODOS = {
-      telefono: { nom: "Contra el teléfono", jug: [[0, false], [2, true]] },
-      2: { nom: "De a 2", jug: [[0, false], [2, false]] },
-      3: { nom: "De a 3", jug: [[0, false], [1, false], [2, false]] },
-      4: { nom: "De a 4", jug: [[0, false], [1, false], [2, false], [3, false]] },
-    };
-    let modo = String(leer("ludo-modo", "telefono")); if (!MODOS[modo]) modo = "telefono";
+    // Quién juega en cada ciudad: una persona, el teléfono o nadie.
+    const TIPOS = [["persona", "Persona"], ["telefono", "Teléfono"], ["fuera", "No juega"]];
+    let asientos = leer("ludo-asientos", null);
+    if (!Array.isArray(asientos) || asientos.length !== 4) asientos = [{ t: "persona", n: "" }, { t: "fuera", n: "" }, { t: "telefono", n: "" }, { t: "fuera", n: "" }];
+    const cuenta = jug => ({ per: jug.filter(j => !j.bot).length, tel: jug.filter(j => j.bot).length });
+    const plural = (n, s, p) => n + " " + (n === 1 ? s : p);
+    const describir = jug => { const { per, tel } = cuenta(jug); return [per ? plural(per, "persona", "personas") : "", tel ? plural(tel, "teléfono", "teléfonos") : ""].filter(Boolean).join(" y "); };
     let E = null, espera = null, anim = null, hits = [];
     const visible = () => !$("#vista-juego").hidden && !$("#j-ludo").hidden;
     const programar = (fn, ms) => { clearTimeout(espera); espera = setTimeout(() => { espera = null; if (visible()) fn(); }, ms); };
-    const nombreJ = j => E.modo === "telefono" ? (j.bot ? "El teléfono" : (nombreJugador() || "Vos")) : (j.n || COL[j.c].nom);
+    const solo = () => cuenta(E.jug).per === 1;
+    const nombreJ = j => j.bot ? (cuenta(E.jug).tel === 1 ? "El teléfono" : "Teléfono de " + COL[j.c].lugar)
+      : (j.n || (solo() ? (nombreJugador() || "Vos") : COL[j.c].nom));
     const FRASES_COMER = ["¡Volvé a Villa Elisa!", "¡Te quedaste sin pasaje!", "¡A hacer la valija de nuevo!", "¡Volvé a la fila de migraciones!"];
     const alAzar = a => a[Math.floor(Math.random() * a.length)];
     const msj = t => { $("#lu-msj").textContent = t || ""; };
@@ -2054,7 +2059,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       }
       E.t = (E.t + 1) % E.jug.length; E.seis = 0; E.dado = null; E.fase = "tirar"; guardar(); pintarTurno(); dibujar();
       const j = E.jug[E.t];
-      msj(j.bot ? "" : E.modo === "telefono" ? "Te toca: tocá el dado." : "Pasale el teléfono a " + nombreJ(j) + ".");
+      msj(j.bot ? "" : solo() ? "Te toca: tocá el dado." : "Pasale el teléfono a " + nombreJ(j) + ".");
       if (j.bot) programar(tirar, 800);
     }
     function elegirBot(c, d) {
@@ -2081,34 +2086,44 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     function terminar() {
       const j = E.jug[E.t], K = COL[j.c];
       E.fase = "fin"; escribir("ludo-partida", null); pintarTurno(); dibujar(); msj("");
-      const tel = E.modo === "telefono", gane = tel && !j.bot, quien = nombreJugador();
-      $("#lu-fin-tit").textContent = tel ? (gane ? "¡Le ganaste al teléfono!" : "Ganó el teléfono") : "¡Ganó " + nombreJ(j) + "!";
-      $("#lu-fin-txt").textContent = tel ? (gane ? "Llegaste primero al escenario del festival con las 4 fichas." : "Esta vez llegó primero al escenario. ¿La revancha?") : "Llegó primero al escenario del festival con las 4 fichas.";
-      const grande = tel ? "Le gané al teléfono" : "Ganó " + nombreJ(j);
-      const texto = "Ludo · Gira México 2026\n" + MODOS[E.modo].nom + "\n" + grande + " después de " + E.tiros + " tiradas.\n" +
-        (tel ? "¿Quién me gana?" : "¿La revancha?") + "\nhttps://gusriosromero.github.io/gira-mexico/#juego";
-      $("#lu-compartir").hidden = tel && !gane;
-      if (!(tel && !gane)) tarjetaResultado("lu-compartir", { juego: "Ludo", detalle: MODOS[E.modo].nom, grande, chico: "después de " + E.tiros + " tiradas", cierre: tel ? "" : "¿La revancha?", texto });
+      const { per, tel } = cuenta(E.jug), contraTel = per === 1 && tel > 0, detalle = describir(E.jug);
+      $("#lu-fin-tit").textContent = j.bot ? (tel === 1 ? "Ganó el teléfono" : "Ganó el " + nombreJ(j).toLowerCase()) : contraTel ? "¡Le ganaste " + (tel === 1 ? "al teléfono!" : "a los teléfonos!") : "¡Ganó " + nombreJ(j) + "!";
+      $("#lu-fin-txt").textContent = j.bot ? "Esta vez llegó primero al escenario. ¿La revancha?" : "Llegó primero al escenario del festival con las 4 fichas.";
+      const grande = contraTel ? "Le gané " + (tel === 1 ? "al teléfono" : "a " + tel + " teléfonos") : "Ganó " + nombreJ(j);
+      const texto = "Ludo · Gira México 2026\n" + detalle + "\n" + grande + " después de " + E.tiros + " tiradas.\n" +
+        (contraTel ? "¿Quién me gana?" : "¿La revancha?") + "\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#lu-compartir").hidden = j.bot;
+      if (!j.bot) tarjetaResultado("lu-compartir", { juego: "Ludo", detalle, grande, chico: "después de " + E.tiros + " tiradas", cierre: contraTel ? "" : "¿La revancha?", texto });
       $("#lu-fin").hidden = false; $("#lu-salir").textContent = "Jugar otra partida";
-      evento("ludo: terminó una partida (" + E.modo + (tel ? (gane ? ", ganó" : ", perdió") : "") + ")", "juego");
-      void quien;
+      evento("ludo: terminó una partida (" + detalle + (j.bot ? ", ganó un teléfono" : ", ganó una persona") + ")", "juego");
     }
     function verPartida(si) { $("#lu-config").hidden = si; $("#lu-juego").hidden = !si; $("#lu-fin").hidden = true; }
-    function pintarNombres() {
-      const guardados = leer("ludo-nombres", []), cont = $("#lu-nombres");
-      if (modo === "telefono") { cont.hidden = true; return; }
-      cont.hidden = false;
-      cont.replaceChildren(el("p", { class: "lu-nom-tit", text: "¿Quiénes juegan? (opcional)" }), ...MODOS[modo].jug.map(([c]) => {
-        const K = COL[c], inp = el("input", { type: "text", maxlength: "14", placeholder: K.nom, "data-c": String(c) });
-        inp.value = guardados[c] != null ? guardados[c] : (c === 0 ? nombreJugador() : "");
-        inp.addEventListener("change", () => { const n = leer("ludo-nombres", []); n[c] = inp.value.trim().slice(0, 14); escribir("ludo-nombres", n); });
-        return el("label", { class: "lu-nom", style: "--c:" + K.f + ";--s:" + K.s }, el("span", { class: "lu-nom-ico", text: K.ico }), el("span", { class: "lu-nom-lugar", text: K.lugar }), inp);
+    function validar() {
+      const per = asientos.filter(a => a.t === "persona").length, total = asientos.filter(a => a.t !== "fuera").length;
+      const aviso = total < 2 ? "Tienen que jugar al menos 2." : !per ? "Tiene que jugar al menos una persona." : "";
+      $("#lu-aviso").textContent = aviso; $("#lu-aviso").hidden = !aviso; $("#lu-empezar").disabled = !!aviso;
+    }
+    function pintarAsientos() {
+      if (asientos[0].t === "persona" && !asientos[0].n) asientos[0].n = nombreJugador();
+      $("#lu-nombres").replaceChildren(el("p", { class: "lu-nom-tit", text: "¿Quiénes juegan? Elegí en cada ciudad" }), ...asientos.map((a, c) => {
+        const K = COL[c], inp = el("input", { type: "text", maxlength: "14", placeholder: "Nombre (opcional)", "aria-label": "Nombre para " + K.lugar });
+        inp.value = a.n || ""; inp.hidden = a.t !== "persona";
+        inp.addEventListener("change", () => { a.n = inp.value.trim().slice(0, 14); escribir("ludo-asientos", asientos); });
+        const tipos = el("div", { class: "lu-tipos", role: "group", "aria-label": "Quién juega en " + K.lugar }, ...TIPOS.map(([t, txt]) => {
+          const b = el("button", { type: "button", "aria-pressed": String(a.t === t), text: txt });
+          b.addEventListener("click", () => { a.t = t; escribir("ludo-asientos", asientos); pintarAsientos(); });
+          return b;
+        }));
+        return el("div", { class: "lu-nom" + (a.t === "fuera" ? " fuera" : ""), style: "--c:" + K.f + ";--s:" + K.s },
+          el("span", { class: "lu-nom-ico", text: K.ico }), el("span", { class: "lu-nom-lugar", text: K.lugar }), tipos, inp);
       }));
+      validar();
     }
     function pintarConfig() {
-      document.querySelectorAll("#vista-juego [data-lmodo]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lmodo === modo)));
-      pintarNombres();
-      const g0 = leer("ludo-partida", null); $("#lu-seguir").hidden = !(g0 && g0.f && g0.jug);
+      pintarAsientos();
+      const g0 = leer("ludo-partida", null), hay = !!(g0 && g0.f && g0.jug);
+      $("#lu-seguir").hidden = !hay;
+      $("#lu-empezar").classList.toggle("sec", hay);
     }
     function reanudar() {
       if (!E) return;
@@ -2117,25 +2132,27 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       const j = E.jug[E.t];
       if (E.fase === "anim") return programar(resolver, 300);
       if (j.bot) { if (E.fase === "tirar") programar(tirar, 700); else if (E.fase === "mover") programar(() => mover(elegirBot(j.c, E.dado)), 600); }
-      else msj(E.fase === "mover" ? "Tocá la ficha que querés mover." : E.modo === "telefono" ? "Te toca: tocá el dado." : "Turno de " + nombreJ(j) + ": tocá el dado.");
+      else msj(E.fase === "mover" ? "Tocá la ficha que querés mover." : solo() ? "Te toca: tocá el dado." : "Turno de " + nombreJ(j) + ": tocá el dado.");
     }
     function empezar() {
       clearTimeout(espera); anim = null;
-      const noms = leer("ludo-nombres", []);
-      document.querySelectorAll("#lu-nombres input").forEach(i => { noms[+i.dataset.c] = i.value.trim().slice(0, 14); });
-      escribir("ludo-nombres", noms);
-      E = { modo, jug: MODOS[modo].jug.map(([c, bot]) => ({ c, bot, n: modo === "telefono" ? "" : (noms[c] || "") })), t: 0, f: [0, 1, 2, 3].map(() => [-1, -1, -1, -1]),
+      document.querySelectorAll("#lu-nombres input").forEach((i, c) => { asientos[c].n = i.value.trim().slice(0, 14); });
+      escribir("ludo-asientos", asientos);
+      const jug = asientos.map((a, c) => ({ c, bot: a.t === "telefono", n: a.t === "persona" ? a.n : "", juega: a.t !== "fuera" })).filter(j => j.juega).map(({ c, bot, n }) => ({ c, bot, n }));
+      if (jug.length < 2 || !jug.some(j => !j.bot)) return validar();
+      E = { jug, t: 0, f: [0, 1, 2, 3].map(() => [-1, -1, -1, -1]),
         dado: null, fase: "tirar", seis: 0, tiros: 0, sigue: null, movs: [] };
-      $("#lu-salir").textContent = "Pausar (la partida queda guardada)";
+      $("#lu-salir").textContent = "Pausar o cambiar jugadores";
       verPartida(true); guardar(); pintarTurno(); dibujar();
-      msj(E.modo === "telefono" ? "Vos salís de Villa Elisa con los cántaros 🏺. Llegá primero al escenario del festival." : "Empieza " + nombreJ(E.jug[0]) + ": tocá el dado.");
-      evento("ludo: empezó una partida (" + modo + ")", "juego");
+      const p0 = E.jug[0];
+      msj(p0.bot ? "Empieza " + nombreJ(p0) + "." : solo() ? "Salís de " + COL[p0.c].lugar + " " + COL[p0.c].ico + ". Llegá primero al escenario del festival: tocá el dado." : "Empieza " + nombreJ(p0) + ": tocá el dado.");
+      if (p0.bot) programar(tirar, 900);
+      evento("ludo: empezó una partida (" + describir(E.jug) + ")", "juego");
     }
-    document.querySelectorAll("#vista-juego [data-lmodo]").forEach(b => b.addEventListener("click", () => { modo = b.dataset.lmodo; escribir("ludo-modo", modo); pintarConfig(); }));
     $("#lu-empezar").addEventListener("click", empezar);
     $("#lu-seguir").addEventListener("click", () => {
       const g0 = leer("ludo-partida", null); if (!g0 || !g0.f) return;
-      E = g0; anim = null; $("#lu-salir").textContent = "Pausar (la partida queda guardada)"; verPartida(true); reanudar();
+      E = g0; anim = null; $("#lu-salir").textContent = "Pausar o cambiar jugadores"; verPartida(true); reanudar();
     });
     $("#lu-salir").addEventListener("click", () => { clearTimeout(espera); anim = null; E = null; verPartida(false); pintarConfig(); });
     $("#lu-dado").addEventListener("click", () => { if (E && !E.jug[E.t].bot) tirar(); });
@@ -2148,8 +2165,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     });
     document.addEventListener("ludo-ver", e => {
       if (!e.detail) { clearTimeout(espera); anim = null; return; }
-      pintarConfig();
-      if (E && E.fase !== "fin") reanudar(); else dibujar();
+      // Al entrar siempre se ven las opciones; la partida a medias queda en "Seguir la partida guardada".
+      E = null; verPartida(false); pintarConfig();
     });
   })();
 
