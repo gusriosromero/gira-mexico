@@ -388,7 +388,15 @@ p{margin:0}
 .j-juego b{display:block;font-size:16px;line-height:1.25}.j-juego small{display:block;font-size:13px;line-height:1.35;opacity:.8}
 .j-juego.pronto{background:transparent;border:1.5px dashed var(--suave);color:var(--suave);cursor:default}
 .j-volver{border:0;background:none;color:inherit;font:inherit;font-weight:700;font-size:14px;padding:4px 0;justify-self:start;cursor:pointer}
-#j-partida,#j-ahorcado{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden]{display:none}
+#j-partida,#j-ahorcado,#j-sopa{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden],#j-sopa[hidden]{display:none}
+.j-juego.c3{background:var(--p-lila)}
+.s-grilla{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.s-grilla button{aspect-ratio:1;border:0;border-radius:7px;background:var(--superficie);color:var(--texto);font:inherit;font-weight:700;font-size:16px;padding:0;cursor:pointer}
+.s-grilla button.ok{background:var(--ok-fondo);color:#17171c}
+.s-grilla button.sel{background:var(--tinta);color:#fff}
+.s-lista{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.s-lista li{border:1px solid var(--linea);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700}
+.s-lista li.ok{background:var(--ok-fondo);border-color:transparent;color:#17171c;text-decoration:line-through}
 .j-juego.c2{background:var(--p-durazno)}
 .j-letras{flex:none;width:46px;font-family:var(--titulo);font-size:22px;letter-spacing:1px;text-align:center}
 .a-vidas{display:flex;justify-content:center;gap:8px;color:var(--tinta)}
@@ -1003,6 +1011,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <div class="j-juegos">
         <button type="button" class="j-juego" id="j-abrir-memoria" data-ev="juegos: abrió Memoria de ñandutí"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nanduti"/></svg><span><b>Memoria de ñandutí</b><small>Dá vuelta las cartas y buscá las parejas</small></span></button>
         <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
+        <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1031,6 +1040,33 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="wa" id="a-compartir" href="#" target="_blank" rel="noopener" data-ev="ahorcado: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
     </div>
     <button type="button" class="btn" id="a-nueva" data-ev="ahorcado: otra palabra">Otra palabra</button>
+    </div>
+    <div id="j-sopa" hidden>
+    <button type="button" class="j-volver" id="s-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
+    <div class="bloque">
+      <span class="etiqueta">Juegos · para el viaje</span>
+      <h2>Sopa de letras</h2>
+      <p class="nota">Tocá la primera letra de la palabra y después la última. Funciona sin internet.</p>
+    </div>
+    <div class="j-opc" role="group" aria-label="Palabras">
+      <button type="button" data-stema="musicas" aria-pressed="true">Las músicas</button>
+      <button type="button" data-stema="elenco" aria-pressed="false">El elenco</button>
+      <button type="button" data-stema="paises" aria-pressed="false">Paraguay y México</button>
+    </div>
+    <div class="j-opc" role="group" aria-label="Dificultad">
+      <button type="button" data-snivel="facil" aria-pressed="false">Fácil</button>
+      <button type="button" data-snivel="normal" aria-pressed="true">Normal</button>
+      <button type="button" data-snivel="dificil" aria-pressed="false">Difícil</button>
+    </div>
+    <div class="j-marcador"><span>Encontradas <b id="s-cuenta">0</b></span><span>Tiempo <b id="s-tiempo">0:00</b></span><span>Tu mejor <b id="s-mejor">–</b></span></div>
+    <div class="s-grilla" id="s-grilla" data-sin-ev></div>
+    <ul class="s-lista" id="sopa-lista"></ul>
+    <div class="j-fin" id="s-fin" hidden>
+      <b id="s-fin-tit">¡Ganaste!</b>
+      <span id="s-fin-txt"></span>
+      <a class="wa" id="s-compartir" href="#" target="_blank" rel="noopener" data-ev="sopa: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
+    </div>
+    <button type="button" class="btn" id="s-nueva" data-ev="sopa: otra sopa">Otra sopa</button>
     </div>
     <div id="j-partida" hidden>
     <button type="button" class="j-volver" id="j-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
@@ -1640,7 +1676,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#j-nuevo").addEventListener("click", nueva);
     // Menú de juegos: al entrar a la sección se ve la lista; cada juego se abre desde ahí.
     const verJuego = cual => {
-      $("#j-menu").hidden = !!cual; $("#j-partida").hidden = cual !== "memoria"; $("#j-ahorcado").hidden = cual !== "ahorcado";
+      $("#j-menu").hidden = !!cual; $("#j-partida").hidden = cual !== "memoria"; $("#j-ahorcado").hidden = cual !== "ahorcado"; $("#j-sopa").hidden = cual !== "sopa";
+      document.dispatchEvent(new CustomEvent("sopa-ver", { detail: cual === "sopa" }));
       pararReloj(); if (cual === "memoria") nueva();
       if (cual === "ahorcado") document.dispatchEvent(new Event("ahorcado-abrir"));
       window.scrollTo(0, 0);
@@ -1649,8 +1686,105 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#j-abrir-ahorcado").addEventListener("click", () => verJuego("ahorcado"));
     $("#j-volver").addEventListener("click", () => verJuego(null));
     $("#a-volver").addEventListener("click", () => verJuego(null));
+    $("#j-abrir-sopa").addEventListener("click", () => verJuego("sopa"));
+    $("#s-volver").addEventListener("click", () => verJuego(null));
     window.addEventListener("hashchange", () => { if (location.hash === "#juego") verJuego(null); });
     nueva();
+  })();
+
+  // ---------- Sopa de letras: grilla de 10 x 10, se marca tocando la primera y la última letra ----------
+  (() => {
+    const N = 10;
+    const POZOS = {
+      musicas: ["Tetagua", "Sapukai", "Pájaro", "Campana", "Carreta", "Lechero", "Caacupé", "Kumandá", "Galopera", "Musiqueada", "Acuarela", "Paraguaya", "Pycasu", "Hovy", "Gallito", "Cantor"],
+      elenco: ["José", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Katy", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"],
+      paises: ["Tereré", "Chipa", "Mbeju", "Mandioca", "Ñandutí", "Lapacho", "Guaraní", "Arpa", "Polca", "Nayarit", "Jalisco", "Mariachi", "Tacos", "Tamales", "Guacamole", "Pozole", "Piñata", "Sombrero", "Nopal"],
+    };
+    const NOM = { musicas: "Las músicas", elenco: "El elenco", paises: "Paraguay y México" };
+    const NIVELES = {
+      facil: { nom: "Fácil", cant: 6, dirs: [[1, 0], [0, 1]] },
+      normal: { nom: "Normal", cant: 8, dirs: [[1, 0], [0, 1], [1, 1], [1, -1]] },
+      dificil: { nom: "Difícil", cant: 10, dirs: [[1, 0], [0, 1], [1, 1], [1, -1], [-1, 0], [0, -1], [-1, -1], [-1, 1]] },
+    };
+    const norm = t => t.toUpperCase().normalize("NFD").replace(/N\u0303/g, "Ñ").replace(/[\u0300-\u036f]/g, "");
+    const azar = n => Math.floor(Math.random() * n);
+    const mmss = s => Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+    let tema = leer("sopa-tema", "musicas"); if (!NOM[tema]) tema = "musicas";
+    let nivel = leer("sopa-nivel", "normal"); if (!NIVELES[nivel]) nivel = "normal";
+    let letras = [], palabras = [], primera = null, t0 = 0, reloj = null, listo = false;
+    const clave = () => "sopa-mejor-" + nivel;
+    function pararReloj() { clearInterval(reloj); reloj = null; }
+    function pintarMejor() { const m = leer(clave(), 0); $("#s-mejor").textContent = m ? mmss(m) : "–"; }
+    function armar() {
+      const { cant, dirs } = NIVELES[nivel];
+      for (let intento = 0; intento < 60; intento++) {
+        const g = Array(N * N).fill(""), elegidas = [...POZOS[tema]].sort(() => Math.random() - .5).slice(0, cant).sort((a, b) => b.length - a.length);
+        let bien = true;
+        for (const p of elegidas) {
+          const w = norm(p); let puesta = false;
+          for (let k = 0; k < 200 && !puesta; k++) {
+            const [dx, dy] = dirs[azar(dirs.length)], x = azar(N), y = azar(N), fx = x + dx * (w.length - 1), fy = y + dy * (w.length - 1);
+            if (fx < 0 || fx >= N || fy < 0 || fy >= N) continue;
+            if (![...w].every((ch, i) => { const c = g[(y + dy * i) * N + x + dx * i]; return !c || c === ch; })) continue;
+            [...w].forEach((ch, i) => { g[(y + dy * i) * N + x + dx * i] = ch; }); puesta = true;
+          }
+          if (!puesta) { bien = false; break; }
+        }
+        if (bien) return { g: g.map(c => c || "ABCDEFGHIJLMNOPRSTUV"[azar(20)]), elegidas };
+      }
+      return null;
+    }
+    function nueva() {
+      pararReloj(); t0 = 0; primera = null; listo = false;
+      const r = armar(); if (!r) return;
+      letras = r.g; palabras = r.elegidas.sort((a, b) => a.localeCompare(b, "es")).map(p => ({ p, w: norm(p), ok: false }));
+      $("#s-tiempo").textContent = "0:00"; $("#s-fin").hidden = true;
+      document.querySelectorAll("#vista-juego [data-stema]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.stema === tema)));
+      document.querySelectorAll("#vista-juego [data-snivel]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.snivel === nivel)));
+      $("#s-grilla").replaceChildren(...letras.map((L, i) => { const b = el("button", { type: "button", text: L }); b.addEventListener("click", () => tocar(i)); return b; }));
+      pintarLista(); pintarMejor();
+    }
+    function pintarLista() {
+      $("#s-cuenta").textContent = palabras.filter(x => x.ok).length + "/" + palabras.length;
+      $("#sopa-lista").replaceChildren(...palabras.map(x => el("li", x.ok ? { class: "ok", text: x.p } : { text: x.p })));
+    }
+    function tocar(i) {
+      if (listo) return;
+      const celdas = $("#s-grilla").children;
+      if (!t0) {
+        t0 = Date.now();
+        reloj = setInterval(() => { $("#s-tiempo").textContent = mmss(Math.floor((Date.now() - t0) / 1000)); }, 1000);
+        evento("sopa: empezó una sopa (" + tema + ", " + nivel + ")", "juego");
+      }
+      if (primera == null) { primera = i; celdas[i].classList.add("sel"); return; }
+      const a = primera; celdas[a].classList.remove("sel"); primera = null;
+      if (a === i) return;
+      const ax = a % N, ay = Math.floor(a / N), bx = i % N, by = Math.floor(i / N), dx = bx - ax, dy = by - ay, largo = Math.max(Math.abs(dx), Math.abs(dy));
+      if (dx && dy && Math.abs(dx) !== Math.abs(dy)) { primera = i; celdas[i].classList.add("sel"); return; }
+      const camino = Array.from({ length: largo + 1 }, (_, k) => (ay + Math.sign(dy) * k) * N + ax + Math.sign(dx) * k);
+      const texto = camino.map(k => letras[k]).join(""), alReves = [...texto].reverse().join("");
+      const hallada = palabras.find(x => !x.ok && (x.w === texto || x.w === alReves));
+      if (!hallada) { primera = i; celdas[i].classList.add("sel"); return; }
+      hallada.ok = true; camino.forEach(k => celdas[k].classList.add("ok")); pintarLista();
+      if (palabras.every(x => x.ok)) ganar();
+    }
+    function ganar() {
+      pararReloj(); listo = true;
+      const seg = Math.max(1, Math.floor((Date.now() - t0) / 1000)), antes = leer(clave(), 0), record = !antes || seg < antes;
+      if (record) escribir(clave(), seg);
+      $("#s-tiempo").textContent = mmss(seg);
+      $("#s-fin-tit").textContent = record && antes ? "¡Nuevo récord!" : "¡Ganaste!";
+      $("#s-fin-txt").textContent = "Encontraste las " + palabras.length + " palabras en " + mmss(seg) + ".";
+      const msj = "Sopa de letras · Gira México 2026\n" + NIVELES[nivel].nom + " · " + NOM[tema] + "\nLa terminé en " + mmss(seg) +
+        ".\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#s-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
+      $("#s-fin").hidden = false; pintarMejor();
+      evento("sopa: terminó una sopa (" + nivel + ")", "juego");
+    }
+    document.querySelectorAll("#vista-juego [data-stema]").forEach(b => b.addEventListener("click", () => { tema = b.dataset.stema; escribir("sopa-tema", tema); nueva(); }));
+    document.querySelectorAll("#vista-juego [data-snivel]").forEach(b => b.addEventListener("click", () => { nivel = b.dataset.snivel; escribir("sopa-nivel", nivel); nueva(); }));
+    $("#s-nueva").addEventListener("click", nueva);
+    document.addEventListener("sopa-ver", e => { if (e.detail) nueva(); else pararReloj(); });
   })();
 
   // ---------- Ahorcado: palabras de la gira, sin internet. En vez de horca, se van apagando 6 ñandutíes. ----------
