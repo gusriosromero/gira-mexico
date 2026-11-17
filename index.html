@@ -1057,7 +1057,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
         <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
         <button type="button" class="j-juego c4" id="j-abrir-vibora" data-ev="juegos: abrió Viborita viajera"><span class="j-letras" aria-hidden="true">🧳</span><span><b>Viborita viajera</b><small>Juntá las cosas del viaje sin chocarte</small></span></button>
-        <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>De Villa Elisa al escenario de San Blas. De 2 a 4, personas o el teléfono</small></span></button>
+        <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>Del Paraguay al escenario de San Blas. De 2 a 4, personas o el teléfono</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1145,7 +1145,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <span class="etiqueta">Juegos · para el viaje</span>
       <h2>Ludo</h2>
-      <p class="nota">De 2 a 4 jugadores: en cada ciudad elegís si juega una persona (pasándose el teléfono) o el teléfono. Cada uno sale de su lugar (Villa Elisa, Panamá, Guadalajara o San Blas) y hay que llegar con las 4 fichas al escenario del festival, en el centro. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
+      <p class="nota">De 2 a 4 jugadores: en cada ciudad elegís si juega una persona (pasándose el teléfono) o el teléfono. Cada uno sale de una parada del viaje (Villa Elisa, Asunción, Panamá o Guadalajara) y hay que llegar con las 4 fichas al centro: el escenario del festival en San Blas. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
     </div>
     <div id="lu-config" class="lu-config">
       <button type="button" class="btn" id="lu-seguir" data-ev="ludo: siguió la partida guardada" hidden>▶ Seguir la partida guardada</button>
@@ -1889,10 +1889,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   (() => {
     const N = 15, lienzo = $("#lu-lienzo"), g = lienzo.getContext("2d"), C = lienzo.width / N, FIN = 56;
     const COL = [
-      { nom: "Rojo", lugar: "Villa Elisa", ico: "🏺", f: "#e04f4f", s: "#f9d0d0", base: [0, 0], ini: 0, casa: i => [1 + i, 7], meta: [6.55, 7.5] },
-      { nom: "Verde", lugar: "Panamá", ico: "🍾", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.55] },
-      { nom: "Amarillo", lugar: "Guadalajara", ico: "👒", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.45, 7.5] },
-      { nom: "Azul", lugar: "San Blas", ico: "🎺", f: "#2e7fd9", s: "#cfe2f7", base: [0, 9], ini: 39, casa: i => [7, 13 - i], meta: [7.5, 8.45] },
+      { nom: "Rojo", lugar: "Villa Elisa", ico: "🏺", f: "#e04f4f", s: "#f9d0d0", base: [0, 0], ini: 0, casa: i => [1 + i, 7], meta: [6.33, 7.5] },
+      { nom: "Verde", lugar: "Asunción", ico: "🍾", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.33] },
+      { nom: "Amarillo", lugar: "Panamá", ico: "👒", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.67, 7.5] },
+      { nom: "Azul", lugar: "Guadalajara", ico: "🎺", f: "#2e7fd9", s: "#cfe2f7", base: [0, 9], ini: 39, casa: i => [7, 13 - i], meta: [7.5, 8.67] },
     ];
     // Recorrido de 52 casillas, empezando en la salida del Rojo y yendo a favor del reloj.
     const PISTA = [];
@@ -1965,6 +1965,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       tri([[6, 6], [6, 9], [7.5, 7.5]], COL[0].f); tri([[6, 6], [9, 6], [7.5, 7.5]], COL[1].f);
       tri([[9, 6], [9, 9], [7.5, 7.5]], COL[2].f); tri([[6, 9], [9, 9], [7.5, 7.5]], COL[3].f);
       nandutiDibujo(g, 7.5 * C, 7.5 * C, C * 1.15, "#ffffff", .85);
+      // La meta: el escenario del festival en San Blas
+      g.save(); g.font = "700 " + Math.round(C * .3) + "px Montserrat, Arial, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+      g.lineWidth = C * .14; g.strokeStyle = "rgba(23,23,28,.75)"; g.lineJoin = "round";
+      g.strokeText("SAN BLAS", 7.5 * C, 7.5 * C); g.fillStyle = "#ffffff"; g.fillText("SAN BLAS", 7.5 * C, 7.5 * C); g.restore();
       hits = [];
       if (!E) return;
       const grupos = {};
@@ -1981,7 +1985,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         const mia = t.c === turno.c && marcar.includes(t.i);
         if (mia) circulo(x, y, r + .18, "rgba(255,255,255,.9)", "#17171c", 3);
         circulo(x, y + .06, r, "rgba(0,0,0,.2)");
-        circulo(x, y, r, "#ffffff", COL[t.c].f, meta ? 3 : 5);
+        circulo(x, y, r, meta ? COL[t.c].f : "#ffffff", meta ? "#ffffff" : COL[t.c].f, meta ? 2.5 : 5);
         if (!meta) {
           g.font = Math.round(C * r * 1.4) + "px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
           g.fillText(COL[t.c].ico, x * C, y * C + C * .03);
@@ -2037,7 +2041,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       E.sigue = gano ? "fin" : (d === 6 || comio || hasta === FIN) ? "mismo" : "pasar";
       E.fase = "anim"; E.movs = []; guardar(); pintarTurno();
       const aviso = comio ? alAzar(FRASES_COMER) + " " + nombreJ(E.jug[E.t]) + " comió " + (comio > 1 ? comio + " fichas" : "una ficha") + ". Tira de nuevo."
-        : hasta === FIN && !gano ? "¡Al escenario! Una ficha llegó al festival. Tira de nuevo."
+        : hasta === FIN && !gano ? "¡Al escenario! Una ficha llegó a San Blas. Tira de nuevo."
         : desde < 0 ? "¡Salió de " + COL[c].lugar + "! Tira de nuevo."
         : d === 6 && !gano ? "¡Seis! Tira de nuevo." : "";
       anim = { c, i, p: desde }; let k = 0;
@@ -2088,7 +2092,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       E.fase = "fin"; escribir("ludo-partida", null); pintarTurno(); dibujar(); msj("");
       const { per, tel } = cuenta(E.jug), contraTel = per === 1 && tel > 0, detalle = describir(E.jug);
       $("#lu-fin-tit").textContent = j.bot ? (tel === 1 ? "Ganó el teléfono" : "Ganó el " + nombreJ(j).toLowerCase()) : contraTel ? "¡Le ganaste " + (tel === 1 ? "al teléfono!" : "a los teléfonos!") : "¡Ganó " + nombreJ(j) + "!";
-      $("#lu-fin-txt").textContent = j.bot ? "Esta vez llegó primero al escenario. ¿La revancha?" : "Llegó primero al escenario del festival con las 4 fichas.";
+      $("#lu-fin-txt").textContent = j.bot ? "Esta vez llegó primero a San Blas. ¿La revancha?" : "Llegó primero al escenario de San Blas con las 4 fichas.";
       const grande = contraTel ? "Le gané " + (tel === 1 ? "al teléfono" : "a " + tel + " teléfonos") : "Ganó " + nombreJ(j);
       const texto = "Ludo · Gira México 2026\n" + detalle + "\n" + grande + " después de " + E.tiros + " tiradas.\n" +
         (contraTel ? "¿Quién me gana?" : "¿La revancha?") + "\nhttps://gusriosromero.github.io/gira-mexico/#juego";
@@ -2145,7 +2149,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       $("#lu-salir").textContent = "Pausar o cambiar jugadores";
       verPartida(true); guardar(); pintarTurno(); dibujar();
       const p0 = E.jug[0];
-      msj(p0.bot ? "Empieza " + nombreJ(p0) + "." : solo() ? "Salís de " + COL[p0.c].lugar + " " + COL[p0.c].ico + ". Llegá primero al escenario del festival: tocá el dado." : "Empieza " + nombreJ(p0) + ": tocá el dado.");
+      msj(p0.bot ? "Empieza " + nombreJ(p0) + "." : solo() ? "Salís de " + COL[p0.c].lugar + " " + COL[p0.c].ico + ". Llegá primero al escenario de San Blas: tocá el dado." : "Empieza " + nombreJ(p0) + ": tocá el dado.");
       if (p0.bot) programar(tirar, 900);
       evento("ludo: empezó una partida (" + describir(E.jug) + ")", "juego");
     }
