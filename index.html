@@ -1004,7 +1004,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <p class="nota">Los 15 que viajamos a México.</p>
     </div>
     <div class="bloque"><h3>Dirección <span class="cnt-elenco">2</span></h3><ul class="elenco"><li><span class="ini c-durazno">J</span><span><b>Director José</b><small>Director y bailarín</small></span></li><li><span class="ini c-celeste">V</span><span><b>Vivi</b><small>Dirección coreográfica y bailarina</small></span></li></ul></div>
-    <div class="bloque"><h3>Bailarinas <span class="cnt-elenco">7</span></h3><ul class="elenco"><li><span class="ini c-lila">C</span><span><b>Caro</b><small>Bailarina</small></span></li><li><span class="ini c-rosa">C</span><span><b>Carmen</b><small>Bailarina</small></span></li><li><span class="ini c-durazno">F</span><span><b>Flavia</b><small>Bailarina</small></span></li><li><span class="ini c-celeste">K</span><span><b>Kari</b><small>Bailarina</small></span></li><li><span class="ini c-lila">K</span><span><b>Katy</b><small>Bailarina</small></span></li><li><span class="ini c-rosa">N</span><span><b>Nahomi</b><small>Bailarina</small></span></li><li><span class="ini c-durazno">S</span><span><b>Samira</b><small>Bailarina</small></span></li></ul></div>
+    <div class="bloque"><h3>Bailarinas <span class="cnt-elenco">7</span></h3><ul class="elenco"><li><span class="ini c-lila">C</span><span><b>Caro</b><small>Bailarina</small></span></li><li><span class="ini c-rosa">C</span><span><b>Carmen</b><small>Bailarina</small></span></li><li><span class="ini c-durazno">F</span><span><b>Flavia</b><small>Bailarina</small></span></li><li><span class="ini c-celeste">K</span><span><b>Kari</b><small>Bailarina</small></span></li><li><span class="ini c-lila">K</span><span><b>Kate</b><small>Bailarina</small></span></li><li><span class="ini c-rosa">N</span><span><b>Nahomi</b><small>Bailarina</small></span></li><li><span class="ini c-durazno">S</span><span><b>Samira</b><small>Bailarina</small></span></li></ul></div>
     <div class="bloque"><h3>Bailarines <span class="cnt-elenco">5</span></h3><ul class="elenco"><li><span class="ini c-celeste">C</span><span><b>Carlitos</b><small>Bailarín</small></span></li><li><span class="ini c-lila">E</span><span><b>Edu</b><small>Bailarín</small></span></li><li><span class="ini c-rosa">J</span><span><b>Joel</b><small>Bailarín</small></span></li><li><span class="ini c-durazno">S</span><span><b>Santi</b><small>Bailarín</small></span></li><li><span class="ini c-celeste">T</span><span><b>Tima</b><small>Bailarín</small></span></li></ul></div>
     <div class="bloque"><h3>Staff <span class="cnt-elenco">1</span></h3><ul class="elenco"><li><span class="ini c-lila">G</span><span><b>Gustavo</b><small>Staff · técnica y logística</small></span></li></ul></div>
   </section>
@@ -1631,7 +1631,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   (() => {
     const PASTEL = ["var(--p-durazno)", "var(--p-rosa)", "var(--p-lila)", "var(--p-celeste)"];
     const CARTAS = {
-      elenco: ["Director José", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Katy", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"]
+      elenco: ["Director José", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Kate", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"]
         .map((n, i) => ({ id: "p-" + n, ini: n === "Director José" ? "J" : n[0], txt: n, c: PASTEL[i % 4] })),
       comidas: [["🧉", "Tereré"], ["🧀", "Chipa"], ["🥧", "Sopa paraguaya"], ["🥩", "Asado"], ["🥟", "Empanada"], ["🍠", "Mandioca"], ["🫓", "Mbeju"],
         ["🌮", "Tacos"], ["🫔", "Tamales"], ["🥑", "Guacamole"], ["🌽", "Elote"], ["🌶️", "Chile"], ["🍲", "Pozole"], ["🍤", "Camarones"]]
@@ -1835,7 +1835,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const N = 10;
     const POZOS = {
       musicas: ["Tetagua", "Sapukai", "Pájaro", "Campana", "Carreta", "Lechero", "Caacupé", "Kumandá", "Galopera", "Musiqueada", "Acuarela", "Paraguaya", "Pycasu", "Hovy", "Gallito", "Cantor"],
-      elenco: ["José", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Katy", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"],
+      elenco: ["José", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Kate", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"],
       paises: ["Tereré", "Chipa", "Mbeju", "Mandioca", "Ñandutí", "Lapacho", "Guaraní", "Arpa", "Polca", "Nayarit", "Jalisco", "Mariachi", "Tacos", "Tamales", "Guacamole", "Pozole", "Piñata", "Sombrero", "Nopal"],
     };
     const NOM = { musicas: "Las músicas", elenco: "El elenco", paises: "Paraguay y México" };
@@ -1948,7 +1948,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         ...P("Para el viaje", "Pasaporte", "Avión", "Aeropuerto", "Valija"), ...P("Ahí hacemos escala", "Panamá"),
         ...P("Vamos a uno en México", "Festival"), ...P("Ahí bailamos", "Escenario"), ...P("Antes de cada función", "Ensayo"), ...P("Lo que hacemos", "Danza", "Folklore"),
         ...P("Nuestro grupo", "Acuarela Mimbi"), ...P("Se baila con ella en la cabeza", "Botella"), ...P("Lo llevan las bailarinas", "Cántaro"),
-        ...P("Alguien del elenco", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Katy", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"),
+        ...P("Alguien del elenco", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Kate", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"),
       ],
     };
     const NOM = { musicas: "Las músicas", todo: "Todo mezclado", paraguay: "Paraguay", mexico: "México", gira: "La gira" };
