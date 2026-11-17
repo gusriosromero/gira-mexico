@@ -382,6 +382,7 @@ p{margin:0}
 .j-carta.hecha{cursor:default}
 .j-tablero.n12 .j-carta .frente small{font-size:clamp(9px,2.6vw,11px)}
 .j-fin{border-radius:var(--radio);background:var(--ok-fondo);color:#17171c;padding:16px;display:grid;gap:2px;text-align:center}
+.j-fin .wa{margin-top:10px}
 .j-fin b{font-family:var(--titulo);font-weight:400;font-size:28px}
 #j-nuevo{justify-self:center}
 @media (prefers-reduced-motion:no-preference){.j-carta .giro{transition:transform .35s ease}}
@@ -992,6 +993,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="j-fin" id="j-fin" hidden>
       <b id="j-fin-tit">¡Ganaste!</b>
       <span id="j-fin-txt"></span>
+      <a class="wa" id="j-compartir" href="#" target="_blank" rel="noopener" data-ev="memoria: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
     </div>
     <button type="button" class="btn" id="j-nuevo" data-ev="memoria: jugar de nuevo">Jugar de nuevo</button>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="nanduti" viewBox="0 0 100 100">
@@ -1562,6 +1564,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (record) escribir(claveMejor(), { mov, seg });
       $("#j-fin-tit").textContent = record && antes ? "¡Nuevo récord!" : "¡Ganaste!";
       $("#j-fin-txt").textContent = "Encontraste las " + nivel + " parejas en " + mov + " movimientos y " + mmssJ(seg) + ".";
+      const NOM_TEMA = { todo: "Todo mezclado", elenco: "El elenco", comidas: "Comidas", simbolos: "Paraguay y México" };
+      const NOM_NIVEL = { 6: "Fácil", 8: "Normal", 12: "Difícil" };
+      const msj = "Memoria de ñandutí · Gira México 2026\n" + NOM_NIVEL[nivel] + " (" + nivel + " parejas) · " + NOM_TEMA[tema] + "\n" +
+        "Lo hice en " + mov + " movimientos y " + mmssJ(seg) + ".\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#j-compartir").href = "https://wa.me/?text=" + encodeURIComponent(msj);
       $("#j-fin").hidden = false; pintarMejor();
       evento("memoria: ganó (" + nivel + " parejas)", "juego");
     }
