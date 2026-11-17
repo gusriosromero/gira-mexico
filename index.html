@@ -391,6 +391,25 @@ p{margin:0}
 .j-volver{border:0;background:none;color:inherit;font:inherit;font-weight:700;font-size:14px;padding:4px 0;justify-self:start;cursor:pointer}
 #j-partida,#j-ahorcado,#j-sopa,#j-vibora{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden],#j-sopa[hidden],#j-vibora[hidden]{display:none}
 .j-juego.c4{background:var(--p-rosa)}
+.j-juego.c5{background:var(--p-durazno)}
+.j-juego.oculto{display:none}
+.j-nombre{display:grid;gap:4px;font-weight:700;font-size:14px}
+#j-menu>.j-nombre{margin:16px 0 18px}
+.j-nombre input{font:inherit;font-weight:500;font-size:16px;padding:10px 12px;border:1px solid var(--linea);border-radius:12px;background:var(--fondo);color:var(--texto)}
+.j-nombre small{font-weight:500;color:var(--suave);font-size:12.5px}
+.j-nombre-fin{margin-top:10px;color:#17171c;text-align:left}.j-nombre-fin input{background:#fff;color:#17171c}.j-nombre-fin[hidden]{display:none}
+#j-ludo{display:grid;gap:inherit}#j-ludo[hidden],.lu-config[hidden],.lu-juego[hidden]{display:none}
+.lu-config,.lu-juego{display:grid;gap:12px}
+.lu-barra{display:flex;align-items:center;gap:12px}
+.lu-turno{flex:1;border-radius:14px;padding:12px 14px;font-weight:700;font-size:16px;background:var(--superficie);border-left:8px solid transparent;color:#17171c}
+.lu-dado{width:68px;height:68px;flex:none;border:0;border-radius:18px;font-family:var(--titulo);font-size:38px;line-height:1;color:#fff;background:var(--tinta);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.lu-dado:disabled{opacity:.6;cursor:default}
+.lu-dado:not(:disabled){animation:lu-pulso 1.2s ease-in-out infinite}
+@keyframes lu-pulso{50%{transform:scale(1.07)}}
+@media (prefers-reduced-motion:reduce){.lu-dado{animation:none!important}}
+.lu-msj{margin:0;min-height:1.5em;text-align:center;font-weight:600}
+.lu-caja{max-width:460px;width:100%;margin:0 auto}
+.lu-caja canvas{display:block;width:100%;aspect-ratio:1;border-radius:12px;box-shadow:0 0 0 1px var(--linea);touch-action:manipulation}
 .vb-caja{position:relative;max-width:420px;width:100%;margin:0 auto}
 .vb-caja canvas{display:block;width:100%;aspect-ratio:1;border-radius:var(--radio);background:var(--superficie);touch-action:none}
 .vb-caja .btn{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:16px;padding:12px 26px}
@@ -1016,11 +1035,16 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <h2>Juegos</h2>
         <p class="nota">Para pasar el rato en el avión o en el colectivo. Funcionan sin internet.</p>
       </div>
+      <label class="j-nombre">Tu nombre, para compartir tus resultados
+        <input type="text" id="j-nombre" maxlength="20" autocomplete="nickname" placeholder="Por ejemplo: Carlitos">
+        <small>Queda guardado solo en este teléfono.</small>
+      </label>
       <div class="j-juegos">
         <button type="button" class="j-juego" id="j-abrir-memoria" data-ev="juegos: abrió Memoria de ñandutí"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#nanduti"/></svg><span><b>Memoria de ñandutí</b><small>Dá vuelta las cartas y buscá las parejas</small></span></button>
         <button type="button" class="j-juego c2" id="j-abrir-ahorcado" data-ev="juegos: abrió Ahorcado"><span class="j-letras" aria-hidden="true">A_C</span><span><b>Ahorcado</b><small>Adiviná las músicas del repertorio, letra por letra</small></span></button>
         <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
         <button type="button" class="j-juego c4" id="j-abrir-vibora" data-ev="juegos: abrió Viborita viajera"><span class="j-letras" aria-hidden="true">🧳</span><span><b>Viborita viajera</b><small>Juntá las cosas del viaje sin chocarte</small></span></button>
+        <button type="button" class="j-juego c5 oculto" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>De 2 a 4 pasándose el teléfono, o contra el teléfono</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1101,6 +1125,35 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <b id="vb-fin-tit"></b>
       <span id="vb-fin-txt"></span>
       <a class="wa" id="vb-compartir" href="#" target="_blank" rel="noopener" data-ev="viborita: compartió su resultado por WhatsApp">Compartir mi resultado por WhatsApp</a>
+    </div>
+    </div>
+    <div id="j-ludo" hidden>
+    <button type="button" class="j-volver" id="lu-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
+    <div class="bloque">
+      <span class="etiqueta">Juegos · para el viaje</span>
+      <h2>Ludo</h2>
+      <p class="nota">De 2 a 4 jugadores pasándose el teléfono, o vos contra el teléfono. Sacá un 6 para salir, comé las fichas de los demás y llegá al centro con las 4. Las casillas con estrella son seguras. Funciona sin internet.</p>
+    </div>
+    <div id="lu-config" class="lu-config">
+      <div class="j-opc" role="group" aria-label="Jugadores">
+        <button type="button" data-lmodo="telefono" aria-pressed="true">Contra el teléfono</button>
+        <button type="button" data-lmodo="2" aria-pressed="false">De a 2</button>
+        <button type="button" data-lmodo="3" aria-pressed="false">De a 3</button>
+        <button type="button" data-lmodo="4" aria-pressed="false">De a 4</button>
+      </div>
+      <button type="button" class="btn" id="lu-empezar" data-ev="ludo: empezar partida nueva">Empezar partida nueva</button>
+      <button type="button" class="btn sec" id="lu-seguir" data-ev="ludo: siguió la partida guardada" hidden>Seguir la partida guardada</button>
+    </div>
+    <div id="lu-juego" class="lu-juego" hidden data-sin-ev>
+      <div class="lu-barra"><span class="lu-turno" id="lu-turno"></span><button type="button" class="lu-dado" id="lu-dado" aria-label="Tirar el dado">🎲</button></div>
+      <p class="lu-msj" id="lu-msj" aria-live="polite"></p>
+      <div class="lu-caja"><canvas id="lu-lienzo" width="600" height="600" aria-label="Tablero de ludo"></canvas></div>
+      <button type="button" class="btn sec" id="lu-salir">Pausar (la partida queda guardada)</button>
+    </div>
+    <div class="j-fin" id="lu-fin" hidden>
+      <b id="lu-fin-tit"></b>
+      <span id="lu-fin-txt"></span>
+      <a class="wa" id="lu-compartir" href="#" target="_blank" rel="noopener" data-ev="ludo: compartió su resultado">Compartir mi resultado por WhatsApp</a>
     </div>
     </div>
     <div id="j-partida" hidden>
@@ -1628,7 +1681,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") traerClima(); });
 
   // ---------- Compartir el resultado de un juego como imagen (tarjeta con el logo). Si el teléfono no puede, queda el texto por WhatsApp. ----------
-  const TARJETAS = {};
+  const TARJETAS = {}, ULTIMAS = {};
+  const nombreJugador = () => String(leer("juego-nombre", "") || "").trim().slice(0, 20);
   function nandutiDibujo(g, cx, cy, r, color, alfa) {
     g.save(); g.globalAlpha = alfa; g.strokeStyle = color; g.lineCap = "round";
     [1, .75, .48, .18].forEach((k, i) => { g.lineWidth = i % 3 ? r * .02 : r * .035; g.beginPath(); g.arc(cx, cy, r * k, 0, Math.PI * 2); g.stroke(); });
@@ -1643,8 +1697,19 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     g.fillText(t, x, y);
   }
   async function tarjetaResultado(id, d) {
-    const a = $("#" + id);
+    const a = $("#" + id), quien = nombreJugador();
+    ULTIMAS[id] = d;
+    const texto = (quien ? quien + " te desafía 👇\n" : "") + d.texto;
+    a.href = "https://wa.me/?text=" + encodeURIComponent(texto);
     TARJETAS[id] = null; a.textContent = "Compartir mi resultado por WhatsApp";
+    // Si no puso su nombre, se lo pedimos ahí mismo, arriba del botón.
+    let pide = a.parentNode.querySelector(".j-nombre-fin");
+    if (!quien && !pide) {
+      pide = el("label", { class: "j-nombre j-nombre-fin" }, "Poné tu nombre para la tarjeta", el("input", { type: "text", maxlength: "20", autocomplete: "nickname", placeholder: "Tu nombre" }));
+      pide.querySelector("input").addEventListener("change", ev => guardarNombre(ev.target.value));
+      a.before(pide);
+    }
+    if (pide) pide.hidden = !!quien;
     if (!navigator.canShare || !window.File) return;
     try {
       await Promise.all([document.fonts.load("120px Anton"), document.fonts.load("700 40px Montserrat"), document.fonts.load("500 40px Montserrat")]).catch(() => {});
@@ -1668,20 +1733,36 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       g.fillStyle = "#55596b"; textoAjustado(g, d.detalle, W / 2, y, "500", 38, "Montserrat, Arial, sans-serif", W - 160); y += 70;
       const cajaH = 330; g.fillStyle = "rgba(255,255,255,.82)";
       g.beginPath(); if (g.roundRect) g.roundRect(90, y, W - 180, cajaH, 40); else g.rect(90, y, W - 180, cajaH); g.fill();
-      g.fillStyle = "#17171c"; textoAjustado(g, d.grande, W / 2, y + 185, "", 150, "Anton, Impact, sans-serif", W - 260);
-      g.fillStyle = "#55596b"; textoAjustado(g, d.chico, W / 2, y + 265, "600", 42, "Montserrat, Arial, sans-serif", W - 260);
+      if (quien) {
+        g.fillStyle = "#7a5ca8"; textoAjustado(g, quien, W / 2, y + 78, "700", 50, "Montserrat, Arial, sans-serif", W - 260);
+        g.fillStyle = "#17171c"; textoAjustado(g, d.grande, W / 2, y + 210, "", 130, "Anton, Impact, sans-serif", W - 260);
+        g.fillStyle = "#55596b"; textoAjustado(g, d.chico, W / 2, y + 285, "600", 40, "Montserrat, Arial, sans-serif", W - 260);
+      } else {
+        g.fillStyle = "#17171c"; textoAjustado(g, d.grande, W / 2, y + 185, "", 150, "Anton, Impact, sans-serif", W - 260);
+        g.fillStyle = "#55596b"; textoAjustado(g, d.chico, W / 2, y + 265, "600", 42, "Montserrat, Arial, sans-serif", W - 260);
+      }
       y += cajaH + 120;
-      g.fillStyle = "#17171c"; g.font = "120px Anton, Impact, sans-serif"; g.fillText("¿QUIÉN ME GANA?", W / 2, Math.min(y, H - 170));
+      g.fillStyle = "#17171c"; textoAjustado(g, (d.cierre || "¿Quién me gana?").toUpperCase(), W / 2, Math.min(y, H - 170), "", 120, "Anton, Impact, sans-serif", W - 140);
       g.fillStyle = "#55596b"; g.font = "600 32px Montserrat, Arial, sans-serif";
       g.fillText("Acuarela Mimbi · jugá en la app de la gira", W / 2, H - 70);
       const blob = await new Promise(r => cv.toBlob(r, "image/png"));
       if (!blob) return;
       const file = new File([blob], "Gira-Mexico-2026-" + d.juego.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z]+/g, "-") + ".png", { type: "image/png" });
-      if (navigator.canShare({ files: [file] })) { TARJETAS[id] = { file, texto: d.texto }; a.textContent = "Compartir mi resultado (imagen)"; }
+      if (navigator.canShare({ files: [file] })) { TARJETAS[id] = { file, texto }; a.textContent = "Compartir mi resultado (imagen)"; }
     } catch (e) {}
   }
+  function guardarNombre(v) {
+    v = String(v || "").trim().slice(0, 20);
+    escribir("juego-nombre", v);
+    $("#j-nombre").value = v;
+    document.querySelectorAll(".j-nombre-fin input").forEach(i => { i.value = v; });
+    // Rehace las tarjetas que ya estaban listas para compartir, ahora con el nombre.
+    Object.keys(ULTIMAS).forEach(id => { if (!$("#" + id).closest("[hidden]")) tarjetaResultado(id, ULTIMAS[id]); });
+  }
+  $("#j-nombre").value = nombreJugador();
+  $("#j-nombre").addEventListener("change", e => guardarNombre(e.target.value));
   document.addEventListener("click", e => {
-    const a = e.target.closest("#j-compartir, #a-compartir, #s-compartir, #vb-compartir");
+    const a = e.target.closest("#j-compartir, #a-compartir, #s-compartir, #vb-compartir, #lu-compartir");
     const t = a && TARJETAS[a.id];
     if (!t) return;
     e.preventDefault();
@@ -1776,6 +1857,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       $("#j-menu").hidden = !!cual; $("#j-partida").hidden = cual !== "memoria"; $("#j-ahorcado").hidden = cual !== "ahorcado"; $("#j-sopa").hidden = cual !== "sopa";
       document.dispatchEvent(new CustomEvent("sopa-ver", { detail: cual === "sopa" }));
       $("#j-vibora").hidden = cual !== "vibora"; document.dispatchEvent(new CustomEvent("vibora-ver", { detail: cual === "vibora" }));
+      $("#j-ludo").hidden = cual !== "ludo"; document.dispatchEvent(new CustomEvent("ludo-ver", { detail: cual === "ludo" }));
       pararReloj(); if (cual === "memoria") nueva();
       if (cual === "ahorcado") document.dispatchEvent(new Event("ahorcado-abrir"));
       window.scrollTo(0, 0);
@@ -1786,10 +1868,256 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#a-volver").addEventListener("click", () => verJuego(null));
     $("#j-abrir-sopa").addEventListener("click", () => verJuego("sopa"));
     $("#j-abrir-vibora").addEventListener("click", () => verJuego("vibora"));
+    $("#j-abrir-ludo").addEventListener("click", () => verJuego("ludo"));
+    $("#lu-volver").addEventListener("click", () => verJuego(null));
     $("#vb-volver").addEventListener("click", () => verJuego(null));
     $("#s-volver").addEventListener("click", () => verJuego(null));
     window.addEventListener("hashchange", () => { if (location.hash === "#juego") verJuego(null); });
     nueva();
+  })();
+
+  // ---------- Ludo: de 2 a 4 pasándose el teléfono, o contra el teléfono ----------
+  (() => {
+    const N = 15, lienzo = $("#lu-lienzo"), g = lienzo.getContext("2d"), C = lienzo.width / N, FIN = 56;
+    const COL = [
+      { nom: "Rojo", f: "#e04f4f", s: "#f9d0d0", base: [0, 0], ini: 0, casa: i => [1 + i, 7], meta: [6.55, 7.5] },
+      { nom: "Verde", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.55] },
+      { nom: "Amarillo", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.45, 7.5] },
+      { nom: "Azul", f: "#2e7fd9", s: "#cfe2f7", base: [0, 9], ini: 39, casa: i => [7, 13 - i], meta: [7.5, 8.45] },
+    ];
+    // Recorrido de 52 casillas, empezando en la salida del Rojo y yendo a favor del reloj.
+    const PISTA = [];
+    const tramo = (x0, y0, dx, dy, n) => { for (let i = 0; i < n; i++) PISTA.push([x0 + dx * i, y0 + dy * i]); };
+    tramo(1, 6, 1, 0, 5); tramo(6, 5, 0, -1, 6); tramo(7, 0, 1, 0, 2); tramo(8, 1, 0, 1, 5); tramo(9, 6, 1, 0, 6); tramo(14, 7, 0, 1, 2);
+    tramo(13, 8, -1, 0, 5); tramo(8, 9, 0, 1, 6); tramo(7, 14, -1, 0, 2); tramo(6, 13, 0, -1, 5); tramo(5, 8, -1, 0, 6); tramo(0, 7, 0, -1, 2);
+    const SEGUROS = new Set([0, 8, 13, 21, 26, 34, 39, 47]);
+    const MODOS = {
+      telefono: { nom: "Contra el teléfono", jug: [[0, false], [2, true]] },
+      2: { nom: "De a 2", jug: [[0, false], [2, false]] },
+      3: { nom: "De a 3", jug: [[0, false], [1, false], [2, false]] },
+      4: { nom: "De a 4", jug: [[0, false], [1, false], [2, false], [3, false]] },
+    };
+    let modo = String(leer("ludo-modo", "telefono")); if (!MODOS[modo]) modo = "telefono";
+    let E = null, espera = null, anim = null, hits = [];
+    const visible = () => !$("#vista-juego").hidden && !$("#j-ludo").hidden;
+    const programar = (fn, ms) => { clearTimeout(espera); espera = setTimeout(() => { espera = null; if (visible()) fn(); }, ms); };
+    const nombreJ = j => E.modo === "telefono" ? (j.bot ? "El teléfono" : (nombreJugador() || "Vos")) : COL[j.c].nom;
+    const msj = t => { $("#lu-msj").textContent = t || ""; };
+    const guardar = () => { if (E && E.fase !== "fin") escribir("ludo-partida", E); };
+
+    function posicion(c, i, p) {
+      const K = COL[c];
+      if (p < 0) return [K.base[0] + (i % 2 ? 4.2 : 1.8), K.base[1] + (i < 2 ? 1.8 : 4.2)];
+      if (p <= 50) { const [x, y] = PISTA[(K.ini + p) % 52]; return [x + .5, y + .5]; }
+      if (p < FIN) { const [x, y] = K.casa(p - 51); return [x + .5, y + .5]; }
+      return K.meta;
+    }
+    const enPista = (c, p) => p >= 0 && p <= 50 ? (COL[c].ini + p) % 52 : -1;
+    const movibles = (c, d) => [0, 1, 2, 3].filter(i => { const p = E.f[c][i]; return p < 0 ? d === 6 : p + d <= FIN; });
+
+    function cuadro(x, y, color) {
+      g.fillStyle = color; g.fillRect(x * C, y * C, C, C);
+      g.strokeStyle = "#cfd3df"; g.lineWidth = 1.5; g.strokeRect(x * C + .75, y * C + .75, C - 1.5, C - 1.5);
+    }
+    function circulo(x, y, r, relleno, borde, lw) {
+      g.beginPath(); g.arc(x * C, y * C, r * C, 0, Math.PI * 2);
+      if (relleno) { g.fillStyle = relleno; g.fill(); }
+      if (borde) { g.strokeStyle = borde; g.lineWidth = lw || 2; g.stroke(); }
+    }
+    function dibujar() {
+      g.fillStyle = "#ffffff"; g.fillRect(0, 0, lienzo.width, lienzo.height);
+      const enJuego = E ? E.jug.map(j => j.c) : [0, 1, 2, 3];
+      PISTA.forEach(([x, y], k) => {
+        const sal = COL.find(K => K.ini === k);
+        cuadro(x, y, sal ? sal.s : "#ffffff");
+        if (SEGUROS.has(k) && !sal) {
+          g.fillStyle = "#a3a8ba"; g.font = Math.round(C * .62) + "px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+          g.fillText("★", x * C + C / 2, y * C + C / 2 + 1);
+        }
+      });
+      COL.forEach((K, c) => {
+        for (let i = 0; i < 5; i++) { const [x, y] = K.casa(i); cuadro(x, y, K.s); }
+        const [bx, by] = K.base, activo = enJuego.includes(c);
+        g.fillStyle = activo ? K.f : "#e4e6ee"; g.fillRect(bx * C, by * C, 6 * C, 6 * C);
+        g.fillStyle = "#ffffff"; g.beginPath();
+        if (g.roundRect) g.roundRect(bx * C + C * .7, by * C + C * .7, C * 4.6, C * 4.6, C * .7); else g.rect(bx * C + C * .7, by * C + C * .7, C * 4.6, C * 4.6);
+        g.fill();
+        for (let i = 0; i < 4; i++) { const [x, y] = posicion(c, i, -1); circulo(x, y, .62, activo ? K.s : "#f1f2f6"); }
+      });
+      const tri = (pts, color) => { g.fillStyle = color; g.beginPath(); pts.forEach(([x, y], k) => k ? g.lineTo(x * C, y * C) : g.moveTo(x * C, y * C)); g.closePath(); g.fill(); };
+      tri([[6, 6], [6, 9], [7.5, 7.5]], COL[0].f); tri([[6, 6], [9, 6], [7.5, 7.5]], COL[1].f);
+      tri([[9, 6], [9, 9], [7.5, 7.5]], COL[2].f); tri([[6, 9], [9, 9], [7.5, 7.5]], COL[3].f);
+      nandutiDibujo(g, 7.5 * C, 7.5 * C, C * 1.15, "#ffffff", .85);
+      hits = [];
+      if (!E) return;
+      const grupos = {};
+      E.jug.forEach(({ c }) => E.f[c].forEach((p, i) => {
+        if (anim && anim.c === c && anim.i === i) p = anim.p;
+        const [x, y] = posicion(c, i, p), k = x.toFixed(2) + "," + y.toFixed(2);
+        (grupos[k] = grupos[k] || []).push({ c, i, x, y, p });
+      }));
+      const turno = E.jug[E.t], marcar = E.fase === "mover" && !turno.bot ? E.movs : [];
+      Object.values(grupos).forEach(gr => gr.forEach((t, n) => {
+        const meta = t.p >= FIN, off = gr.length > 1 ? (n - (gr.length - 1) / 2) * (meta ? .3 : .2) : 0;
+        const vertical = meta && (t.c === 0 || t.c === 2);
+        const x = t.x + (vertical ? 0 : off), y = t.y + (vertical ? off : (meta ? 0 : -off * .5)), r = meta ? .2 : .34;
+        const mia = t.c === turno.c && marcar.includes(t.i);
+        if (mia) circulo(x, y, r + .18, "rgba(255,255,255,.9)", "#17171c", 3);
+        circulo(x, y + .05, r, "rgba(0,0,0,.18)");
+        circulo(x, y, r, COL[t.c].f, "#ffffff", 3);
+        circulo(x, y, r * .42, "rgba(255,255,255,.55)");
+        hits.push({ c: t.c, i: t.i, x, y, mia });
+      }));
+    }
+    function pintarTurno() {
+      const j = E.jug[E.t], K = COL[j.c], dado = $("#lu-dado"), turno = $("#lu-turno");
+      turno.textContent = E.fase === "fin" ? "Partida terminada" : "Turno: " + nombreJ(j) + (E.modo === "telefono" ? " (" + K.nom.toLowerCase() + ")" : "");
+      turno.style.background = K.s; turno.style.borderLeftColor = K.f;
+      dado.style.background = K.f;
+      if (E.fase !== "tirando") dado.textContent = E.dado || "🎲";
+      dado.disabled = j.bot || E.fase !== "tirar";
+    }
+    function tirar() {
+      if (!E || E.fase !== "tirar") return;
+      E.fase = "tirando"; pintarTurno();
+      let k = 0;
+      const giro = setInterval(() => {
+        $("#lu-dado").textContent = 1 + Math.floor(Math.random() * 6);
+        if (++k > 6) { clearInterval(giro); if (E && E.fase === "tirando") cayo(); }
+      }, 60);
+    }
+    function cayo() {
+      const j = E.jug[E.t], c = j.c, d = 1 + Math.floor(Math.random() * 6);
+      E.dado = d; E.tiros++; E.seis = d === 6 ? E.seis + 1 : 0;
+      if (E.seis === 3) {
+        msj("Tres seis seguidos: pierde el turno.");
+        E.fase = "anim"; E.sigue = "pasar"; pintarTurno(); guardar(); return programar(resolver, 1200);
+      }
+      E.movs = movibles(c, d);
+      if (!E.movs.length) {
+        msj(d === 6 ? "No hay ficha para mover. Tira de nuevo." : "Salió " + d + ": no hay ficha para mover.");
+        E.fase = "anim"; E.sigue = d === 6 ? "mismo" : "pasar"; pintarTurno(); guardar(); return programar(resolver, 1100);
+      }
+      E.fase = "mover"; guardar(); pintarTurno(); dibujar();
+      const unicas = new Set(E.movs.map(i => E.f[c][i]));
+      if (j.bot) { msj(""); programar(() => mover(elegirBot(c, d)), 650); }
+      else if (unicas.size === 1) { msj(""); programar(() => mover(E.movs[0]), 450); }
+      else msj("Tocá la ficha que querés mover.");
+    }
+    function mover(i) {
+      if (!E || E.fase !== "mover" || !E.movs.includes(i)) return;
+      const c = E.jug[E.t].c, d = E.dado, desde = E.f[c][i], hasta = desde < 0 ? 0 : desde + d;
+      const pasos = desde < 0 ? [0] : Array.from({ length: d }, (_, k) => desde + k + 1);
+      E.f[c][i] = hasta; msj("");
+      let comio = 0; const idx = enPista(c, hasta);
+      if (idx >= 0 && !SEGUROS.has(idx)) E.jug.forEach(({ c: o }) => {
+        if (o !== c) E.f[o].forEach((p, k) => { if (enPista(o, p) === idx) { E.f[o][k] = -1; comio++; } });
+      });
+      const gano = E.f[c].every(p => p === FIN);
+      E.sigue = gano ? "fin" : (d === 6 || comio || hasta === FIN) ? "mismo" : "pasar";
+      E.fase = "anim"; E.movs = []; guardar(); pintarTurno();
+      const aviso = comio ? "¡Comió " + (comio > 1 ? comio + " fichas" : "una ficha") + "! Tira de nuevo." : hasta === FIN && !gano ? "¡Una ficha llegó a la meta! Tira de nuevo." : d === 6 && !gano ? "Sacó 6: tira de nuevo." : "";
+      anim = { c, i, p: desde }; let k = 0;
+      const paso = () => {
+        if (!anim) return;
+        anim.p = pasos[k++]; dibujar();
+        if (k < pasos.length) espera = setTimeout(paso, 110);
+        else { anim = null; dibujar(); msj(aviso); programar(resolver, aviso ? 900 : 300); }
+      };
+      paso();
+    }
+    function resolver() {
+      if (!E) return;
+      if (E.sigue === "fin") return terminar();
+      if (E.sigue === "mismo") {
+        E.fase = "tirar"; E.dado = null; guardar(); pintarTurno(); dibujar();
+        if (E.jug[E.t].bot) programar(tirar, 700);
+        return;
+      }
+      E.t = (E.t + 1) % E.jug.length; E.seis = 0; E.dado = null; E.fase = "tirar"; guardar(); pintarTurno(); dibujar();
+      const j = E.jug[E.t];
+      msj(j.bot ? "" : E.modo === "telefono" ? "Te toca: tocá el dado." : "Pasale el teléfono a " + COL[j.c].nom + ".");
+      if (j.bot) programar(tirar, 800);
+    }
+    function elegirBot(c, d) {
+      let mejor = E.movs[0], pts = -1e9;
+      for (const i of E.movs) {
+        const p = E.f[c][i], h = p < 0 ? 0 : p + d, idx = enPista(c, h);
+        let s = h * .1;
+        if (h === FIN) s += 100;
+        if (p < 0) s += 40;
+        if (p <= 50 && h > 50) s += 25;
+        if (idx >= 0 && SEGUROS.has(idx)) s += 12;
+        if (idx >= 0 && !SEGUROS.has(idx)) E.jug.forEach(({ c: o }) => {
+          if (o === c) return;
+          E.f[o].forEach(q => {
+            const qi = enPista(o, q);
+            if (qi === idx) s += 60;
+            else if (qi >= 0) { const dist = (idx - qi + 52) % 52; if (dist >= 1 && dist <= 6) s -= 15; }
+          });
+        });
+        if (s > pts) { pts = s; mejor = i; }
+      }
+      return mejor;
+    }
+    function terminar() {
+      const j = E.jug[E.t], K = COL[j.c];
+      E.fase = "fin"; escribir("ludo-partida", null); pintarTurno(); dibujar(); msj("");
+      const tel = E.modo === "telefono", gane = tel && !j.bot, quien = nombreJugador();
+      $("#lu-fin-tit").textContent = tel ? (gane ? "¡Le ganaste al teléfono!" : "Ganó el teléfono") : "¡Ganó " + K.nom + "!";
+      $("#lu-fin-txt").textContent = tel ? (gane ? "Llegaste con las 4 fichas a la meta." : "Esta vez te ganó. ¿La revancha?") : "Llegó primero con las 4 fichas a la meta.";
+      const grande = tel ? "Le gané al teléfono" : "Ganó " + K.nom;
+      const texto = "Ludo · Gira México 2026\n" + MODOS[E.modo].nom + "\n" + grande + " después de " + E.tiros + " tiradas.\n" +
+        (tel ? "¿Quién me gana?" : "¿La revancha?") + "\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#lu-compartir").hidden = tel && !gane;
+      if (!(tel && !gane)) tarjetaResultado("lu-compartir", { juego: "Ludo", detalle: MODOS[E.modo].nom, grande, chico: "después de " + E.tiros + " tiradas", cierre: tel ? "" : "¿La revancha?", texto });
+      $("#lu-fin").hidden = false; $("#lu-salir").textContent = "Jugar otra partida";
+      evento("ludo: terminó una partida (" + E.modo + (tel ? (gane ? ", ganó" : ", perdió") : "") + ")", "juego");
+      void quien;
+    }
+    function verPartida(si) { $("#lu-config").hidden = si; $("#lu-juego").hidden = !si; $("#lu-fin").hidden = true; }
+    function pintarConfig() {
+      document.querySelectorAll("#vista-juego [data-lmodo]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lmodo === modo)));
+      const g0 = leer("ludo-partida", null); $("#lu-seguir").hidden = !(g0 && g0.f && g0.jug);
+    }
+    function reanudar() {
+      if (!E) return;
+      if (E.fase === "tirando") E.fase = "tirar";
+      pintarTurno(); dibujar();
+      const j = E.jug[E.t];
+      if (E.fase === "anim") return programar(resolver, 300);
+      if (j.bot) { if (E.fase === "tirar") programar(tirar, 700); else if (E.fase === "mover") programar(() => mover(elegirBot(j.c, E.dado)), 600); }
+      else msj(E.fase === "mover" ? "Tocá la ficha que querés mover." : E.modo === "telefono" ? "Te toca: tocá el dado." : "Turno de " + COL[j.c].nom + ": tocá el dado.");
+    }
+    function empezar() {
+      clearTimeout(espera); anim = null;
+      E = { modo, jug: MODOS[modo].jug.map(([c, bot]) => ({ c, bot })), t: 0, f: [0, 1, 2, 3].map(() => [-1, -1, -1, -1]),
+        dado: null, fase: "tirar", seis: 0, tiros: 0, sigue: null, movs: [] };
+      $("#lu-salir").textContent = "Pausar (la partida queda guardada)";
+      verPartida(true); guardar(); pintarTurno(); dibujar();
+      msj(E.modo === "telefono" ? "Vos sos el rojo. Tocá el dado para empezar." : "Empieza Rojo: tocá el dado.");
+      evento("ludo: empezó una partida (" + modo + ")", "juego");
+    }
+    document.querySelectorAll("#vista-juego [data-lmodo]").forEach(b => b.addEventListener("click", () => { modo = b.dataset.lmodo; escribir("ludo-modo", modo); pintarConfig(); }));
+    $("#lu-empezar").addEventListener("click", empezar);
+    $("#lu-seguir").addEventListener("click", () => {
+      const g0 = leer("ludo-partida", null); if (!g0 || !g0.f) return;
+      E = g0; anim = null; $("#lu-salir").textContent = "Pausar (la partida queda guardada)"; verPartida(true); reanudar();
+    });
+    $("#lu-salir").addEventListener("click", () => { clearTimeout(espera); anim = null; E = null; verPartida(false); pintarConfig(); });
+    $("#lu-dado").addEventListener("click", () => { if (E && !E.jug[E.t].bot) tirar(); });
+    lienzo.addEventListener("click", e => {
+      if (!E || E.fase !== "mover" || E.jug[E.t].bot) return;
+      const r = lienzo.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * N, y = (e.clientY - r.top) / r.height * N;
+      let mejor = null, dm = .85;
+      hits.forEach(h => { if (!h.mia) return; const dd = Math.hypot(h.x - x, h.y - y); if (dd < dm) { dm = dd; mejor = h; } });
+      if (mejor) mover(mejor.i);
+    });
+    document.addEventListener("ludo-ver", e => {
+      if (!e.detail) { clearTimeout(espera); anim = null; return; }
+      pintarConfig();
+      if (E && E.fase !== "fin") reanudar(); else dibujar();
+    });
   })();
 
   // ---------- Viborita viajera: la fila crece con cada cosa del viaje que junta ----------
