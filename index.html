@@ -303,7 +303,25 @@ p{margin:0}
 .g-fila small{display:block;color:var(--suave);font-weight:400;font-size:12px}
 .g-sub{border-top:1px solid var(--linea);padding-top:6px;margin-top:2px}
 .g-total{background:var(--superficie);border-radius:var(--radio);padding:12px 14px;display:grid;gap:6px}
-.g-total .g-fila{font-size:15px}
+.g-total .g-fila{font-size:14px}
+.g-grande{font-family:var(--titulo);font-weight:400;font-size:34px;line-height:1.1;font-variant-numeric:tabular-nums}
+.g-barra{height:8px;border-radius:4px;background:var(--linea);overflow:hidden;margin:2px 0 4px}
+.g-barra i{display:block;height:100%;background:var(--celeste);border-radius:4px}
+.g-total.listo .g-barra i{background:var(--amarillo)}
+.g-perfil{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.g-perfil button{font:inherit;font-size:13px;font-weight:700;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);border-radius:999px;padding:5px 12px;cursor:pointer}
+.g-perfil button[aria-pressed="true"]{border-color:var(--texto);background:var(--superficie)}
+.g-item{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:10px;align-items:start;padding:8px 0;border-top:1px solid var(--linea);font-size:14px;cursor:pointer}
+.g-grupo h3 + .g-item{border-top:0}
+.g-item input{appearance:none;width:22px;height:22px;margin:0;border:2px solid var(--suave);border-radius:7px;display:grid;place-items:center;cursor:pointer;background:var(--fondo)}
+.g-item input:checked{background:var(--tinta);border-color:var(--tinta)}
+.g-item input:checked::after{content:"";width:5px;height:11px;border:solid var(--amarillo);border-width:0 3px 3px 0;transform:translateY(-1px) rotate(45deg)}
+:root[data-theme="dark"] .g-item input:checked{background:var(--amarillo);border-color:var(--amarillo)}
+:root[data-theme="dark"] .g-item input:checked::after{border-color:var(--tinta)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .g-item input:checked{background:var(--amarillo);border-color:var(--amarillo)}:root:not([data-theme="light"]) .g-item input:checked::after{border-color:var(--tinta)}}
+.g-item small,.g-total small{display:block;color:var(--suave);font-weight:400;font-size:12px}
+.g-monto{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;text-align:right}
+.g-item.hecho .g-nom,.g-item.hecho .g-monto{color:var(--suave);text-decoration:line-through}
 .cotiz summary{cursor:pointer;font-weight:700;font-size:14px}
 .cotiz-campos{display:grid;gap:10px;margin-top:10px;font-size:14px}
 .cotiz-campos input{font:inherit;font-weight:700;width:90px;padding:4px 6px;border-radius:8px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);text-align:right}
@@ -812,7 +830,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <span class="etiqueta">Gastos de la gira</span>
       <h2>Cuánto pone cada uno</h2>
-      <p class="nota">Montos <b>por persona</b>, en guaraníes. Algunos se pagan acá y otros allá en México.</p>
+      <p class="nota">Montos <b>por persona</b>, en guaraníes. Marcá lo que ya pagaste y el total va bajando.</p>
       <div class="gastos" id="gastos"></div>
     </div>
     <div class="bloque">
@@ -1574,21 +1592,43 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     ["Se paga en México", true, [["Aporte al festival de San Blas", 350000], ["Hotel en San Blas (1 día)", 50000], ["Bus Tepic – San Blas", 60200], ["Bus Guadalajara – Tepic, ida y vuelta", 315400]]],
   ];
   const gs = x => "G. " + fmtN(x, 0);
+  let pagados = leer("gastos-pagados", {});
   function gastos() {
     const c = $("#gastos"); if (!c) return; c.textContent = "";
-    let todos = 0, ellas = 0;
-    for (const [tit, mx, items] of GASTOS) {
-      const sum = items.reduce((a, it) => a + it[1], 0); todos += items.reduce((a, it) => a + (it[2] ? 0 : it[1]), 0); ellas += sum;
-      const pesos = x => mx ? el("small", { text: `≈ $${fmtN(Math.round(deUsd("mxn", aUsd("pyg", x))), 0)} MXN` }) : null;
-      c.append(el("div", { class: "g-grupo" }, el("h3", { text: tit }),
-        items.map(([n, v, sol]) => el("div", { class: "g-fila" }, el("span", {}, n, sol ? el("small", { text: "Solo bailarinas" }) : null), el("span", {}, gs(v), pesos(v)))),
-        el("div", { class: "g-fila g-sub" }, el("span", { text: "Subtotal" }), el("span", {}, gs(sum), pesos(sum)))));
+    const perf = leer("info-perfil", "bailarina"), ella = perf === "bailarina";
+    const mxTxt = x => `≈ $${fmtN(Math.round(deUsd("mxn", aUsd("pyg", x))), 0)} MXN`;
+    let total = 0, pagado = 0, faltaPy = 0, faltaMx = 0;
+    for (const [, mx, items] of GASTOS) for (const [n, v, sol] of items) {
+      if (sol && !ella) continue;
+      total += v; if (pagados[n]) pagado += v; else if (mx) faltaMx += v; else faltaPy += v;
     }
-    c.append(el("div", { class: "g-total" }, el("h3", { text: "Total por persona" }),
-      el("div", { class: "g-fila" }, el("span", { text: "Bailarinas" }), el("span", { text: gs(ellas) })),
-      el("div", { class: "g-fila" }, el("span", {}, "Los demás", el("small", { text: "Sin accesorios ni uñas" })), el("span", { text: gs(todos) }))),
-      el("p", { class: "nota", text: "Lo de México está en guaraníes; los pesos son aproximados, según la cotización de abajo." }));
+    const falta = total - pagado;
+    const chips = el("div", { class: "g-perfil" }, el("span", { class: "nota", text: "Soy:" }),
+      [["bailarina", "Bailarina"], ["bailarin", "Bailarín"], ["staff", "Staff"]].map(([v, t]) =>
+        el("button", { type: "button", "aria-pressed": String(perf === v), onclick: () => { escribir("info-perfil", v); gastos(); } }, t)));
+    c.append(chips, el("div", { class: "g-total" + (falta === 0 ? " listo" : "") },
+      el("span", { class: "etiqueta", text: falta === 0 ? "¡Todo pagado!" : "Te falta pagar" }),
+      el("b", { class: "g-grande", text: gs(falta) }),
+      el("div", { class: "g-barra", "aria-hidden": "true" }, el("i", { style: `width:${total ? Math.round(pagado * 100 / total) : 0}%` })),
+      el("div", { class: "g-fila" }, el("span", { text: "Ya pagaste" }), el("span", { text: gs(pagado) })),
+      el("div", { class: "g-fila" }, el("span", { text: "Falta pagar acá" }), el("span", { text: gs(faltaPy) })),
+      el("div", { class: "g-fila" }, el("span", { text: "Falta pagar en México" }), el("span", {}, gs(faltaMx), faltaMx ? el("small", { text: mxTxt(faltaMx) }) : null)),
+      el("div", { class: "g-fila g-sub" }, el("span", { text: "Total por persona" }), el("span", { text: gs(total) }))));
+    for (const [tit, mx, items] of GASTOS) {
+      const vis = items.filter(it => ella || !it[2]);
+      c.append(el("div", { class: "g-grupo" }, el("h3", { text: tit }),
+        vis.map(([n, v, sol]) => {
+          const cb = el("input", { type: "checkbox", "aria-label": "Ya pagué " + n });
+          cb.checked = !!pagados[n];
+          cb.addEventListener("change", () => { if (cb.checked) pagados[n] = 1; else delete pagados[n]; escribir("gastos-pagados", pagados); gastos(); });
+          return el("label", { class: "g-item" + (pagados[n] ? " hecho" : "") }, cb,
+            el("span", { class: "g-nom" }, n, sol ? el("small", { text: "Solo bailarinas" }) : null),
+            el("span", { class: "g-monto" }, gs(v), mx ? el("small", { text: mxTxt(v) }) : null));
+        })));
+    }
+    c.append(el("p", { class: "nota", text: (ella ? "" : "Accesorios y uñas son solo para bailarinas, por eso no te aparecen. ") + "Marcá lo que ya pagaste: queda guardado solo en este celular. Lo de México está en guaraníes; los pesos son aproximados." }));
   }
+  window.addEventListener("hashchange", () => { if (location.hash === "#plata") gastos(); });
   function pintarTasa() {
     $("#t-pyg").value = fmtN(tasa.pyg, 0); $("#t-mxn").value = fmtN(tasa.mxn, 2);
     $("#t-fuente").textContent = propia ? "Estás usando una cotización propia, guardada en este celular." : `Cotización de mercado del ${auto.fecha}. Se actualiza sola cuando abrís la app con internet. En casas de cambio puede ser un poco peor.`;
