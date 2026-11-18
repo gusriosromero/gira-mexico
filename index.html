@@ -296,6 +296,14 @@ p{margin:0}
 .ref{background:var(--superficie);border-radius:12px;padding:10px 12px;font-size:13px}
 .ref b{display:block;font-size:15px;font-variant-numeric:tabular-nums}
 .gastos{display:grid;gap:10px}
+.g-det summary{list-style:none;cursor:pointer;display:grid;gap:4px}
+.g-det summary::-webkit-details-marker{display:none}
+.g-det summary h2::after{content:" ▾";font-size:.7em;color:var(--suave)}
+.g-det:not([open]) summary h2::after{content:" ▸"}
+.g-det[open] .g-resumen{display:none}
+.g-det:not([open]){border:1px solid var(--linea);border-radius:var(--radio);padding:12px 14px}
+.g-resumen{font-size:14px;font-weight:700}
+.g-det > .nota{margin-top:12px}
 .g-grupo{border:1px solid var(--linea);border-radius:var(--radio);padding:12px 14px;display:grid;gap:6px}
 .g-grupo h3,.g-total h3{font-size:15px}
 .g-fila{display:flex;justify-content:space-between;gap:10px;font-size:14px;align-items:baseline}
@@ -827,12 +835,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <h2>Conversor y gastos</h2>
       <p class="nota">Valores <b>aproximados</b>, funciona sin internet.</p>
     </div>
-    <div class="bloque">
-      <span class="etiqueta">Gastos de la gira</span>
-      <h2>Cuánto pone cada uno</h2>
+    <details class="bloque g-det" id="g-bloque" open>
+      <summary><span class="etiqueta">Gastos de la gira</span><h2>Cuánto pone cada uno</h2><span class="g-resumen" id="g-resumen"></span></summary>
       <p class="nota">Montos <b>por persona</b>, en guaraníes. Marcá lo que ya pagaste y el total va bajando.</p>
       <div class="gastos" id="gastos"></div>
-    </div>
+    </details>
     <div class="bloque">
       <h2>Conversor de moneda</h2>
       <p class="nota">Tocá un cuadro y escribí un monto.</p>
@@ -1603,6 +1610,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       total += v; if (pagados[n]) pagado += v; else if (mx) faltaMx += v; else faltaPy += v;
     }
     const falta = total - pagado;
+    const r = $("#g-resumen"); if (r) r.textContent = falta === 0 ? "¡Todo pagado!" : "Te falta pagar " + gs(falta) + " · tocá para ver";
     const chips = el("div", { class: "g-perfil" }, el("span", { class: "nota", text: "Soy:" }),
       [["bailarina", "Bailarina"], ["bailarin", "Bailarín"], ["staff", "Staff"]].map(([v, t]) =>
         el("button", { type: "button", "aria-pressed": String(perf === v), onclick: () => { escribir("info-perfil", v); gastos(); } }, t)));
@@ -1629,6 +1637,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     c.append(el("p", { class: "nota", text: (ella ? "" : "Accesorios y uñas son solo para bailarinas, por eso no te aparecen. ") + "Marcá lo que ya pagaste: queda guardado solo en este celular. Lo de México está en guaraníes; los pesos son aproximados." }));
   }
   window.addEventListener("hashchange", () => { if (location.hash === "#plata") gastos(); });
+  // Desde que arranca el viaje, el conversor va primero y los gastos quedan plegados abajo.
+  if (new Date() >= new Date(2026, 10, 30)) { const g = $("#g-bloque"), cv = $("#vista-plata .conversor"); if (g && cv) { g.open = false; cv.after(g); } }
   function pintarTasa() {
     $("#t-pyg").value = fmtN(tasa.pyg, 0); $("#t-mxn").value = fmtN(tasa.mxn, 2);
     $("#t-fuente").textContent = propia ? "Estás usando una cotización propia, guardada en este celular." : `Cotización de mercado del ${auto.fecha}. Se actualiza sola cuando abrís la app con internet. En casas de cambio puede ser un poco peor.`;
