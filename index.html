@@ -295,6 +295,15 @@ p{margin:0}
 .refs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .ref{background:var(--superficie);border-radius:12px;padding:10px 12px;font-size:13px}
 .ref b{display:block;font-size:15px;font-variant-numeric:tabular-nums}
+.gastos{display:grid;gap:10px}
+.g-grupo{border:1px solid var(--linea);border-radius:var(--radio);padding:12px 14px;display:grid;gap:6px}
+.g-grupo h3,.g-total h3{font-size:15px}
+.g-fila{display:flex;justify-content:space-between;gap:10px;font-size:14px;align-items:baseline}
+.g-fila span:last-child{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap;text-align:right}
+.g-fila small{display:block;color:var(--suave);font-weight:400;font-size:12px}
+.g-sub{border-top:1px solid var(--linea);padding-top:6px;margin-top:2px}
+.g-total{background:var(--superficie);border-radius:var(--radio);padding:12px 14px;display:grid;gap:6px}
+.g-total .g-fila{font-size:15px}
 .cotiz summary{cursor:pointer;font-weight:700;font-size:14px}
 .cotiz-campos{display:grid;gap:10px;margin-top:10px;font-size:14px}
 .cotiz-campos input{font:inherit;font-weight:700;width:90px;padding:4px 6px;border-radius:8px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);text-align:right}
@@ -613,7 +622,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="mosaico c-durazno" href="#recorrido" data-vista="recorrido"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span class="txt"><b>Recorrido</b><small>Vuelos, fechas y el festival</small></span></a>
       <a class="mosaico c-celeste" href="#mi-lista" data-vista="mi-lista"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span><span class="txt"><b>Qué llevar</b><small>Tu lista de equipaje</small></span></a>
       <a class="mosaico c-lila" href="#repertorio" data-vista="repertorio"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="txt"><b>Repertorio</b><small>Cuadros y música del espectáculo</small></span></a>
-      <a class="mosaico c-rosa" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Conversor de moneda</b><small>Pesos mexicanos, guaraníes y dólares</small></span></a>
+      <a class="mosaico c-rosa" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Plata y gastos</b><small>Gastos de la gira y conversor de moneda</small></span></a>
       <a class="mosaico c-durazno" href="#fotos" data-vista="fotos"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="txt"><b>Fotos y videos</b><small>Subí y bajá los del grupo</small></span></a>
       <a class="mosaico c-celeste" href="#lugares" data-vista="lugares"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span class="txt"><b>Lugares</b><small>Los 9 pueblos de la gira y San Blas</small></span></a>
       <a class="mosaico c-lila" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
@@ -796,9 +805,19 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   <!-- PLATA -->
   <section class="vista" id="vista-plata" hidden>
     <div class="bloque">
-      <span class="etiqueta">Conversor</span>
+      <span class="etiqueta">Plata</span>
+      <h2>Gastos y conversor</h2>
+      <p class="nota">Valores <b>aproximados</b>, funciona sin internet.</p>
+    </div>
+    <div class="bloque">
+      <span class="etiqueta">Gastos de la gira</span>
+      <h2>Cuánto pone cada uno</h2>
+      <p class="nota">Montos <b>por persona</b>, en guaraníes. Algunos se pagan acá y otros allá en México.</p>
+      <div class="gastos" id="gastos"></div>
+    </div>
+    <div class="bloque">
       <h2>Conversor de moneda</h2>
-      <p class="nota">Tocá un cuadro y escribí un monto. Valores <b>aproximados</b>, funciona sin internet.</p>
+      <p class="nota">Tocá un cuadro y escribí un monto.</p>
     </div>
     <div class="conversor">
       <label class="moneda" for="m-mxn"><span><b>Pesos mexicanos</b><small>MXN</small></span><span class="campo"><input id="m-mxn" inputmode="decimal" autocomplete="off" placeholder="0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span></label>
@@ -1550,10 +1569,30 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       c.append(el("div", { class: "ref" }, t, el("b", { text: `$${fmtN(mxn, 0)} MXN` }), el("span", { class: "nota", text: `≈ G. ${fmtN(Math.round(deUsd("pyg", aUsd("mxn", mxn)) / 100) * 100, 0)}` })));
     }
   }
+  const GASTOS = [
+    ["Se paga en Paraguay", false, [["Aporte AIFL", 62200], ["Regalo de ñandutí", 40000], ["Camisa Ao Po'i", 150000], ["Remeras", 73500], ["DJ en la presentación familiar", 20000], ["Accesorios", 110000, 1], ["Uñas", 100000, 1]]],
+    ["Se paga en México", true, [["Aporte al festival de San Blas", 350000], ["Hotel en San Blas (1 día)", 50000], ["Bus Tepic – San Blas", 60200], ["Bus Guadalajara – Tepic, ida y vuelta", 315400]]],
+  ];
+  const gs = x => "G. " + fmtN(x, 0);
+  function gastos() {
+    const c = $("#gastos"); if (!c) return; c.textContent = "";
+    let todos = 0, ellas = 0;
+    for (const [tit, mx, items] of GASTOS) {
+      const sum = items.reduce((a, it) => a + it[1], 0); todos += items.reduce((a, it) => a + (it[2] ? 0 : it[1]), 0); ellas += sum;
+      const pesos = x => mx ? el("small", { text: `≈ $${fmtN(Math.round(deUsd("mxn", aUsd("pyg", x))), 0)} MXN` }) : null;
+      c.append(el("div", { class: "g-grupo" }, el("h3", { text: tit }),
+        items.map(([n, v, sol]) => el("div", { class: "g-fila" }, el("span", {}, n, sol ? el("small", { text: "Solo bailarinas" }) : null), el("span", {}, gs(v), pesos(v)))),
+        el("div", { class: "g-fila g-sub" }, el("span", { text: "Subtotal" }), el("span", {}, gs(sum), pesos(sum)))));
+    }
+    c.append(el("div", { class: "g-total" }, el("h3", { text: "Total por persona" }),
+      el("div", { class: "g-fila" }, el("span", { text: "Bailarinas" }), el("span", { text: gs(ellas) })),
+      el("div", { class: "g-fila" }, el("span", {}, "Los demás", el("small", { text: "Sin accesorios ni uñas" })), el("span", { text: gs(todos) }))),
+      el("p", { class: "nota", text: "Lo de México está en guaraníes; los pesos son aproximados, según la cotización de abajo." }));
+  }
   function pintarTasa() {
     $("#t-pyg").value = fmtN(tasa.pyg, 0); $("#t-mxn").value = fmtN(tasa.mxn, 2);
     $("#t-fuente").textContent = propia ? "Estás usando una cotización propia, guardada en este celular." : `Cotización de mercado del ${auto.fecha}. Se actualiza sola cuando abrís la app con internet. En casas de cambio puede ser un poco peor.`;
-    refs(); convertir(ultima);
+    refs(); gastos(); convertir(ultima);
   }
   for (const k of ["pyg", "mxn"]) $("#t-" + k).addEventListener("change", e => { const x = num(e.target.value); if (x > 0) { propia = { pyg: tasa.pyg, mxn: tasa.mxn, [k]: x }; tasa = propia; escribir("info-tasa", propia); } pintarTasa(); });
   $("#t-reset").addEventListener("click", () => { propia = null; tasa = auto; try { localStorage.removeItem("info-tasa"); } catch (e) {} pintarTasa(); });
