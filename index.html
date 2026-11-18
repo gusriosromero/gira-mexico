@@ -427,6 +427,41 @@ p{margin:0}
 #j-partida,#j-ahorcado,#j-sopa,#j-vibora{display:grid;gap:inherit}#j-partida[hidden],#j-ahorcado[hidden],#j-sopa[hidden],#j-vibora[hidden]{display:none}
 .j-juego.c4{background:var(--p-rosa)}
 .j-juego.c5{background:var(--p-durazno)}
+.j-juego.c6{background:var(--p-lila)}
+#j-jeroky{display:grid;gap:inherit}#j-jeroky[hidden],.jk-juego[hidden],.jk-colores[hidden]{display:none}
+.jk-reglas summary{cursor:pointer;font-weight:700;font-size:14px}
+.jk-reglas ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.jk-juego{display:grid;gap:12px}
+.jk-rivales{display:flex;gap:6px;flex-wrap:wrap}
+.jk-rival{flex:1 1 0;min-width:0;border-radius:12px;padding:8px 10px;background:var(--superficie);border:2px solid transparent;display:grid;gap:2px;font-size:13px}
+.jk-rival b{font-size:13px;overflow-wrap:anywhere;line-height:1.2}
+.jk-rival.activo{border-color:var(--texto)}
+.jk-rival .jk-cuantas{font-weight:700}
+.jk-mesa{display:flex;justify-content:center;align-items:center;gap:22px;padding:6px 0}
+.jk-centro{display:grid;justify-items:center;gap:6px}
+.jk-color{font-size:13px;font-weight:700;border-radius:999px;padding:3px 10px;color:#fff}
+.jk-carta{--c:#888;position:relative;width:64px;height:92px;flex:none;border-radius:10px;border:3px solid #fff;background:var(--c);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);display:grid;place-items:center;font-family:var(--titulo);font-size:36px;line-height:1;padding:0;cursor:pointer;user-select:none}
+.jk-carta small{position:absolute;left:4px;top:3px;font-family:var(--cuerpo,inherit);font-size:13px;line-height:1}
+.jk-carta small + small{left:auto;top:auto;right:4px;bottom:3px}
+.jk-carta .jk-emo{font-size:30px;font-family:inherit}
+.jk-carta.jk-comodin{background:conic-gradient(#e04f4f 0 25%,#2f9e5b 0 50%,#e0a800 0 75%,#2e7fd9 0)}
+.jk-carta.jk-comodin .jk-emo{background:rgba(255,255,255,.85);border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font-size:26px}
+.jk-dorso{background:repeating-linear-gradient(45deg,#3b3470 0 8px,#4a4290 8px 16px);font-size:13px;letter-spacing:.04em;display:grid;align-content:center;gap:4px}
+.jk-dorso small{position:static;font-size:11px;opacity:.85}
+.jk-dorso:disabled{opacity:.55;cursor:default}
+.jk-dorso.sugerido{animation:lu-pulso 1.2s ease-in-out infinite}
+#jk-pila .jk-carta{width:76px;height:108px;font-size:44px;cursor:default}
+.jk-mano{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.jk-mano .jk-carta.no{opacity:.45;filter:saturate(.6)}
+.jk-mano .jk-carta.si{transform:translateY(-4px);box-shadow:0 6px 10px rgba(0,0,0,.3)}
+.jk-acciones[hidden],.jk-carta[hidden]{display:none}
+.jk-acciones{display:flex;gap:8px;justify-content:center}
+.jk-acciones .btn{flex:1;max-width:200px}
+.jk-grito:not(:disabled){animation:lu-pulso 1.2s ease-in-out infinite}
+.jk-acciones .btn:disabled{opacity:.45}
+.jk-yo{text-align:center;font-weight:700;font-size:14px}
+.jk-colores{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.jk-colores button{border:0;border-radius:12px;padding:14px 8px;color:#fff;font:inherit;font-weight:700;cursor:pointer}
 .j-juego.oculto{display:none}
 .j-nombre{display:grid;gap:4px;font-weight:700;font-size:14px}
 #j-menu>.j-nombre{margin:16px 0 18px}
@@ -1102,6 +1137,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         <button type="button" class="j-juego c3" id="j-abrir-sopa" data-ev="juegos: abrió Sopa de letras"><span class="j-letras" aria-hidden="true">ABC</span><span><b>Sopa de letras</b><small>Encontrá las palabras escondidas</small></span></button>
         <button type="button" class="j-juego c4" id="j-abrir-vibora" data-ev="juegos: abrió Viborita viajera"><span class="j-letras" aria-hidden="true">🧳</span><span><b>Viborita viajera</b><small>Juntá las cosas del viaje sin chocarte</small></span></button>
         <button type="button" class="j-juego c5" id="j-abrir-ludo" data-ev="juegos: abrió Ludo"><span class="j-letras" aria-hidden="true">🎲</span><span><b>Ludo</b><small>Del Paraguay al escenario de San Blas. De 2 a 4, personas o el teléfono</small></span></button>
+        <button type="button" class="j-juego c6" id="j-abrir-jeroky" data-ev="juegos: abrió Jeroky"><span class="j-letras" aria-hidden="true">🃏</span><span><b>¡Jeroky!</b><small>Juego de cartas: tirá del mismo color o número y quedate sin cartas. Contra el teléfono</small></span></button>
         <div class="j-juego pronto"><span><b>Más juegos</b><small>Pronto vamos a sumar otros</small></span></div>
       </div>
     </div>
@@ -1207,6 +1243,52 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <b id="lu-fin-tit"></b>
       <span id="lu-fin-txt"></span>
       <a class="wa" id="lu-compartir" href="#" target="_blank" rel="noopener" data-ev="ludo: compartió su resultado">Compartir mi resultado por WhatsApp</a>
+    </div>
+    </div>
+    <div id="j-jeroky" hidden>
+    <button type="button" class="j-volver" id="jk-volver" data-ev="juegos: volvió al menú de juegos">‹ Todos los juegos</button>
+    <div class="bloque">
+      <span class="etiqueta">Juegos · para el viaje</span>
+      <h2>¡Jeroky!</h2>
+      <p class="nota">Tirá una carta del mismo color o del mismo número que la del centro. Si no tenés, levantá del mazo. Cuando te queda una sola carta, tocá <b>¡Jeroky!</b> o levantás 2. Gana el primero que se queda sin cartas. Funciona sin internet.</p>
+      <details class="jk-reglas"><summary>Cartas especiales</summary>
+        <ul>
+          <li><b>✈️ Perdiste el vuelo:</b> el siguiente pierde su turno.</li>
+          <li><b>🔄 Cambio de coreografía:</b> cambia el sentido de la ronda.</li>
+          <li><b>🧳 Equipaje extra:</b> el siguiente levanta 2.</li>
+          <li><b>🎭 ¡Al escenario!:</b> todos los demás levantan 1.</li>
+          <li><b>🕸️ Ñandutí:</b> va sobre cualquier carta y elegís el color.</li>
+        </ul>
+      </details>
+    </div>
+    <div id="jk-config" class="lu-config">
+      <button type="button" class="btn" id="jk-seguir" data-ev="jeroky: siguió la partida guardada" hidden>▶ Seguir la partida guardada</button>
+      <p class="lu-nom-tit">¿Contra cuántos teléfonos?</p>
+      <div class="j-opc" role="group" aria-label="Cantidad de rivales">
+        <button type="button" data-jkr="1" aria-pressed="true">1 teléfono</button>
+        <button type="button" data-jkr="2" aria-pressed="false">2 teléfonos</button>
+        <button type="button" data-jkr="3" aria-pressed="false">3 teléfonos</button>
+      </div>
+      <button type="button" class="btn" id="jk-empezar" data-ev="jeroky: empezar partida nueva">Empezar partida nueva</button>
+      <p class="nota" id="jk-ganadas"></p>
+    </div>
+    <div id="jk-juego" class="jk-juego" hidden data-sin-ev>
+      <div class="jk-rivales" id="jk-rivales"></div>
+      <div class="jk-mesa">
+        <button type="button" class="jk-carta jk-dorso" id="jk-mazo" aria-label="Levantar una carta del mazo"><span>Jeroky</span><small id="jk-quedan"></small></button>
+        <div class="jk-centro"><div id="jk-pila"></div><span class="jk-color" id="jk-color"></span></div>
+      </div>
+      <p class="lu-msj" id="jk-msj" aria-live="polite"></p>
+      <div class="jk-colores" id="jk-colores" hidden></div>
+      <div class="jk-acciones"><button type="button" class="btn jk-grito" id="jk-grito">¡Jeroky!</button><button type="button" class="btn sec" id="jk-pasar">Pasar</button></div>
+      <div class="jk-yo" id="jk-yo"></div>
+      <div class="jk-mano" id="jk-mano"></div>
+      <button type="button" class="btn sec" id="jk-salir">Pausar o cambiar rivales</button>
+    </div>
+    <div class="j-fin" id="jk-fin" hidden>
+      <b id="jk-fin-tit"></b>
+      <span id="jk-fin-txt"></span>
+      <a class="wa" id="jk-compartir" href="#" target="_blank" rel="noopener" data-ev="jeroky: compartió su resultado">Compartir mi resultado por WhatsApp</a>
     </div>
     </div>
     <div id="j-partida" hidden>
@@ -1860,7 +1942,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   $("#j-nombre").value = nombreJugador();
   $("#j-nombre").addEventListener("change", e => guardarNombre(e.target.value));
   document.addEventListener("click", e => {
-    const a = e.target.closest("#j-compartir, #a-compartir, #s-compartir, #vb-compartir, #lu-compartir");
+    const a = e.target.closest("#j-compartir, #a-compartir, #s-compartir, #vb-compartir, #lu-compartir, #jk-compartir");
     const t = a && TARJETAS[a.id];
     if (!t) return;
     e.preventDefault();
@@ -1956,6 +2038,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       document.dispatchEvent(new CustomEvent("sopa-ver", { detail: cual === "sopa" }));
       $("#j-vibora").hidden = cual !== "vibora"; document.dispatchEvent(new CustomEvent("vibora-ver", { detail: cual === "vibora" }));
       $("#j-ludo").hidden = cual !== "ludo"; document.dispatchEvent(new CustomEvent("ludo-ver", { detail: cual === "ludo" }));
+      $("#j-jeroky").hidden = cual !== "jeroky"; document.dispatchEvent(new CustomEvent("jeroky-ver", { detail: cual === "jeroky" }));
       pararReloj(); if (cual === "memoria") nueva();
       if (cual === "ahorcado") document.dispatchEvent(new Event("ahorcado-abrir"));
       window.scrollTo(0, 0);
@@ -1968,6 +2051,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#j-abrir-vibora").addEventListener("click", () => verJuego("vibora"));
     $("#j-abrir-ludo").addEventListener("click", () => verJuego("ludo"));
     $("#lu-volver").addEventListener("click", () => verJuego(null));
+    $("#j-abrir-jeroky").addEventListener("click", () => verJuego("jeroky"));
+    $("#jk-volver").addEventListener("click", () => verJuego(null));
     $("#vb-volver").addEventListener("click", () => verJuego(null));
     $("#s-volver").addEventListener("click", () => verJuego(null));
     window.addEventListener("hashchange", () => { if (location.hash === "#juego") verJuego(null); });
@@ -2268,6 +2353,192 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (!e.detail) { clearTimeout(espera); anim = null; return; }
       // Al entrar siempre se ven las opciones; la partida a medias queda en "Seguir la partida guardada".
       E = null; verPartida(false); pintarConfig();
+    });
+  })();
+
+  // ---------- ¡Jeroky!: juego de cartas contra el teléfono ----------
+  (() => {
+    const CJ = [
+      { nom: "Villa Elisa", ico: "🏺", f: "#e04f4f" }, { nom: "Tepic", ico: "🍾", f: "#2f9e5b" },
+      { nom: "Mexcaltitán", ico: "👒", f: "#e0a800" }, { nom: "Guadalajara", ico: "🎺", f: "#2e7fd9" },
+    ];
+    const ESP = {
+      vuelo: { emo: "✈️", nom: "Perdiste el vuelo" }, vuelta: { emo: "🔄", nom: "Cambio de coreografía" },
+      equipaje: { emo: "🧳", nom: "Equipaje extra" }, escenario: { emo: "🎭", nom: "¡Al escenario!" }, nanduti: { emo: "🕸️", nom: "Ñandutí" },
+    };
+    const RIVALES = ["Tepic", "Mexcaltitán", "Guadalajara"];
+    let E = leer("jeroky-partida", null), rivales = +leer("jeroky-rivales", 1) || 1, espera = null, grace = null;
+    const pausa = (fn, ms) => { clearTimeout(espera); espera = setTimeout(fn, ms); };
+    function mezclar(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+    function mazoNuevo() {
+      const m = [];
+      for (let c = 0; c < 4; c++) {
+        for (let n = 1; n <= 8; n++) m.push({ c, t: "n", n }, { c, t: "n", n });
+        for (const t of ["vuelo", "vuelta", "equipaje"]) m.push({ c, t }, { c, t });
+        m.push({ c, t: "escenario" });
+      }
+      for (let i = 0; i < 4; i++) m.push({ c: -1, t: "nanduti" });
+      return mezclar(m);
+    }
+    const nomJ = i => i === 0 ? (nombreJugador() || "Vos") : "Teléfono de " + RIVALES[i - 1];
+    const corto = i => i === 0 ? "Vos" : RIVALES[i - 1];
+    const sirve = k => { const top = E.pila[E.pila.length - 1]; return k.t === "nanduti" || k.c === E.color || (k.t === "n" ? top.t === "n" && top.n === k.n : k.t === top.t); };
+    const sig = (i, pasos = 1) => { const n = E.manos.length; return ((i + E.dir * pasos) % n + n) % n; };
+    const guardar = () => escribir("jeroky-partida", E);
+    const msj = t => { $("#jk-msj").textContent = t; };
+    function levantar(i, cant) {
+      let k = 0;
+      for (; k < cant; k++) {
+        if (!E.mazo.length) { const top = E.pila.pop(); E.mazo = mezclar(E.pila); E.pila = [top]; if (!E.mazo.length) break; }
+        E.manos[i].push(E.mazo.pop());
+      }
+      return k;
+    }
+    function cartaEl(k, extra = {}) {
+      const esp = ESP[k.t], col = k.c >= 0 ? CJ[k.c] : null;
+      const b = el(extra.tag || "button", { type: extra.tag ? null : "button", class: "jk-carta" + (k.t === "nanduti" ? " jk-comodin" : "") + (extra.cls ? " " + extra.cls : ""),
+        "aria-label": (esp ? esp.nom : String(k.n)) + (col ? " de " + col.nom : ""), onclick: extra.onclick });
+      if (col) b.style.setProperty("--c", col.f);
+      if (k.t === "n") b.append(el("small", { text: col.ico }), document.createTextNode(String(k.n)), el("small", { text: String(k.n) }));
+      else b.append(el("span", { class: "jk-emo", text: esp.emo }));
+      return b;
+    }
+    function pintar() {
+      if (!E) return;
+      const fin = E.fin != null, mio = !fin && E.turno === 0 && !E.eligiendo;
+      const r = $("#jk-rivales"); r.textContent = "";
+      for (let i = 1; i < E.manos.length; i++) {
+        const n = E.manos[i].length;
+        r.append(el("div", { class: "jk-rival" + (E.turno === i && !fin ? " activo" : "") }, el("b", { text: RIVALES[i - 1] }),
+          el("span", { class: "jk-cuantas", text: "📱 " + n + (n === 1 ? " carta ¡Jeroky!" : " cartas") })));
+      }
+      const top = E.pila[E.pila.length - 1], p = $("#jk-pila"); p.textContent = ""; p.append(cartaEl(top, { tag: "div" }));
+      const cc = $("#jk-color"); cc.textContent = "Color: " + CJ[E.color].nom; cc.style.background = CJ[E.color].f;
+      const mano = E.manos[0], hay = mano.some(sirve);
+      const mz = $("#jk-mazo"); mz.disabled = !mio || E.robo; mz.classList.toggle("sugerido", mio && !hay && !E.robo);
+      $("#jk-quedan").textContent = E.mazo.length + " en el mazo";
+      $("#jk-pasar").disabled = !(mio && E.robo);
+      $("#jk-grito").disabled = !(E.pendiente || (mio && mano.length === 2 && hay && !E.gritado));
+      $("#jk-yo").textContent = fin ? "" : mio ? "Tu turno · tenés " + mano.length + (mano.length === 1 ? " carta" : " cartas") : "Juega " + corto(E.turno) + "…";
+      const m = $("#jk-mano"); m.textContent = "";
+      mano.forEach((k, idx) => m.append(cartaEl(k, { cls: mio ? (sirve(k) ? "si" : "no") : "", onclick: () => { if (mio && sirve(k)) jugar(0, idx); } })));
+      document.querySelector(".jk-acciones").hidden = fin; $("#jk-mazo").hidden = fin;
+      $("#jk-salir").textContent = fin ? "Jugar otra partida" : "Pausar o cambiar rivales";
+    }
+    function jugar(i, idx, colorBot) {
+      const k = E.manos[i].splice(idx, 1)[0];
+      E.pila.push(k);
+      if (k.t === "nanduti") {
+        if (i === 0) { E.eligiendo = true; guardar(); pintar(); elegirColor(); return; }
+        E.color = colorBot;
+      } else E.color = k.c;
+      despues(i, k);
+    }
+    function elegirColor() {
+      const c = $("#jk-colores"); c.textContent = ""; c.hidden = false;
+      msj("Ñandutí: elegí el color que sigue.");
+      CJ.forEach((K, n) => { const b = el("button", { type: "button", text: K.ico + " " + K.nom, onclick: () => { c.hidden = true; E.eligiendo = false; E.color = n; despues(0, E.pila[E.pila.length - 1]); } }); b.style.background = K.f; c.append(b); });
+    }
+    function despues(i, k) {
+      E.jugadas++; E.robo = false;
+      const quien = i === 0 ? "Tiraste" : corto(i) + " tiró";
+      let t = quien + " " + (ESP[k.t] ? ESP[k.t].emo + " " + ESP[k.t].nom : k.n + " " + CJ[k.c].ico) + (k.t === "nanduti" ? " y eligió " + CJ[E.color].nom : "") + ".";
+      if (k.t === "nanduti" && i === 0) t = "Tiraste 🕸️ Ñandutí y elegiste " + CJ[E.color].nom + ".";
+      if (!E.manos[i].length) { E.fin = i; guardar(); pintar(); msj(t); return terminar(); }
+      let salto = 1;
+      const n = sig(i);
+      if (k.t === "vuelo") { t += " " + (n === 0 ? "¡Perdiste el turno!" : corto(n) + " pierde el turno."); salto = 2; }
+      else if (k.t === "vuelta") { E.dir *= -1; t += " Cambia el sentido."; if (E.manos.length === 2) salto = 2; }
+      else if (k.t === "equipaje") { const q = levantar(n, 2); t += " " + (n === 0 ? "Levantás " : corto(n) + " levanta ") + q + "."; }
+      else if (k.t === "escenario") { for (let j = 0; j < E.manos.length; j++) if (j !== i) levantar(j, 1); t += " " + (i === 0 ? "Todos los demás levantan 1." : "Los demás levantan 1."); }
+      // ¡Jeroky! al quedar con una carta
+      if (E.manos[i].length === 1) {
+        if (i === 0) {
+          if (!E.gritado) {
+            E.pendiente = true; E.turnoSig = sig(i, salto); guardar(); pintar(); msj(t + " ¡Te queda una! Tocá ¡Jeroky!");
+            clearTimeout(grace); grace = setTimeout(() => { if (!E || !E.pendiente) return; E.pendiente = false; const q = levantar(0, 2); msj("¡Te olvidaste de gritar Jeroky! Levantás " + q + "."); pasarA(E.turnoSig, 1400); }, 2200);
+            return;
+          }
+          t += " ¡Jeroky!";
+        } else if (Math.random() < .15) { const q = levantar(i, 2); t += " ¡Se olvidó de gritar Jeroky! Levanta " + q + "."; }
+        else t += " " + corto(i) + " gritó ¡Jeroky!";
+      }
+      E.gritado = false;
+      msj(t); pasarA(sig(i, salto), i === 0 ? 900 : 1300);
+    }
+    function pasarA(j, ms) {
+      E.turno = j; E.gritado = false; guardar(); pintar();
+      if (j !== 0) pausa(turnoBot, ms);
+    }
+    function turnoBot() {
+      if (!E || E.fin != null || E.turno === 0) return;
+      const i = E.turno, mano = E.manos[i];
+      let ops = mano.map((k, idx) => ({ k, idx })).filter(o => sirve(o.k));
+      if (!ops.length) {
+        levantar(i, 1); const nueva = mano[mano.length - 1];
+        if (nueva && sirve(nueva)) ops = [{ k: nueva, idx: mano.length - 1 }];
+        else { msj(corto(i) + " levantó una carta y pasa."); return pasarA(sig(i), 1100); }
+      }
+      const cuenta = [0, 0, 0, 0]; mano.forEach(k => { if (k.c >= 0) cuenta[k.c]++; });
+      const amenaza = E.manos[sig(i)].length <= 2;
+      const val = o => o.k.t === "nanduti" ? (mano.length <= 2 ? 50 : -50) : (o.k.t !== "n" ? (amenaza ? 40 : 5) : 10) + cuenta[o.k.c] * 3;
+      ops.sort((a, b) => val(b) - val(a));
+      const o = ops[0];
+      jugar(i, o.idx, cuenta.indexOf(Math.max(...cuenta)) >= 0 ? cuenta.indexOf(Math.max(...cuenta)) : 0);
+    }
+    function terminar() {
+      clearTimeout(espera); clearTimeout(grace);
+      const yo = E.fin === 0, tel = E.manos.length - 1;
+      const ganadas = (+leer("jeroky-ganadas", 0) || 0) + (yo ? 1 : 0); if (yo) escribir("jeroky-ganadas", ganadas);
+      $("#jk-fin-tit").textContent = yo ? "¡Jeroky! Ganaste" : "Ganó " + corto(E.fin);
+      $("#jk-fin-txt").textContent = yo ? "Te quedaste sin cartas antes que " + (tel === 1 ? "el teléfono." : "los " + tel + " teléfonos.") + " Llevás " + ganadas + (ganadas === 1 ? " partida ganada." : " partidas ganadas.") : "Esta vez el teléfono se quedó sin cartas primero. ¿La revancha?";
+      const grande = "Le gané " + (tel === 1 ? "al teléfono" : "a " + tel + " teléfonos"), chico = "después de " + E.jugadas + " jugadas";
+      const texto = "¡Jeroky! · Gira México 2026\n" + grande + " " + chico + ".\n¿Quién me gana?\nhttps://gusriosromero.github.io/gira-mexico/#juego";
+      $("#jk-compartir").hidden = !yo;
+      if (yo) tarjetaResultado("jk-compartir", { juego: "¡Jeroky!", detalle: "Juego de cartas", grande, chico, texto });
+      $("#jk-fin").hidden = false;
+      escribir("jeroky-partida", null);
+      evento("jeroky: terminó una partida (contra " + tel + ", " + (yo ? "ganó la persona" : "ganó el teléfono") + ")", "juego");
+      pintar();
+    }
+    function nueva() {
+      const mazo = mazoNuevo(), manos = Array.from({ length: rivales + 1 }, () => mazo.splice(-7));
+      let i = mazo.findIndex(k => k.t === "n"); const top = mazo.splice(i, 1)[0];
+      E = { mazo, pila: [top], manos, turno: 0, dir: 1, color: top.c, jugadas: 0, robo: false, gritado: false, pendiente: false, fin: null };
+      guardar(); verPartida(true); msj("Empezás vos. Tirá una carta del mismo color o número."); pintar();
+    }
+    function verPartida(si) { $("#jk-config").hidden = si; $("#jk-juego").hidden = !si; $("#jk-fin").hidden = true; $("#jk-colores").hidden = true; }
+    function pintarConfig() {
+      document.querySelectorAll("[data-jkr]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.jkr === rivales)));
+      const g = +leer("jeroky-ganadas", 0) || 0;
+      $("#jk-ganadas").textContent = g ? "Llevás " + g + (g === 1 ? " partida ganada." : " partidas ganadas.") : "";
+      $("#jk-seguir").hidden = !(E && E.fin == null);
+    }
+    document.querySelectorAll("[data-jkr]").forEach(b => b.addEventListener("click", () => { rivales = +b.dataset.jkr; escribir("jeroky-rivales", rivales); pintarConfig(); }));
+    $("#jk-empezar").addEventListener("click", nueva);
+    $("#jk-seguir").addEventListener("click", () => {
+      E = leer("jeroky-partida", E); if (!E) return pintarConfig();
+      verPartida(true); pintar(); msj(E.turno === 0 ? "Seguís vos." : "Sigue " + corto(E.turno) + ".");
+      if (E.eligiendo) elegirColor(); else if (E.pendiente) { E.pendiente = false; pasarA(E.turnoSig, 900); } else if (E.turno !== 0) pausa(turnoBot, 900);
+    });
+    $("#jk-salir").addEventListener("click", () => { clearTimeout(espera); clearTimeout(grace); if (E && E.fin != null) E = null; verPartida(false); pintarConfig(); });
+    $("#jk-mazo").addEventListener("click", () => {
+      if (!E || E.turno !== 0 || E.robo || E.eligiendo || E.fin != null) return;
+      const q = levantar(0, 1); E.robo = true;
+      const nueva = E.manos[0][E.manos[0].length - 1];
+      if (!q) { msj("No quedan cartas en el mazo. Pasás."); E.robo = false; return pasarA(sig(0), 900); }
+      if (sirve(nueva)) { msj("Levantaste una carta que sirve. Tirala o tocá Pasar."); guardar(); pintar(); }
+      else { msj("Levantaste una carta y no sirve. Pasás."); E.robo = false; pasarA(sig(0), 1100); }
+    });
+    $("#jk-pasar").addEventListener("click", () => { if (!E || E.turno !== 0 || !E.robo) return; E.robo = false; msj("Pasaste."); pasarA(sig(0), 700); });
+    $("#jk-grito").addEventListener("click", () => {
+      if (!E) return;
+      if (E.pendiente) { E.pendiente = false; clearTimeout(grace); msj("¡Jeroky! Te queda una sola carta."); return pasarA(E.turnoSig, 1000); }
+      E.gritado = true; msj("¡Jeroky! Ahora tirá tu penúltima carta."); pintar();
+    });
+    document.addEventListener("jeroky-ver", e => {
+      if (!e.detail) { clearTimeout(espera); clearTimeout(grace); return; }
+      E = leer("jeroky-partida", null); verPartida(false); pintarConfig();
     });
   })();
 
