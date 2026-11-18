@@ -1189,7 +1189,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <div class="bloque">
       <span class="etiqueta">Juegos · para el viaje</span>
       <h2>Ludo</h2>
-      <p class="nota">De 2 a 4 jugadores: en cada ciudad elegís si juega una persona (pasándose el teléfono) o el teléfono. Cada uno sale de una parada del viaje (Villa Elisa, Asunción, Panamá o Guadalajara) y hay que llegar con las 4 fichas al centro: el escenario del festival en San Blas. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
+      <p class="nota">De 2 a 4 jugadores: en cada ciudad elegís si juega una persona (pasándose el teléfono) o el teléfono. Cada uno sale de una ciudad del viaje (Villa Elisa, Tepic, Mexcaltitán o Guadalajara) y hay que llegar con las 4 fichas al centro: el escenario del festival en San Blas. Con un 6 salís, y si caés donde hay otra ficha, la mandás de vuelta a su casa. Las casillas con estrella son seguras. Funciona sin internet.</p>
     </div>
     <div id="lu-config" class="lu-config">
       <button type="button" class="btn" id="lu-seguir" data-ev="ludo: siguió la partida guardada" hidden>▶ Seguir la partida guardada</button>
@@ -1979,8 +1979,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const N = 15, lienzo = $("#lu-lienzo"), g = lienzo.getContext("2d"), C = lienzo.width / N, FIN = 56;
     const COL = [
       { nom: "Rojo", lugar: "Villa Elisa", ico: "🏺", f: "#e04f4f", s: "#f9d0d0", base: [0, 0], ini: 0, casa: i => [1 + i, 7], meta: [6.33, 7.5] },
-      { nom: "Verde", lugar: "Asunción", ico: "🍾", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.33] },
-      { nom: "Amarillo", lugar: "Panamá", ico: "👒", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.67, 7.5] },
+      { nom: "Verde", lugar: "Tepic", ico: "🍾", f: "#2f9e5b", s: "#cdeedb", base: [9, 0], ini: 13, casa: i => [7, 1 + i], meta: [7.5, 6.33] },
+      { nom: "Amarillo", lugar: "Mexcaltitán", ico: "👒", f: "#e0a800", s: "#fbecb3", base: [9, 9], ini: 26, casa: i => [13 - i, 7], meta: [8.67, 7.5] },
       { nom: "Azul", lugar: "Guadalajara", ico: "🎺", f: "#2e7fd9", s: "#cfe2f7", base: [0, 9], ini: 39, casa: i => [7, 13 - i], meta: [7.5, 8.67] },
     ];
     // Recorrido de 52 casillas, empezando en la salida del Rojo y yendo a favor del reloj.
@@ -2475,7 +2475,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       paraguay: [
         ...P("Comida o bebida paraguaya", "Tereré", "Chipa", "Sopa paraguaya", "Mbeju", "Mandioca"),
         ...P("Artesanía paraguaya", "Ñandutí"), ...P("Árbol del Paraguay", "Lapacho"), ...P("Idioma del Paraguay", "Guaraní"),
-        ...P("Nuestra ciudad", "Villa Elisa"), ...P("Capital del Paraguay", "Asunción"), ...P("Instrumento paraguayo", "Arpa"), ...P("Música paraguaya", "Polca"),
+        ...P("Nuestra ciudad", "Villa Elisa"), ...P("Instrumento paraguayo", "Arpa"), ...P("Música paraguaya", "Polca"),
       ],
       musicas: [
         ...P("Música del cuadro 1", "Tetagua Sapukai", "Pájaro Campana", "Carreta Guy", "Tren Lechero"),
@@ -2483,12 +2483,12 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         ...P("Música del cuadro 3", "Acuarela Paraguaya", "La Paraguaya", "Pycasu Hovy", "Nda Rekoi La Culpa", "Gallito Cantor"),
       ],
       mexico: [
-        ...P("Donde es el festival", "San Blas"), ...P("Estado de México", "Nayarit", "Jalisco"), ...P("Ciudad de México a la que llegamos", "Guadalajara"),
+        ...P("Donde es el festival", "San Blas"), ...P("Estado de México", "Nayarit", "Jalisco"), ...P("Ciudad de México a la que llegamos", "Guadalajara"), ...P("Capital de Nayarit", "Tepic"), ...P("Pueblo de la gira", "Mexcaltitán", "Rosamorada", "Santiago Ixcuintla"),
         ...P("Música mexicana", "Mariachi"), ...P("Comida mexicana", "Tacos", "Tamales", "Guacamole", "Pozole", "Elote"),
         ...P("Se rompe en las fiestas", "Piñata"), ...P("Va en la cabeza", "Sombrero"), ...P("Planta de México", "Nopal"), ...P("Playa cerca de San Blas", "Matanchén"),
       ],
       gira: [
-        ...P("Para el viaje", "Pasaporte", "Avión", "Aeropuerto", "Valija"), ...P("Ahí hacemos escala", "Panamá"),
+        ...P("Para el viaje", "Pasaporte", "Avión", "Aeropuerto", "Valija"),
         ...P("Vamos a uno en México", "Festival"), ...P("Ahí bailamos", "Escenario"), ...P("Antes de cada función", "Ensayo"), ...P("Lo que hacemos", "Danza", "Folklore"),
         ...P("Nuestro grupo", "Acuarela Mimbi"), ...P("Se baila con ella en la cabeza", "Botella"), ...P("Lo llevan las bailarinas", "Cántaro"),
         ...P("Alguien del elenco", "Vivi", "Caro", "Carmen", "Flavia", "Kari", "Kate", "Nahomi", "Samira", "Carlitos", "Edu", "Joel", "Santi", "Tima", "Gustavo"),
