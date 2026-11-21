@@ -2878,8 +2878,6 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
         g.fillStyle = "#17171c"; g.font = "190px Anton, Impact, sans-serif"; g.fillText(String(n), x + w / 2, y + 205);
         g.fillStyle = "#4a4e60"; g.font = "700 40px Montserrat, sans-serif"; g.fillText(t, x + w / 2, y + 268);
       });
-      g.font = "600 40px Montserrat, sans-serif"; g.fillStyle = "#fff";
-      g.fillText("(modo ansioso 😬)", W / 2, 1585);
     } else {
     g.fillText(f.d === 0 ? "¡Hoy" : "Faltan", W / 2, 800);
     g.fillStyle = "#fff"; g.font = (f.d === 0 ? "300px" : "520px") + " Anton, Impact, sans-serif";
@@ -2891,7 +2889,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     }
     g.shadowColor = "transparent";
     g.font = "700 52px Montserrat, sans-serif"; g.fillStyle = "#fff";
-    g.fillText("para la Gira México 2026", W / 2, ansioso ? 1655 : 1600);
+    g.fillText("para la Gira México 2026", W / 2, ansioso ? 1620 : 1600);
     g.fillStyle = "#17171c";
     g.font = "700 40px Montserrat, sans-serif";
     const pill = g.measureText("ACUARELA MIMBI · SAN BLAS, NAYARIT").width + 110, py = 1700, ph = 100;
@@ -2905,7 +2903,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const compartirRegresiva = async ansioso => {
     const b = await imagenRegresiva(ansioso);
     if (!b) return;
-    const nombre = "faltan-" + faltan().d + "-dias" + (ansioso ? "-ansioso" : "") + ".png";
+    const nombre = "faltan-" + faltan().d + "-dias" + (ansioso ? "-y-contando" : "") + ".png";
     const arch = new File([b], nombre, { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [arch] })) {
       try { await navigator.share({ files: [arch] }); } catch (e) {}
