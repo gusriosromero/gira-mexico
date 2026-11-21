@@ -90,6 +90,7 @@ button{font:inherit;color:inherit}
 .regresiva .r-caja small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4a4e60}
 .regresiva .r-sub{font-size:13px;font-weight:600;color:#fff;margin:0;text-shadow:0 1px 3px rgba(23,23,28,.3)}
 .regresiva .btn{background:var(--tinta);color:#fff;display:inline-flex;gap:8px;align-items:center}
+.regresiva .r-ansioso{background:rgba(255,255,255,.92);color:var(--tinta);font-size:14px}
 .regresiva .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* Pestañas */
@@ -670,6 +671,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       </div>
       <p class="r-sub">Despegamos el lunes 30 de noviembre a las 06:31</p>
       <button type="button" class="btn" id="r-compartir"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir imagen de hoy</button>
+      <button type="button" class="btn r-ansioso" id="r-ansioso" data-ev="inicio: compartió la cuenta regresiva en modo ansioso">😬 Modo ansioso</button>
     </div>
     <div class="clima" data-clima hidden></div>
     <div class="cab-inicio">
@@ -2844,7 +2846,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   ticRegresiva(); setInterval(ticRegresiva, 1000);
 
   // Imagen vertical para estados y el grupo de WhatsApp
-  async function imagenRegresiva() {
+  async function imagenRegresiva(ansioso) {
     try { await Promise.all(["40px Anton", "40px 'Great Vibes'", "700 40px Montserrat", "600 40px Montserrat"].map(x => document.fonts.load(x))); } catch (e) {}
     const W = 1080, H = 1920, cv = document.createElement("canvas");
     cv.width = W; cv.height = H;
@@ -2865,6 +2867,20 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     g.textAlign = "center"; g.textBaseline = "alphabetic";
     g.shadowColor = "rgba(23,23,28,.25)"; g.shadowBlur = 18; g.shadowOffsetY = 6;
     g.fillStyle = "#fff"; g.font = "120px 'Great Vibes', cursive";
+    if (ansioso) {
+      g.fillText("Faltan", W / 2, 790);
+      const cajas = [[f.d, f.d === 1 ? "DÍA" : "DÍAS"], [dos(f.h), f.h === 1 ? "HORA" : "HORAS"], [dos(f.m), "MINUTOS"], [dos(f.s), "SEGUNDOS"]];
+      cajas.forEach(([n, t], i) => {
+        const x = i % 2 ? 560 : 120, y = i < 2 ? 870 : 1205, w = 400, h = 300;
+        g.shadowColor = "rgba(23,23,28,.2)"; g.shadowBlur = 30; g.shadowOffsetX = 0; g.shadowOffsetY = 10;
+        g.fillStyle = "rgba(255,255,255,.93)"; g.beginPath(); g.roundRect(x, y, w, h, 36); g.fill();
+        g.shadowColor = "transparent";
+        g.fillStyle = "#17171c"; g.font = "190px Anton, Impact, sans-serif"; g.fillText(String(n), x + w / 2, y + 205);
+        g.fillStyle = "#4a4e60"; g.font = "700 40px Montserrat, sans-serif"; g.fillText(t, x + w / 2, y + 268);
+      });
+      g.font = "600 40px Montserrat, sans-serif"; g.fillStyle = "#fff";
+      g.fillText("(modo ansioso 😬)", W / 2, 1585);
+    } else {
     g.fillText(f.d === 0 ? "¡Hoy" : "Faltan", W / 2, 800);
     g.fillStyle = "#fff"; g.font = (f.d === 0 ? "300px" : "520px") + " Anton, Impact, sans-serif";
     g.shadowColor = "#17171c"; g.shadowBlur = 0; g.shadowOffsetX = 14; g.shadowOffsetY = 14;
@@ -2872,9 +2888,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     g.shadowOffsetX = 0; g.shadowOffsetY = 0;
     g.fillStyle = "#17171c"; g.font = "140px Anton, Impact, sans-serif";
     if (f.d > 0) g.fillText(f.d === 1 ? "DÍA" : "DÍAS", W / 2, 1490);
+    }
     g.shadowColor = "transparent";
     g.font = "700 52px Montserrat, sans-serif"; g.fillStyle = "#fff";
-    g.fillText("para la Gira México 2026", W / 2, 1600);
+    g.fillText("para la Gira México 2026", W / 2, ansioso ? 1655 : 1600);
     g.fillStyle = "#17171c";
     g.font = "700 40px Montserrat, sans-serif";
     const pill = g.measureText("ACUARELA MIMBI · SAN BLAS, NAYARIT").width + 110, py = 1700, ph = 100;
@@ -2884,11 +2901,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     return new Promise(res => cv.toBlob(res, "image/png"));
   }
   // En la vista de Claude no se pueden bajar archivos: el botón solo va en la app.
-  if (!/github\.io$/.test(location.hostname) && location.protocol !== "file:") $("#r-compartir").hidden = true;
-  $("#r-compartir").addEventListener("click", async () => {
-    const b = await imagenRegresiva();
+  if (!/github\.io$/.test(location.hostname) && location.protocol !== "file:") $("#r-compartir").hidden = $("#r-ansioso").hidden = true;
+  const compartirRegresiva = async ansioso => {
+    const b = await imagenRegresiva(ansioso);
     if (!b) return;
-    const nombre = "faltan-" + faltan().d + "-dias.png";
+    const nombre = "faltan-" + faltan().d + "-dias" + (ansioso ? "-ansioso" : "") + ".png";
     const arch = new File([b], nombre, { type: "image/png" });
     if (navigator.canShare && navigator.canShare({ files: [arch] })) {
       try { await navigator.share({ files: [arch] }); } catch (e) {}
@@ -2896,7 +2913,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     }
     const a = el("a", { href: URL.createObjectURL(b), download: nombre });
     document.body.append(a); a.click(); a.remove();
-  });
+  };
+  $("#r-compartir").addEventListener("click", () => compartirRegresiva(false));
+  $("#r-ansioso").addEventListener("click", () => compartirRegresiva(true));
 
   function tic() {
     const dias = faltan().d;
