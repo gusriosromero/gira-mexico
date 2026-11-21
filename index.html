@@ -90,6 +90,10 @@ button{font:inherit;color:inherit}
 .regresiva .r-caja small{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#4a4e60}
 .regresiva .r-sub{font-size:13px;font-weight:600;color:#fff;margin:0;text-shadow:0 1px 3px rgba(23,23,28,.3)}
 .regresiva .btn{background:var(--tinta);color:#fff;display:inline-flex;gap:8px;align-items:center}
+.regresiva{position:relative}
+.r-voz{position:absolute;top:10px;right:10px;width:46px;height:46px;border:0;border-radius:50%;background:rgba(255,255,255,.92);font-size:22px;line-height:1;cursor:pointer;box-shadow:0 3px 10px rgba(23,23,28,.2)}
+.r-voz[hidden]{display:none}
+.r-voz.hablando{animation:lu-pulso 1s ease-in-out infinite}
 .regresiva .r-ansioso{background:rgba(255,255,255,.92);color:var(--tinta);font-size:14px}
 .regresiva .btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
@@ -662,6 +666,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   <!-- INICIO -->
   <section class="vista" id="vista-inicio">
     <div class="regresiva" id="regresiva" hidden>
+      <button type="button" class="r-voz" id="r-voz" aria-label="Escuchar cuánto falta" data-ev="inicio: escuchó la cuenta regresiva" hidden>🔊</button>
       <span class="r-tit">Faltan</span>
       <div class="r-cajas">
         <div class="r-caja"><b id="r-d">--</b><small>días</small></div>
@@ -2844,6 +2849,31 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#r-d").textContent = f.d; $("#r-h").textContent = dos(f.h); $("#r-m").textContent = dos(f.m); $("#r-s").textContent = dos(f.s);
   }
   ticRegresiva(); setInterval(ticRegresiva, 1000);
+
+  // La app "habla": lee en voz alta cuánto falta, con la voz del celular (funciona sin internet).
+  (() => {
+    const b = $("#r-voz"), voz = window.speechSynthesis;
+    if (!voz || !window.SpeechSynthesisUtterance) return;
+    b.hidden = false;
+    const elegir = () => { const v = voz.getVoices().filter(x => /^es/i.test(x.lang)); return v.find(x => /es[-_](PY|AR|UY)/i.test(x.lang)) || v.find(x => /es[-_](MX|US|419)/i.test(x.lang)) || v[0] || null; };
+    const plural = (n, uno, varios) => n + " " + (n === 1 ? uno : varios);
+    b.addEventListener("click", () => {
+      if (voz.speaking) { voz.cancel(); b.classList.remove("hablando"); return; }
+      const f = faltan(), nom = nombreJugador();
+      const partes = [];
+      if (f.d) partes.push(plural(f.d, "día", "días"));
+      if (f.h) partes.push(plural(f.h, "hora", "horas"));
+      if (f.m) partes.push(plural(f.m, "minuto", "minutos"));
+      const lista = partes.length > 1 ? partes.slice(0, -1).join(", ") + " y " + partes[partes.length - 1] : partes[0] || "muy poquito";
+      const texto = (nom ? "¡Hola, " + nom + "! " : "¡Hola! ") + (f.d === 0 && f.h === 0 && f.m === 0 ? "¡Ya casi despegamos!" : (partes.length === 1 && f.d === 1 && !f.h && !f.m ? "Falta " : "Faltan ") + lista + " para la Gira México 2026. ¡Vamos Acuarela Mimbi!");
+      const u = new SpeechSynthesisUtterance(texto);
+      u.lang = "es-ES"; const v = elegir(); if (v) { u.lang = v.lang; try { u.voice = v; } catch (e) {} }
+      u.rate = 1; u.pitch = 1.05;
+      u.onend = u.onerror = () => b.classList.remove("hablando");
+      voz.cancel(); b.classList.add("hablando"); voz.speak(u);
+    });
+    if (voz.onvoiceschanged !== undefined) voz.onvoiceschanged = () => {};
+  })();
 
   // Imagen vertical para estados y el grupo de WhatsApp
   async function imagenRegresiva(ansioso) {
