@@ -2951,7 +2951,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (actual == null) return;
       const b = await imagen(); if (!b) return;
       const arch = new File([b], "chipa-de-la-suerte.png", { type: "image/png" });
-      const texto = "Mi chipa de la suerte dice: \"" + FRASES[actual] + "\"\nhttps://gusriosromero.github.io/gira-mexico/";
+      const texto = "Mi chipa de la suerte dice: \"" + FRASES[actual] + "\"";
       if (navigator.canShare && navigator.canShare({ files: [arch] })) { try { await navigator.share({ files: [arch], text: texto }); } catch (e) {} return; }
       if (navigator.share) { try { await navigator.share({ text: texto }); } catch (e) {} return; }
       const a = el("a", { href: URL.createObjectURL(b), download: "chipa-de-la-suerte.png" }); document.body.append(a); a.click(); a.remove();
