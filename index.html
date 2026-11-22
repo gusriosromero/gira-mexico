@@ -384,6 +384,27 @@ p{margin:0}
 .fam-dias li{display:grid;grid-template-columns:88px 1fr;gap:10px;border-bottom:1px solid var(--linea);padding:8px 0;font-size:14px}
 .fam-dias b{font-weight:700}
 .fam-dias em{font-style:normal}
+.chipa-caja{border-radius:var(--radio);background:var(--p-durazno);color:#17171c;padding:14px 16px;display:grid;gap:10px;justify-items:center;text-align:center}
+.chipa-cab{display:grid;gap:2px}.chipa-cab .acento-txt{font-size:30px;color:#17171c}.chipa-cab small{font-size:13px;color:#4a4e60;font-weight:600}
+.chipa{position:relative;width:132px;height:96px;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ch-mitad{position:absolute;top:0;width:66px;height:96px;overflow:hidden;transition:transform .55s cubic-bezier(.3,1.4,.5,1)}
+.ch-mitad::before{content:"";position:absolute;top:6px;width:120px;height:84px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,transparent 0 17px,#e8a74a 18px 22px,#f2c46d 23px 34px,#e9b45a 35px 40px,#c98a33 41px 42px,transparent 43px),
+  radial-gradient(circle at 35% 30%,#fbe2a5 0 6px,transparent 7px),radial-gradient(circle at 70% 70%,#d99a42 0 4px,transparent 5px);
+  box-shadow:inset 0 -6px 10px rgba(150,90,20,.35)}
+.ch-izq{left:0}.ch-izq::before{left:6px}
+.ch-der{right:0}.ch-der::before{right:6px}
+.chipa:not(.abierta){animation:ch-sube 2.4s ease-in-out infinite}
+@keyframes ch-sube{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-3deg)}}
+.chipa.abierta .ch-izq{transform:translateX(-22px) rotate(-18deg)}
+.chipa.abierta .ch-der{transform:translateX(22px) rotate(18deg)}
+.chipa-papel{background:#fffdf6;color:#17171c;border-radius:12px;padding:14px 16px;box-shadow:0 4px 14px rgba(23,23,28,.15);display:grid;gap:12px;width:100%;animation:ch-papel .5s ease-out}
+.chipa-papel[hidden]{display:none}
+.chipa-papel p{margin:0;font-size:18px;font-weight:700;line-height:1.35}
+.chipa-botones{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chipa-botones .btn.sec{color:#17171c;border-color:rgba(0,0,0,.2)}
+@keyframes ch-papel{from{opacity:0;transform:translateY(-10px) scale(.95)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.chipa,.ch-mitad,.chipa-papel{animation:none!important;transition:none!important}}
 .clima{border:1px solid var(--linea);border-radius:var(--radio);background:var(--superficie);padding:14px 16px;display:grid;gap:10px}
 .clima .c-top{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
 .clima .c-ahora small{display:block;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:11px;color:var(--suave)}
@@ -677,6 +698,18 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <p class="r-sub">Despegamos el lunes 30 de noviembre a las 06:31</p>
       <button type="button" class="btn" id="r-compartir"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Compartir imagen de hoy</button>
       <button type="button" class="btn r-ansioso" id="r-ansioso" data-ev="inicio: compartió la cuenta regresiva en modo ansioso">😬 Modo ansioso</button>
+    </div>
+    <div class="chipa-caja" id="chipa-caja">
+      <div class="chipa-cab"><span class="acento-txt">Chipa de la suerte</span><small>Tocá la chipa y mirá qué te dice hoy</small></div>
+      <button type="button" class="chipa" id="chipa" aria-label="Partir la chipa de la suerte" data-ev="inicio: partió la chipa de la suerte"><span class="ch-mitad ch-izq"></span><span class="ch-mitad ch-der"></span></button>
+      <div class="chipa-papel" id="chipa-papel" hidden>
+        <p id="chipa-frase" aria-live="polite"></p>
+        <div class="chipa-botones">
+          <button type="button" class="btn sec" id="chipa-voz" aria-label="Escuchar la frase" data-ev="inicio: escuchó la frase de la chipa">🔊</button>
+          <button type="button" class="btn" id="chipa-compartir" data-ev="inicio: compartió la frase de la chipa">Compartir</button>
+          <button type="button" class="btn sec" id="chipa-otra" data-ev="inicio: pidió otra chipa">Otra chipa</button>
+        </div>
+      </div>
     </div>
     <div class="clima" data-clima hidden></div>
     <div class="cab-inicio">
@@ -2849,6 +2882,81 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#r-d").textContent = f.d; $("#r-h").textContent = dos(f.h); $("#r-m").textContent = dos(f.m); $("#r-s").textContent = dos(f.s);
   }
   ticRegresiva(); setInterval(ticRegresiva, 1000);
+
+
+  // ---------- Chipa de la suerte: frase al azar, sin repetir hasta que salgan todas ----------
+  (() => {
+    const FRASES = ["La valija pesa, pero las ganas pesan más.", "Una sonrisa abre más puertas que el pasaporte.", "Cada escenario nuevo es una casa más.", "El mejor recuerdo del viaje todavía no pasó.", "Lejos de casa también se puede estar en casa.", "Mirá por la ventana: el mundo es más grande de lo que creías.", "Hoy guardá algo en la memoria, no solo en el celular.", "Los kilómetros se olvidan, los momentos no.", "Si te perdés, que sea en una buena historia.", "Viajar es volver distinto. Que sea para mejor.", "Probá una comida nueva hoy. Después nos contás.", "Cada aeropuerto es el comienzo de algo lindo.", "Llevás el Paraguay en los pies. Que se note.", "Bailá como si tu abuela te estuviera mirando desde la primera fila.", "Cuando suena la polca, el cansancio se va.", "El escenario no es grande: vos lo llenás.", "Un error en el escenario se tapa con una sonrisa.", "Cada ensayo de antes hoy vale oro.", "Bailar es contar quiénes somos sin decir una palabra.", "La botella en la cabeza y el corazón en la mano.", "Hoy el público no te conoce. Mañana no te va a olvidar.", "El aplauso más lindo es el de la gente que nunca vio un ñandutí.", "Respirá hondo, mirá al compañero y disfrutá.", "Los nervios son las ganas disfrazadas.", "Hoy vas a conocer a alguien que se va a acordar de vos para siempre.", "Decí \"mba'éichapa\" a alguien nuevo y mirá su cara.", "Un \"gracias\" en otro país vale el doble.", "La gente de otros grupos también está nerviosa. Saludala primero.", "Cambiá un recuerdito, llevate un amigo.", "Escuchá cómo hablan allá: vas a volver con palabras nuevas.", "Preguntá de dónde son. Cada respuesta es un viaje.", "Una foto con alguien nuevo hoy, ¡no te olvides!", "En el festival, todos somos un poco del mismo pueblo.", "Enseñá algo nuestro y aprendé algo de ellos.", "Jaha, que el mundo nos espera.", "Juntos llegamos más lejos. ¡Acuarela Mimbi!", "Si alguien del grupo está cansado, hoy te toca levantarle el ánimo.", "El mejor equipaje es el grupo que viaja con vos.", "Cuidá al que tenés al lado. Mañana te cuida él.", "Somos 15, pero bailamos por todos los que se quedaron.", "Hoy decile a alguien del grupo algo lindo.", "Una ronda de tereré arregla cualquier día.", "Las risas en el bus también son parte del espectáculo.", "Nadie brilla solo: brillamos juntos.", "Hoy no te olvides: ¡tomá agua y disfrutá!", "Dormir bien también es ensayar.", "Protector solar: el mejor amigo del bailarín.", "Revisá que tengas todo antes de salir. Tu yo de más tarde te lo agradece.", "Comé algo antes de bailar. El escenario no espera.", "Si extrañás, llamá a casa. Te están esperando con orgullo.", "Lo que hoy da miedo, mañana es anécdota.", "Ya llegaste hasta acá. Lo que falta es lo más lindo.", "Brillá lejos de casa, que en casa ya saben que brillás.", "Hoy es un buen día para sorprenderte a vos mismo.", "Lo que soñaste en el ensayo, hoy se hace realidad.", "No hace falta ser perfecto, hace falta ser de verdad.", "Si dudás, bailá. Si no dudás, bailá igual.", "Tu familia está orgullosa. Y se nota de lejos.", "Cada paso que das hoy es un paso que Paraguay da con vos.", "¡Vamos que vamos, Acuarela Mimbi! 🇵🇾🇲🇽", "¿Dormir temprano en la gira? Mmmm 🤨", "\"La valija cierra seguro.\" Mmmm", "\"Este es el último ensayo.\" Mmmm", "\"En México la comida no pica nada.\" Mmmm 🌶️", "\"Solo cinco minutitos más en el celular.\" Mmmm", "\"Llego puntual, te juro.\" Mmmm", "\"Me sé toda la coreo.\" Mmmm", "¿Escaparse a ver la bioluminiscencia? Mmmm… 🌊"];
+    const chipa = $("#chipa"), papel = $("#chipa-papel"), txt = $("#chipa-frase");
+    let actual = null;
+    function sacar() {
+      let vistas = leer("chipa-vistas", []); if (!Array.isArray(vistas) || vistas.length >= FRASES.length) vistas = [];
+      const libres = FRASES.map((_, i) => i).filter(i => !vistas.includes(i) && i !== actual);
+      const i = libres[Math.floor(Math.random() * libres.length)] ?? 0;
+      vistas.push(i); escribir("chipa-vistas", vistas);
+      return i;
+    }
+    function abrir() {
+      actual = sacar(); txt.textContent = FRASES[actual];
+      chipa.classList.add("abierta"); papel.hidden = false;
+      papel.style.animation = "none"; void papel.offsetWidth; papel.style.animation = "";
+    }
+    chipa.addEventListener("click", () => { if (chipa.classList.contains("abierta")) { chipa.classList.remove("abierta"); setTimeout(abrir, 250); } else abrir(); });
+    $("#chipa-otra").addEventListener("click", () => { chipa.classList.remove("abierta"); papel.hidden = true; setTimeout(abrir, 300); });
+    const voz = window.speechSynthesis;
+    if (!voz || !window.SpeechSynthesisUtterance) $("#chipa-voz").hidden = true;
+    $("#chipa-voz").addEventListener("click", () => {
+      if (actual == null) return;
+      if (voz.speaking) { voz.cancel(); return; }
+      const u = new SpeechSynthesisUtterance(FRASES[actual].replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F]/gu, "").replace(/Mmmm…?/g, "Mmmmm"));
+      const v = voz.getVoices().filter(x => /^es/i.test(x.lang)); const e = v.find(x => /es[-_](PY|AR|UY)/i.test(x.lang)) || v.find(x => /es[-_](MX|US|419)/i.test(x.lang)) || v[0];
+      u.lang = e ? e.lang : "es-ES"; if (e) { try { u.voice = e; } catch (er) {} }
+      voz.cancel(); voz.speak(u);
+    });
+    async function imagen() {
+      try { await Promise.all(["40px Anton", "40px 'Great Vibes'", "700 40px Montserrat", "600 40px Montserrat"].map(x => document.fonts.load(x))); } catch (e) {}
+      const W = 1080, H = 1920, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      const g = cv.getContext("2d");
+      g.fillStyle = "#f9c9b0"; g.fillRect(0, 0, W, H);
+      const mancha = (x, y, r, rgb, a) => { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, `rgba(${rgb},${a})`); gr.addColorStop(.45, `rgba(${rgb},${a})`); gr.addColorStop(1, `rgba(${rgb},0)`); g.fillStyle = gr; g.fillRect(0, 0, W, H); };
+      mancha(60, 140, 520, "245,179,1", .9); mancha(1060, 300, 480, "240,110,150", .8); mancha(1040, 1840, 600, "150,110,220", .8); mancha(20, 1700, 480, "52,172,230", .8);
+      const logo = $(".portada img");
+      if (logo && logo.complete && logo.naturalWidth) { const lw = 360, lh = lw * logo.naturalHeight / logo.naturalWidth; g.drawImage(logo, (W - lw) / 2, 150, lw, lh); }
+      g.textAlign = "center";
+      g.fillStyle = "#17171c"; g.font = "130px 'Great Vibes', cursive"; g.fillText("Chipa de la suerte", W / 2, 700);
+      // chipa partida
+      const chipaMitad = (cx, rot) => { g.save(); g.translate(cx, 830); g.rotate(rot); g.fillStyle = "#e9b45a"; g.beginPath(); g.ellipse(0, 0, 120, 80, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = "#f2c46d"; g.beginPath(); g.ellipse(0, -6, 100, 62, 0, 0, Math.PI * 2); g.fill(); g.fillStyle = "#f9c9b0"; g.beginPath(); g.ellipse(0, 0, 36, 24, 0, 0, Math.PI * 2); g.fill(); g.restore(); };
+      g.save(); g.beginPath(); g.rect(0, 700, W / 2 - 10, 260); g.clip(); chipaMitad(W / 2 - 40, -.25); g.restore();
+      g.save(); g.beginPath(); g.rect(W / 2 + 10, 700, W / 2, 260); g.clip(); chipaMitad(W / 2 + 40, .25); g.restore();
+      // papelito
+      const px = 110, py = 980, pw = W - 220;
+      g.font = "700 64px Montserrat, sans-serif";
+      const lineas = [], pal = FRASES[actual].split(" "); let l = "";
+      for (const w of pal) { const t = l ? l + " " + w : w; if (g.measureText(t).width > pw - 120 && l) { lineas.push(l); l = w; } else l = t; }
+      if (l) lineas.push(l);
+      const ph = 120 + lineas.length * 86;
+      g.shadowColor = "rgba(23,23,28,.2)"; g.shadowBlur = 40; g.shadowOffsetY = 12;
+      g.fillStyle = "#fffdf6"; g.beginPath(); g.roundRect(px, py, pw, ph, 30); g.fill();
+      g.shadowColor = "transparent"; g.fillStyle = "#17171c";
+      lineas.forEach((t, k) => g.fillText(t, W / 2, py + 100 + k * 86));
+      g.font = "700 52px Montserrat, sans-serif"; g.fillStyle = "#17171c";
+      g.fillText("Gira México 2026", W / 2, Math.max(py + ph + 140, 1600));
+      g.font = "700 40px Montserrat, sans-serif";
+      const pill = g.measureText("ACUARELA MIMBI · SAN BLAS, NAYARIT").width + 110, pyy = 1700, phh = 100;
+      g.beginPath(); g.roundRect((W - pill) / 2, pyy, pill, phh, phh / 2); g.fill();
+      g.fillStyle = "#fff"; g.fillText("ACUARELA MIMBI · SAN BLAS, NAYARIT", W / 2, pyy + 64);
+      return new Promise(res => cv.toBlob(res, "image/png"));
+    }
+    $("#chipa-compartir").addEventListener("click", async () => {
+      if (actual == null) return;
+      const b = await imagen(); if (!b) return;
+      const arch = new File([b], "chipa-de-la-suerte.png", { type: "image/png" });
+      const texto = "Mi chipa de la suerte dice: \"" + FRASES[actual] + "\"\nhttps://gusriosromero.github.io/gira-mexico/";
+      if (navigator.canShare && navigator.canShare({ files: [arch] })) { try { await navigator.share({ files: [arch], text: texto }); } catch (e) {} return; }
+      if (navigator.share) { try { await navigator.share({ text: texto }); } catch (e) {} return; }
+      const a = el("a", { href: URL.createObjectURL(b), download: "chipa-de-la-suerte.png" }); document.body.append(a); a.click(); a.remove();
+    });
+  })();
 
   // La app "habla": lee en voz alta cuánto falta, con la voz del celular (funciona sin internet).
   (() => {
