@@ -2912,15 +2912,23 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   // ---------- Cuenta regresiva y relojes ----------
   const salida = new Date("2026-11-30T06:31:00-03:00"), regreso = new Date("2026-12-16T00:02:00-03:00");
+  const festival = new Date("2026-12-04T19:30:00-07:00"); // primera función, hora de Nayarit
   const vuelta = () => esFamilia() && Date.now() >= salida;
+  // Qué cuenta el cuadro grande: antes de viajar, la salida; ya de viaje, el grupo cuenta hasta el festival
+  // y la familia hasta la vuelta a casa.
+  const meta = () => vuelta()
+    ? { fin: regreso, sub: "Llegan a Asunción el miércoles 16 de diciembre a las 00:02", para: "para que vuelvan a casa", voz: " para que vuelvan a casa. ¡Ya falta poco!", hoy: "VUELVEN!", casi: "¡Ya casi vuelven!" }
+    : Date.now() >= salida
+    ? { fin: festival, sub: "El festival arranca el viernes 4 de diciembre a las 19:30 de México", para: "para el festival en San Blas", voz: " para el festival en San Blas. ¡Vamos Acuarela Mimbi!", hoy: "DEBUTAMOS!", casi: "¡Ya casi salimos al escenario!" }
+    : { fin: salida, sub: "Despegamos el lunes 30 de noviembre a las 06:31", para: "para la Gira México 2026", voz: " para la Gira México 2026. ¡Vamos Acuarela Mimbi!", hoy: "SALIMOS!", casi: "¡Ya casi despegamos!" };
   const faltan = () => {
-    const t = Math.max(0, (vuelta() ? regreso : salida) - Date.now());
+    const t = Math.max(0, meta().fin - Date.now());
     return { d: Math.floor(t / 864e5), h: Math.floor(t / 36e5) % 24, m: Math.floor(t / 6e4) % 60, s: Math.floor(t / 1e3) % 60, t };
   };
   const dos = n => String(n).padStart(2, "0");
   function ticRegresiva() {
     const f = faltan(), r = $("#regresiva");
-    const sub = vuelta() ? "Llegan a Asunción el miércoles 16 de diciembre a las 00:02" : "Despegamos el lunes 30 de noviembre a las 06:31";
+    const sub = meta().sub;
     if (r.querySelector(".r-sub").textContent !== sub) r.querySelector(".r-sub").textContent = sub;
     r.hidden = f.t <= 0;
     if (r.hidden) return;
@@ -3047,7 +3055,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (f.h) partes.push(plural(f.h, "hora", "horas"));
       if (f.m) partes.push(plural(f.m, "minuto", "minutos"));
       const lista = partes.length > 1 ? partes.slice(0, -1).join(", ") + " y " + partes[partes.length - 1] : partes[0] || "muy poquito";
-      const texto = (nom ? "¡Hola, " + nom + "! " : "¡Hola! ") + (f.d === 0 && f.h === 0 && f.m === 0 ? "¡Ya casi despegamos!" : (partes.length === 1 && f.d === 1 && !f.h && !f.m ? "Falta " : "Faltan ") + lista + (vuelta() ? " para que vuelvan a casa. ¡Ya falta poco!" : " para la Gira México 2026. ¡Vamos Acuarela Mimbi!"));
+      const texto = (nom ? "¡Hola, " + nom + "! " : "¡Hola! ") + (f.d === 0 && f.h === 0 && f.m === 0 ? meta().casi : (partes.length === 1 && f.d === 1 && !f.h && !f.m ? "Falta " : "Faltan ") + lista + meta().voz);
       const u = new SpeechSynthesisUtterance(texto);
       u.lang = "es-ES"; const v = elegir(); if (v) { u.lang = v.lang; try { u.voice = v; } catch (e) {} }
       u.rate = 1; u.pitch = 1.05;
@@ -3094,14 +3102,14 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     g.fillText(f.d === 0 ? "¡Hoy" : "Faltan", W / 2, 800);
     g.fillStyle = "#fff"; g.font = (f.d === 0 ? "300px" : "520px") + " Anton, Impact, sans-serif";
     g.shadowColor = "#17171c"; g.shadowBlur = 0; g.shadowOffsetX = 14; g.shadowOffsetY = 14;
-    g.fillText(f.d === 0 ? "SALIMOS!" : String(f.d), W / 2, f.d === 0 ? 1180 : 1320);
+    g.fillText(f.d === 0 ? meta().hoy : String(f.d), W / 2, f.d === 0 ? 1180 : 1320);
     g.shadowOffsetX = 0; g.shadowOffsetY = 0;
     g.fillStyle = "#17171c"; g.font = "140px Anton, Impact, sans-serif";
     if (f.d > 0) g.fillText(f.d === 1 ? "DÍA" : "DÍAS", W / 2, 1490);
     }
     g.shadowColor = "transparent";
     g.font = "700 52px Montserrat, sans-serif"; g.fillStyle = "#fff";
-    g.fillText(vuelta() ? "para que vuelvan a casa" : "para la Gira México 2026", W / 2, ansioso ? 1620 : 1600);
+    g.fillText(meta().para, W / 2, ansioso ? 1620 : 1600);
     g.fillStyle = "#17171c";
     g.font = "700 40px Montserrat, sans-serif";
     const pill = g.measureText("ACUARELA MIMBI · SAN BLAS, NAYARIT").width + 110, py = 1700, ph = 100;
