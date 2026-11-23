@@ -126,6 +126,20 @@ section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqu
 .modo svg,.mosaico svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .menu{display:grid;gap:10px}
 .mosaico{display:grid;color:var(--texto);text-decoration:none;border-radius:var(--radio);background:var(--c);transition:transform .1s}
+/* Modo familia */
+:root[data-modo-app="familia"] .mosaico.solo-grupo{display:none!important}
+:root:not([data-modo-app="familia"]) .mosaico.solo-familia{display:none!important}
+.mosaico.solo-familia{order:-1}
+.elegir-modo{width:100%;border-radius:var(--radio);background:var(--p-lila);color:#17171c;padding:16px;display:grid;gap:8px;text-align:center}
+.elegir-modo[hidden],.en-escenario[hidden]{display:none}
+.elegir-modo b{font-size:17px}.elegir-modo p{margin:0;font-size:14px}
+.elegir-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.elegir-btns .btn{padding:14px 8px;font-size:15px}
+.en-escenario{width:100%;border-radius:var(--radio);background:#e5484d;color:#fff;padding:12px 14px;display:flex;gap:10px;align-items:center;font-weight:700}
+.en-escenario i{width:12px;height:12px;border-radius:50%;background:#fff;flex:none;animation:lu-pulso 1.2s ease-in-out infinite}
+.en-escenario small{display:block;font-weight:600;opacity:.9}
+.modo-app{text-align:center;font-size:13px;color:var(--suave);margin:4px 0 0}
+.modo-app button{font:inherit;font-weight:700;color:var(--texto);background:none;border:0;text-decoration:underline;cursor:pointer;padding:4px}
 /* Botones ocultos del Inicio (la sección sigue andando por enlace directo) */
 .mosaico.oculto{display:none!important}
 .mosaico:active{transform:scale(.97)}
@@ -686,6 +700,15 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   <!-- INICIO -->
   <section class="vista" id="vista-inicio">
+    <div class="elegir-modo" id="elegir-modo" hidden>
+      <b>¡Bienvenidos a la app de la Gira México 2026!</b>
+      <p>Para mostrarte lo que te sirve, contanos:</p>
+      <div class="elegir-btns">
+        <button type="button" class="btn" data-elegir="grupo" data-ev="modo: eligió viajo con el grupo">💃 Viajo con el grupo</button>
+        <button type="button" class="btn" data-elegir="familia" data-ev="modo: eligió soy familia">🏠 Soy familia</button>
+      </div>
+    </div>
+    <div class="en-escenario" data-escenario hidden></div>
     <div class="regresiva" id="regresiva" hidden>
       <button type="button" class="r-voz" id="r-voz" aria-label="Escuchar cuánto falta" data-ev="inicio: escuchó la cuenta regresiva" hidden>🔊</button>
       <span class="r-tit">Faltan</span>
@@ -721,19 +744,20 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     </div>
     <div class="menu grilla" id="menu">
       <a class="mosaico c-durazno" href="#recorrido" data-vista="recorrido"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span class="txt"><b>Recorrido</b><small>Vuelos, fechas y el festival</small></span></a>
-      <a class="mosaico c-celeste" href="#mi-lista" data-vista="mi-lista"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span><span class="txt"><b>Qué llevar</b><small>Tu lista de equipaje</small></span></a>
-      <a class="mosaico c-lila" href="#repertorio" data-vista="repertorio"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="txt"><b>Repertorio</b><small>Cuadros y música del espectáculo</small></span></a>
-      <a class="mosaico c-rosa" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Conversor y gastos</b><small>Pesos, guaraníes, dólares y gastos de la gira</small></span></a>
-      <a class="mosaico c-durazno" href="#fotos" data-vista="fotos"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="txt"><b>Fotos y videos</b><small>Subí y bajá los del grupo</small></span></a>
+      <a class="mosaico c-celeste solo-grupo" href="#mi-lista" data-vista="mi-lista"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span><span class="txt"><b>Qué llevar</b><small>Tu lista de equipaje</small></span></a>
+      <a class="mosaico c-lila solo-grupo" href="#repertorio" data-vista="repertorio"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="txt"><b>Repertorio</b><small>Cuadros y música del espectáculo</small></span></a>
+      <a class="mosaico c-rosa solo-grupo" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Conversor y gastos</b><small>Pesos, guaraníes, dólares y gastos de la gira</small></span></a>
+      <a class="mosaico c-durazno solo-grupo" href="#fotos" data-vista="fotos"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="txt"><b>Fotos y videos</b><small>Subí y bajá los del grupo</small></span></a>
       <a class="mosaico c-celeste" href="#lugares" data-vista="lugares"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span class="txt"><b>Lugares</b><small>Los 9 pueblos de la gira y San Blas</small></span></a>
-      <a class="mosaico c-lila" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
+      <a class="mosaico c-lila solo-grupo" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
       <a class="mosaico c-rosa" href="#elenco" data-vista="elenco"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.6.1 4.4 1.8 5 4.4"/></svg></span><span class="txt"><b>El elenco</b><small>Los 15 que viajamos</small></span></a>
       <a class="mosaico c-celeste" href="#juego" data-vista="juego"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="8" height="11" rx="1.5"/><rect x="13" y="9" width="8" height="11" rx="1.5"/><path d="M7 8v3M17 13v3"/></svg></span><span class="txt"><b>Juegos</b><small>Memoria de ñandutí, para jugar en el viaje</small></span></a>
-      <a class="mosaico c-durazno oculto" href="#familias" data-vista="familias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 18s-3-1.9-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.9-3 3.8-3 3.8z"/></svg></span><span class="txt"><b>Para las familias</b><small>Vuelos en vivo, horarios y contacto</small></span></a>
+      <a class="mosaico c-durazno solo-familia" href="#familias" data-vista="familias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 18s-3-1.9-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.9-3 3.8-3 3.8z"/></svg></span><span class="txt"><b>Para las familias</b><small>Vuelos en vivo, horarios y contacto</small></span></a>
       <a class="mosaico c-lila oculto" href="#seguir" data-vista="seguir"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span><span class="txt"><b>Seguí la gira</b><small>Funciones, en vivo y redes</small></span></a>
-      <a class="mosaico c-urgente" href="#emergencias" data-vista="emergencias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="txt"><b>Emergencias</b><small>Números útiles y tus datos</small></span></a>
+      <a class="mosaico c-urgente solo-grupo" href="#emergencias" data-vista="emergencias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="txt"><b>Emergencias</b><small>Números útiles y tus datos</small></span></a>
       <a class="mosaico c-celeste" href="#instalar" data-vista="instalar"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></span><span class="txt"><b>Instalar</b><small>Cómo instalar en Android y iPhone para usar la app sin internet</small></span></a>
     </div>
+    <p class="modo-app" id="modo-app"></p>
     <p class="firma">Diseño y desarrollo · <a href="https://linktr.ee/GusRiosRomero" target="_blank" rel="noopener" data-ev="créditos: Gustavo (Linktree)">Gustavo Rios Romero ↗</a></p>
   </section>
 
@@ -1064,6 +1088,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <p class="nota">Todo lo que la familia necesita saber mientras estamos de gira.</p>
       <button type="button" class="btn sec" id="compartir-familias">Compartir esta página con la familia</button>
     </div>
+    <div class="en-escenario" data-escenario hidden></div>
     <div class="bloque">
       <h3>Dónde estamos</h3>
       <ol class="fam-dias" id="fam-dias"></ol>
@@ -1488,6 +1513,14 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   };
   const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
   const escribir = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  // ---------- Modo grupo / familia ----------
+  // Si el celular ya usó la app antes (tiene algo guardado), se asume que es del grupo.
+  const yaUsada = (() => { try { return localStorage.length > 0; } catch (e) { return true; } })();
+  let appModo = leer("app-modo", null);
+  if (appModo !== "grupo" && appModo !== "familia") appModo = yaUsada ? "grupo" : null;
+  if (appModo) escribir("app-modo", appModo);
+  const esFamilia = () => appModo === "familia";
+  document.documentElement.dataset.modoApp = appModo || "grupo";
 
   // ---------- Tema ----------
   const ICONOS_TEMA = {
@@ -1687,7 +1720,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const d = DIAS[clave];
     if (n < 1 || n > 17 || !d) { card.hidden = true; return null; }
     card.textContent = "";
-    card.append(el("b", { text: d[0] }), el("p", { text: d[1] }), d[2] ? el("p", { class: "nota", text: d[2] }) : null,
+    const nota = d[2] && esFamilia() ? d[2].replace("Función a las 19:30, hora local.", "Función a las 19:30 de allá, 23:30 en Paraguay.") : d[2];
+    card.append(esFamilia() ? el("span", { class: "dia", text: "Hoy el grupo está en" }) : null, el("b", { text: d[0] }), el("p", { text: d[1] }), nota ? el("p", { class: "nota", text: nota }) : null,
       el("div", { class: "barra-dias", "aria-hidden": "true" }, Array.from({ length: 17 }, (_, i) => el("i", { class: i + 1 < n ? "pasado" : i + 1 === n ? "hoy-i" : "" }))));
     card.hidden = false;
     return n;
@@ -2869,14 +2903,17 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   })();
 
   // ---------- Cuenta regresiva y relojes ----------
-  const salida = new Date("2026-11-30T06:31:00-03:00");
+  const salida = new Date("2026-11-30T06:31:00-03:00"), regreso = new Date("2026-12-16T00:02:00-03:00");
+  const vuelta = () => esFamilia() && Date.now() >= salida;
   const faltan = () => {
-    const t = Math.max(0, salida - Date.now());
+    const t = Math.max(0, (vuelta() ? regreso : salida) - Date.now());
     return { d: Math.floor(t / 864e5), h: Math.floor(t / 36e5) % 24, m: Math.floor(t / 6e4) % 60, s: Math.floor(t / 1e3) % 60, t };
   };
   const dos = n => String(n).padStart(2, "0");
   function ticRegresiva() {
     const f = faltan(), r = $("#regresiva");
+    const sub = vuelta() ? "Llegan a Asunción el miércoles 16 de diciembre a las 00:02" : "Despegamos el lunes 30 de noviembre a las 06:31";
+    if (r.querySelector(".r-sub").textContent !== sub) r.querySelector(".r-sub").textContent = sub;
     r.hidden = f.t <= 0;
     if (r.hidden) return;
     $("#r-d").textContent = f.d; $("#r-h").textContent = dos(f.h); $("#r-m").textContent = dos(f.m); $("#r-s").textContent = dos(f.s);
@@ -2958,6 +2995,35 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     });
   })();
 
+  // ---------- Modo familia: elegir, cambiar y aviso "en el escenario" ----------
+  (() => {
+    const caja = $("#elegir-modo"), linea = $("#modo-app");
+    function pintarModo() {
+      document.documentElement.dataset.modoApp = appModo || "grupo";
+      caja.hidden = !!appModo;
+      linea.textContent = "";
+      if (appModo) linea.append("Estás viendo la app " + (esFamilia() ? "como familia" : "como parte del grupo") + ". ",
+        el("button", { type: "button", "data-ev": "modo: cambió a " + (esFamilia() ? "grupo" : "familia"), onclick: () => elegir(esFamilia() ? "grupo" : "familia"), text: esFamilia() ? "Cambiar a modo grupo" : "Cambiar a modo familia" }));
+      try { hoyCard(); } catch (e) {}
+      ticRegresiva(); escenario();
+    }
+    function elegir(m) { appModo = m; escribir("app-modo", m); pintarModo(); window.scrollTo(0, 0); }
+    caja.querySelectorAll("[data-elegir]").forEach(b => b.addEventListener("click", () => elegir(b.dataset.elegir)));
+    // Funciones: del 4 al 13 de diciembre, 19:30 de Nayarit (4 horas menos que Paraguay).
+    function escenario() {
+      const ahora = new Date(), fmt = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Mazatlan", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+      const pz = Object.fromEntries(fmt.formatToParts(ahora).map(x => [x.type, x.value]));
+      const dia = `${pz.year}-${pz.month}-${pz.day}`, min = +pz.hour * 60 + +pz.minute;
+      const si = dia >= "2026-12-04" && dia <= "2026-12-13" && min >= 19 * 60 + 15 && min < 22 * 60;
+      document.querySelectorAll("[data-escenario]").forEach(c => {
+        const ver = si && (c.closest("#vista-familias") || esFamilia());
+        c.hidden = !ver;
+        if (ver && !c.firstChild) c.append(el("i"), el("span", {}, "Ahora están en el escenario", el("small", { text: "La función es a las 19:30 de allá (23:30 en Paraguay). Si no contestan, ¡están bailando!" })));
+      });
+    }
+    pintarModo(); setInterval(escenario, 60000);
+  })();
+
   // La app "habla": lee en voz alta cuánto falta, con la voz del celular (funciona sin internet).
   (() => {
     const b = $("#r-voz"), voz = window.speechSynthesis;
@@ -2973,7 +3039,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (f.h) partes.push(plural(f.h, "hora", "horas"));
       if (f.m) partes.push(plural(f.m, "minuto", "minutos"));
       const lista = partes.length > 1 ? partes.slice(0, -1).join(", ") + " y " + partes[partes.length - 1] : partes[0] || "muy poquito";
-      const texto = (nom ? "¡Hola, " + nom + "! " : "¡Hola! ") + (f.d === 0 && f.h === 0 && f.m === 0 ? "¡Ya casi despegamos!" : (partes.length === 1 && f.d === 1 && !f.h && !f.m ? "Falta " : "Faltan ") + lista + " para la Gira México 2026. ¡Vamos Acuarela Mimbi!");
+      const texto = (nom ? "¡Hola, " + nom + "! " : "¡Hola! ") + (f.d === 0 && f.h === 0 && f.m === 0 ? "¡Ya casi despegamos!" : (partes.length === 1 && f.d === 1 && !f.h && !f.m ? "Falta " : "Faltan ") + lista + (vuelta() ? " para que vuelvan a casa. ¡Ya falta poco!" : " para la Gira México 2026. ¡Vamos Acuarela Mimbi!"));
       const u = new SpeechSynthesisUtterance(texto);
       u.lang = "es-ES"; const v = elegir(); if (v) { u.lang = v.lang; try { u.voice = v; } catch (e) {} }
       u.rate = 1; u.pitch = 1.05;
@@ -3027,7 +3093,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     }
     g.shadowColor = "transparent";
     g.font = "700 52px Montserrat, sans-serif"; g.fillStyle = "#fff";
-    g.fillText("para la Gira México 2026", W / 2, ansioso ? 1620 : 1600);
+    g.fillText(vuelta() ? "para que vuelvan a casa" : "para la Gira México 2026", W / 2, ansioso ? 1620 : 1600);
     g.fillStyle = "#17171c";
     g.font = "700 40px Montserrat, sans-serif";
     const pill = g.measureText("ACUARELA MIMBI · SAN BLAS, NAYARIT").width + 110, py = 1700, ph = 100;
