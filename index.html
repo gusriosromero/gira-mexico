@@ -1548,7 +1548,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   // ---------- Navegación ----------
   const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "juego", "fotos", "emergencias", "instalar"];
-  const BLOQUEADAS = ["seguir", "familias"];
+  const BLOQUEADAS = ["seguir"]; // "familias" reabierta 22/11 para el modo familia
   const nombres = {};
   document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
   function mostrar(v) {
