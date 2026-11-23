@@ -1517,6 +1517,11 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const yaUsada = (() => { try { return localStorage.length > 0; } catch (e) { return true; } })();
   let appModo = leer("app-modo", null);
   if (appModo !== "grupo" && appModo !== "familia") appModo = yaUsada ? "grupo" : null;
+  // Enlace para las familias (...?familia): entra directo en modo familia, sin preguntar.
+  if (/[?&]familia\b/.test(location.search)) {
+    appModo = "familia";
+    try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
+  }
   if (appModo) escribir("app-modo", appModo);
   const esFamilia = () => appModo === "familia";
   document.documentElement.dataset.modoApp = appModo || "grupo";
