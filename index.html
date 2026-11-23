@@ -709,7 +709,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <p>Para mostrarte lo que te sirve, contanos:</p>
       <div class="elegir-btns">
         <button type="button" class="btn" data-elegir="grupo" data-ev="modo: eligió viajo con el grupo">💃 Viajo con el grupo</button>
-        <button type="button" class="btn" data-elegir="familia" data-ev="modo: eligió soy familia">🏠 Soy familia</button>
+        <button type="button" class="btn" data-elegir="familia" data-ev="modo: eligió soy familia">🏠 Soy familia o amigo</button>
       </div>
     </div>
     <div class="en-escenario" data-escenario hidden></div>
@@ -3006,8 +3006,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       document.documentElement.dataset.modoApp = appModo || "grupo";
       caja.hidden = !!appModo;
       linea.textContent = "";
-      if (appModo) linea.append("Estás viendo la app " + (esFamilia() ? "como familia" : "como parte del grupo") + ". ",
-        el("button", { type: "button", "data-ev": "modo: cambió a " + (esFamilia() ? "grupo" : "familia"), onclick: () => elegir(esFamilia() ? "grupo" : "familia"), text: esFamilia() ? "Cambiar a modo grupo" : "Cambiar a modo familia" }));
+      if (appModo) linea.append("Estás viendo la app " + (esFamilia() ? "en modo familia y amigos" : "como parte del grupo") + ". ",
+        el("button", { type: "button", "data-ev": "modo: cambió a " + (esFamilia() ? "grupo" : "familia"), onclick: () => elegir(esFamilia() ? "grupo" : "familia"), text: esFamilia() ? "Cambiar a modo grupo" : "Cambiar a modo familia y amigos" }));
       try { hoyCard(); } catch (e) {}
       ticRegresiva(); escenario();
     }
