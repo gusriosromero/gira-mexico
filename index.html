@@ -1515,11 +1515,15 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   // ---------- Modo grupo / familia ----------
   // Si el celular ya usó la app antes (tiene algo guardado), se asume que es del grupo.
   const yaUsada = (() => { try { return localStorage.length > 0; } catch (e) { return true; } })();
+  // Mientras sea false, el modo familia y amigos está oculto: no se pregunta ni hay botón para pasarse.
+  // Solo se entra con el enlace ...?familia (lo tiene Gustavo para probar). Cambiar a true para abrirlo a todos.
+  const FAMILIA_ABIERTA = false;
   let appModo = leer("app-modo", null);
-  if (appModo !== "grupo" && appModo !== "familia") appModo = yaUsada ? "grupo" : null;
+  if (appModo !== "grupo" && appModo !== "familia") appModo = (yaUsada || !FAMILIA_ABIERTA) ? "grupo" : null;
+  if (!FAMILIA_ABIERTA && appModo === "familia" && !leer("app-modo-enlace", false)) appModo = "grupo";
   // Enlace para las familias (...?familia): entra directo en modo familia, sin preguntar.
   if (/[?&]familia\b/.test(location.search)) {
-    appModo = "familia";
+    appModo = "familia"; escribir("app-modo-enlace", true);
     try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
   }
   if (appModo) escribir("app-modo", appModo);
@@ -3006,7 +3010,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       document.documentElement.dataset.modoApp = appModo || "grupo";
       caja.hidden = !!appModo;
       linea.textContent = "";
-      if (appModo) linea.append("Estás viendo la app " + (esFamilia() ? "en modo familia y amigos" : "como parte del grupo") + ". ",
+      if (appModo && (FAMILIA_ABIERTA || esFamilia())) linea.append("Estás viendo la app " + (esFamilia() ? "en modo familia y amigos" : "como parte del grupo") + ". ",
         el("button", { type: "button", "data-ev": "modo: cambió a " + (esFamilia() ? "grupo" : "familia"), onclick: () => elegir(esFamilia() ? "grupo" : "familia"), text: esFamilia() ? "Cambiar a modo grupo" : "Cambiar a modo familia y amigos" }));
       try { hoyCard(); } catch (e) {}
       ticRegresiva(); escenario();
