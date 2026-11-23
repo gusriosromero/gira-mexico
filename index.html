@@ -416,6 +416,7 @@ p{margin:0}
 .fam-dias b{font-weight:700}
 .fam-dias em{font-style:normal}
 .chipa-caja{border-radius:var(--radio);background:var(--p-durazno);color:#17171c;padding:14px 16px;display:grid;gap:10px;justify-items:center;text-align:center}
+:root[data-modo-app="familia"] .txt-grupo,:root:not([data-modo-app="familia"]) .txt-fam{display:none}
 .chipa-cab{display:grid;gap:2px}.chipa-cab .acento-txt{font-size:30px;color:#17171c}.chipa-cab small{font-size:13px;color:#4a4e60;font-weight:600}
 .chipa{position:relative;width:132px;height:96px;border:0;background:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .ch-mitad{position:absolute;top:0;width:66px;height:96px;overflow:hidden;transition:transform .55s cubic-bezier(.3,1.4,.5,1)}
@@ -740,7 +741,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <button type="button" class="btn r-ansioso" id="r-ansioso" data-ev="inicio: compartió la cuenta regresiva en modo ansioso">😬 Modo ansioso</button>
     </div>
     <div class="chipa-caja" id="chipa-caja">
-      <div class="chipa-cab"><span class="acento-txt">Chipa de la suerte</span><small>Tocá la chipa y mirá qué te dice hoy</small></div>
+      <div class="chipa-cab"><span class="acento-txt txt-grupo">Chipa de la suerte</span><small class="txt-grupo">Tocá la chipa y mirá qué te dice hoy</small><span class="acento-txt txt-fam">Mandale una chipa de la suerte</span><small class="txt-fam">Tocá la chipa y compartile la frase a tu bailarín o bailarina</small></div>
       <button type="button" class="chipa" id="chipa" aria-label="Partir la chipa de la suerte" data-ev="inicio: partió la chipa de la suerte"><span class="ch-mitad ch-izq"></span><span class="ch-mitad ch-der"></span></button>
       <div class="chipa-papel" id="chipa-papel" hidden>
         <p id="chipa-frase" aria-live="polite"></p>
@@ -3040,20 +3041,25 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const FRASES = ["Una sonrisa abre más puertas que el pasaporte.", "Cada escenario nuevo es una casa más.", "Lejos de casa también se puede estar en casa.", "Los kilómetros se olvidan, los momentos no.", "Si te perdés, que sea en una buena historia.", "Viajar es volver distinto. Que sea para mejor.", "Llevás el Paraguay en los pies. Que se note.", "Bailá como si tu abuela te estuviera mirando desde la primera fila.", "Cuando suena la polca, el cansancio se va.", "El escenario no es grande: vos lo llenás.", "Un error en el escenario se tapa con una sonrisa.", "Bailar es contar quiénes somos sin decir una palabra.", "La botella en la cabeza y el corazón en la mano.", "Respirá hondo, mirá al compañero y disfrutá.", "Los nervios son las ganas disfrazadas.", "Jaha, que el mundo nos espera.", "Juntos llegamos más lejos. ¡Acuarela Mimbi!", "Si alguien del grupo está cansado, hoy te toca levantarle el ánimo.", "El mejor equipaje es el grupo que viaja con vos.", "Cuidá al que tenés al lado. Mañana te cuida él.", "Somos 15, pero bailamos por todos los que se quedaron.", "Hoy decile a alguien del grupo algo lindo.", "Una ronda de tereré arregla cualquier día.", "Las risas en el bus también son parte del espectáculo.", "Nadie brilla solo: brillamos juntos.", "Hoy no te olvides: ¡tomá agua y disfrutá!", "Dormir bien también es ensayar.", "Revisá que tengas todo antes de salir. Tu yo de más tarde te lo agradece.", "Lo que hoy da miedo, mañana es anécdota.", "Ya llegaste hasta acá. Lo que falta es lo más lindo.", "Brillá lejos de casa, que en casa ya saben que brillás.", "Hoy es un buen día para sorprenderte a vos mismo.", "No hace falta ser perfecto, hace falta ser de verdad.", "Si dudás, bailá. Si no dudás, bailá igual.", "Tu familia está orgullosa. Y se nota de lejos.", "Cada paso que das hoy es un paso que Paraguay da con vos.", "¡Vamos que vamos, Acuarela Mimbi! 🇵🇾🇲🇽", "¿Dormir temprano en la gira? Mmmm 🤨", "\"Solo cinco minutitos más en el celular.\" Mmmm", "\"Llego puntual, te juro.\" Mmmm", "\"Me sé toda la coreo.\" Mmmm", "Un tereré compartido vale por dos.", "Hoy es buen día para abrazar a alguien del grupo.", "Que tu sonrisa llegue antes que vos.", "El que se ríe del cansancio, gana.", "Hoy agradecé algo chiquito. Vas a ver que son muchos.", "Tu energía contagia. Usala bien.", "Escuchá al Director José y a Vivi: saben lo que hacen.", "Chipa en mano, el día arranca mejor.", "Hoy prestá atención a los detalles. Ahí está la magia.", "Si hoy te toca estar serio, que sea solo en la foto.", "\"Yo no me pierdo nunca.\" Mmmm 🧭", "\"Ya voy, ya voy.\" Mmmm ⏰", "La valija pesa, pero las ganas pesan más.", "Cada aeropuerto es el comienzo de algo lindo.", "\"La valija cierra seguro.\" Mmmm", "\"Este es el último ensayo.\" Mmmm", "Faltan días, no ganas.", "Ensayá hoy como si fuera la función en México.", "Armá la valija de a poco. Mañana te lo agradecés.", "El pasaporte ya está listo. ¿Y vos?", "Cada ensayo que queda es un regalo. Aprovechalo.", "Los nervios de antes de viajar también son parte del viaje.", "Revisá la lista de qué llevar. Una vez más no hace daño.", "Lo que practicás hoy, lo aplauden en San Blas.", "Dormí bien estas noches: allá no vas a querer dormir.", "\"Ya tengo todo listo para el viaje.\" Mmmm", "Mirá por la ventana: el mundo es más grande de lo que creías.", "Hoy guardá algo en la memoria, no solo en el celular.", "Probá una comida nueva hoy. Después nos contás.", "Escuchá cómo hablan allá: vas a volver con palabras nuevas.", "\"En México la comida no pica nada.\" Mmmm 🌶️", "Si extrañás, llamá a casa. Te están esperando con orgullo.", "Ya estamos en México. Respirá hondo y mirá todo.", "Probá un taco, pero despacito con la salsa.", "Faltan pocos días para el escenario. Repasá la coreo en tu cabeza.", "Cuidá los pies: el festival ya viene.", "Cada kilómetro hacia San Blas es un paso más cerca del sueño.", "Mirá el paisaje del camino: es parte de la historia que vas a contar.", "Mandá una foto a casa. Te están esperando.", "\"Solo voy a mirar las artesanías, no voy a comprar nada.\" Mmmm", "El mejor recuerdo del viaje todavía no pasó.", "Cada ensayo de antes hoy vale oro.", "Hoy el público no te conoce. Mañana no te va a olvidar.", "El aplauso más lindo es el de la gente que nunca vio un ñandutí.", "Hoy vas a conocer a alguien que se va a acordar de vos para siempre.", "Decí \"mba'éichapa\" a alguien nuevo y mirá su cara.", "Un \"gracias\" en otro país vale el doble.", "La gente de otros grupos también está nerviosa. Saludala primero.", "Cambiá un recuerdito, llevate un amigo.", "Preguntá de dónde son. Cada respuesta es un viaje.", "Una foto con alguien nuevo hoy, ¡no te olvides!", "En el festival, todos somos un poco del mismo pueblo.", "Enseñá algo nuestro y aprendé algo de ellos.", "Protector solar: el mejor amigo del bailarín.", "Comé algo antes de bailar. El escenario no espera.", "Lo que soñaste en el ensayo, hoy se hace realidad.", "¿Escaparse a ver la bioluminiscencia? Mmmm… 🌊", "Hoy alguien de Nayarit va a conocer el Paraguay por vos.", "La función de hoy es única. No va a haber otra igual.", "Hoy representás a Villa Elisa y a todo el Paraguay.", "Después de la función, saludá a la gente. Eso se recuerda.", "Cada pueblo que visitamos se queda con un pedacito nuestro.", "El escenario cambia, la entrega no.", "Revisá el vestuario dos veces. La botella, tres.", "\"Esta noche me acuesto temprano.\" Mmmm", "Lo dimos todo. Ahora toca contarlo.", "Llevás la valija llena y el corazón más lleno.", "Gracias por cada función, cada risa y cada abrazo.", "Volvemos distintos, volvemos juntos.", "La familia ya está preparando el abrazo de llegada.", "Lo que vivimos en México no entra en una valija.", "Despedite de México con un \"gracias\" de corazón.", "La gira termina, la amistad no.", "Mirá las fotos del viaje: todo eso lo hicimos nosotros.", "\"La valija cierra igual que a la ida.\" Mmmm", "\"Yo no voy a llorar en la despedida.\" Mmmm 🥲", "Ya extrañás San Blas y todavía no te fuiste."];
     // Etapa de cada frase: s = siempre, a = antes de viajar, m = ya en México, f = festival, v = vuelta.
     const ETAPA = "sssssssssssssssssssssssssssssssssssssssssssssssssssssaaaaaaaaaaaaaammmmmmmmmmmmmmfffffffffffffffffffffffffvvvvvvvvvvvv";
+    // Modo familia y amigos: frases para mandarle al bailarín o bailarina.
+    const FRASES_FAM = ["Desde casa te estamos aplaudiendo.", "Bailá tranquilo, que acá ya estamos orgullosos.", "No importa la distancia: estamos en primera fila.", "Llevás a toda la familia en cada paso.", "Disfrutá cada momento. Nosotros te esperamos con un abrazo.", "Te mandamos un tereré imaginario y mucha fuerza.", "Acordate de comer bien y tomar agua. Lo dice tu familia. 😄", "Sos el orgullo de la casa.", "Mostrales lo que es el Paraguay.", "Acá todos preguntan por vos. Ya sos famoso en el barrio.", "Cuidate mucho y cuidá a tus compañeros.", "Sonreí, que desde acá te vemos brillar.", "Lo que estás viviendo, lo vas a contar toda la vida.", "Te extrañamos, pero estamos felices por vos.", "Un beso grande de todos los de casa.", "¡Jaha, que se note Villa Elisa!", "Ya falta poco. Estamos muy orgullosos de todo tu esfuerzo.", "Cada ensayo valió la pena. Ahora a disfrutar.", "Armá bien la valija y no te olvides el cargador. 😉", "Vas a vivir algo único. Aprovechalo al máximo.", "Los nervios son normales. Vas a estar bárbaro.", "Nos vemos en el aeropuerto con el abrazo de despedida.", "¿Ya llegaste? Mandanos una foto cuando puedas.", "Disfrutá Guadalajara, que nosotros disfrutamos desde acá.", "Descansá bien antes del festival.", "Probá todo, pero despacito con el picante. 🌶️", "Que el viaje a San Blas sea lindo y tranquilo.", "Ya estás allá. ¡No lo podemos creer!", "¡Mucha suerte esta noche! Te estamos aplaudiendo desde acá.", "Hoy bailá con el corazón. El resto ya lo sabés.", "Que la función de hoy sea inolvidable.", "Respirá hondo antes de salir. Estamos con vos.", "Que la gente de México se enamore del Paraguay hoy.", "Después de la función, contanos todo.", "Cada aplauso que te den, sumale el nuestro.", "Estás representando a tu ciudad y a tu país. ¡Qué orgullo!", "Hoy es tu noche. Brillá.", "Esta noche, a las 23:30 de acá, estamos pensando en vos.", "Lo diste todo. Ahora volvé, que te esperamos.", "Gracias por hacernos sentir tan orgullosos.", "Viajá tranquilo. El abrazo de llegada ya está listo.", "Traé muchas historias para contar.", "Ya falta poquito para verte.", "Bienvenido de vuelta, campeón o campeona. 🇵🇾"];
+    const ETAPA_FAM = "ssssssssssssssssaaaaaammmmmmffffffffffvvvvvv";
+    const lista = () => esFamilia() ? FRASES_FAM : FRASES, etapas = () => esFamilia() ? ETAPA_FAM : ETAPA;
     const etapaHoy = () => { const d = new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" }); return d < "2026-11-30" ? "a" : d < "2026-12-04" ? "m" : d < "2026-12-14" ? "f" : "v"; };
     const chipa = $("#chipa"), papel = $("#chipa-papel"), txt = $("#chipa-frase");
     let actual = null;
     function sacar() {
-      const et = etapaHoy(), pozo = FRASES.map((_, i) => i).filter(i => ETAPA[i] === "s" || ETAPA[i] === et);
-      let vistas = leer("chipa-vistas2", []); if (!Array.isArray(vistas)) vistas = [];
+      const et = etapaHoy(), E = etapas(), clave = esFamilia() ? "chipa-vistas-fam" : "chipa-vistas2";
+      const pozo = lista().map((_, i) => i).filter(i => E[i] === "s" || E[i] === et);
+      let vistas = leer(clave, []); if (!Array.isArray(vistas)) vistas = [];
       vistas = vistas.filter(i => pozo.includes(i)); if (vistas.length >= pozo.length) vistas = [];
       let libres = pozo.filter(i => !vistas.includes(i) && i !== actual); if (!libres.length) libres = pozo;
       const i = libres[Math.floor(Math.random() * libres.length)] ?? 0;
-      vistas.push(i); escribir("chipa-vistas2", vistas);
+      vistas.push(i); escribir(clave, vistas);
       return i;
     }
     function abrir() {
-      actual = sacar(); txt.textContent = FRASES[actual];
+      actual = sacar(); txt.textContent = lista()[actual];
       chipa.classList.add("abierta"); papel.hidden = false;
       papel.style.animation = "none"; void papel.offsetWidth; papel.style.animation = "";
     }
@@ -3064,7 +3070,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     $("#chipa-voz").addEventListener("click", () => {
       if (actual == null) return;
       if (voz.speaking) { voz.cancel(); return; }
-      const u = new SpeechSynthesisUtterance(FRASES[actual].replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F]/gu, "").replace(/Mmmm…?/g, "Mmmmm"));
+      const u = new SpeechSynthesisUtterance(lista()[actual].replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F]/gu, "").replace(/Mmmm…?/g, "Mmmmm"));
       const v = voz.getVoices().filter(x => /^es/i.test(x.lang)); const e = v.find(x => /es[-_](PY|AR|UY)/i.test(x.lang)) || v.find(x => /es[-_](MX|US|419)/i.test(x.lang)) || v[0];
       u.lang = e ? e.lang : "es-ES"; if (e) { try { u.voice = e; } catch (er) {} }
       voz.cancel(); voz.speak(u);
@@ -3087,7 +3093,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       // papelito
       const px = 110, py = 980, pw = W - 220;
       g.font = "700 64px Montserrat, sans-serif";
-      const lineas = [], pal = FRASES[actual].split(" "); let l = "";
+      const lineas = [], pal = lista()[actual].split(" "); let l = "";
       for (const w of pal) { const t = l ? l + " " + w : w; if (g.measureText(t).width > pw - 120 && l) { lineas.push(l); l = w; } else l = t; }
       if (l) lineas.push(l);
       const ph = 120 + lineas.length * 86;
@@ -3107,7 +3113,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       if (actual == null) return;
       const b = await imagen(); if (!b) return;
       const arch = new File([b], "chipa-de-la-suerte.png", { type: "image/png" });
-      const texto = "Mi chipa de la suerte dice: \"" + FRASES[actual] + "\"";
+      const texto = (esFamilia() ? "Te mando una chipa de la suerte: \"" : "Mi chipa de la suerte dice: \"") + lista()[actual] + "\"";
       if (navigator.canShare && navigator.canShare({ files: [arch] })) { try { await navigator.share({ files: [arch], text: texto }); } catch (e) {} return; }
       if (navigator.share) { try { await navigator.share({ text: texto }); } catch (e) {} return; }
       const a = el("a", { href: URL.createObjectURL(b), download: "chipa-de-la-suerte.png" }); document.body.append(a); a.click(); a.remove();
@@ -3126,7 +3132,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       try { hoyCard(); } catch (e) {}
       ticRegresiva(); escenario();
     }
-    function elegir(m) { appModo = m; escribir("app-modo", m); pintarModo(); window.scrollTo(0, 0); }
+    function elegir(m) { appModo = m; escribir("app-modo", m); pintarModo(); window.scrollTo(0, 0); try { $("#chipa").classList.remove("abierta"); $("#chipa-papel").hidden = true; } catch (e) {} }
     caja.querySelectorAll("[data-elegir]").forEach(b => b.addEventListener("click", () => elegir(b.dataset.elegir)));
     // Funciones: del 4 al 13 de diciembre, 19:30 de Nayarit (4 horas menos que Paraguay).
     function escenario() {
