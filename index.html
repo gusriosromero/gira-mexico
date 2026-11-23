@@ -144,6 +144,19 @@ section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqu
 .btn-album b{display:block;font-size:16px}.btn-album small{display:block;font-size:13px;opacity:.8;margin-top:2px}
 .solo-fam-blq{width:100%}
 :root:not([data-modo-app="familia"]) .solo-fam-blq{display:none}
+/* Muro de saludos */
+.muro-form{display:grid;gap:10px}
+.muro-form label{display:grid;gap:4px;font-size:13px;font-weight:600;color:var(--suave)}
+.muro-form input,.muro-form textarea{font:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);width:100%;min-width:0}
+.muro-form textarea{min-height:110px;resize:vertical}
+.muro-form .cuenta-car{font-size:12px;color:var(--suave);text-align:right;font-weight:400}
+.muro-estado{margin:0;font-size:14px;font-weight:600}
+.muro-estado.ok{color:#1d7a46}.muro-estado.mal{color:#b3261e}
+.muro-lista{display:grid;gap:10px}
+.saludo{border-radius:var(--radio);padding:14px 16px;background:var(--p-rosa);color:var(--texto)}
+.saludo:nth-child(4n+2){background:var(--p-celeste)}.saludo:nth-child(4n+3){background:var(--p-lila)}.saludo:nth-child(4n+4){background:var(--p-durazno)}
+.saludo p{margin:0 0 8px;font-size:16px;line-height:1.4;white-space:pre-line;overflow-wrap:anywhere}
+.saludo small{font-size:13px;font-weight:700;opacity:.8}
 /* Botones ocultos del Inicio (la sección sigue andando por enlace directo) */
 .mosaico.oculto{display:none!important}
 .mosaico:active{transform:scale(.97)}
@@ -756,6 +769,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="mosaico c-lila solo-grupo" href="#tips" data-vista="tips"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></span><span class="txt"><b>Tips</b><small>Consejos para el viaje</small></span></a>
       <a class="mosaico c-rosa" href="#elenco" data-vista="elenco"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.6c2.6.1 4.4 1.8 5 4.4"/></svg></span><span class="txt"><b>El elenco</b><small>Los 15 que viajamos</small></span></a>
       <a class="mosaico c-celeste" href="#juego" data-vista="juego"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="8" height="11" rx="1.5"/><rect x="13" y="9" width="8" height="11" rx="1.5"/><path d="M7 8v3M17 13v3"/></svg></span><span class="txt"><b>Juegos</b><small>Memoria de ñandutí, para jugar en el viaje</small></span></a>
+      <a class="mosaico c-rosa" href="#muro" data-vista="muro" id="mosaico-muro"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></span><span class="txt"><b>Muro de saludos</b><small>Dejanos tu mensaje de aliento</small></span></a>
       <a class="mosaico c-durazno solo-familia" href="#familias" data-vista="familias"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M12 18s-3-1.9-3-3.8a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.9-3 3.8-3 3.8z"/></svg></span><span class="txt"><b>Para las familias</b><small>Vuelos en vivo, horarios y contacto</small></span></a>
       <a class="mosaico c-celeste solo-familia" href="https://photos.app.goo.gl/vjeYbVuMJC1QcGmh9" target="_blank" rel="noopener" data-ev="familias: abrió el álbum de fotos (inicio)"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="txt"><b>Fotos de la gira</b><small>El álbum con las fotos de cada día</small></span></a>
       <a class="mosaico c-lila oculto" href="#seguir" data-vista="seguir"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span><span class="txt"><b>Seguí la gira</b><small>Funciones, en vivo y redes</small></span></a>
@@ -1408,6 +1422,26 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     </div>
   </section>
 
+  <section class="vista" id="vista-muro" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Para todos</span>
+      <h2>Muro de saludos</h2>
+      <p class="nota">Dejale un saludo a Acuarela Mimbi, el elenco de Paraguay que baila en el Festival de San Blas. Lo leemos todo el grupo.</p>
+      <form class="muro-form" id="muro-form" novalidate>
+        <label for="m-nombre">Tu nombre<input id="m-nombre" maxlength="60" autocomplete="off" required></label>
+        <label for="m-lugar">De dónde sos<input id="m-lugar" maxlength="60" placeholder="Ej.: San Blas, Nayarit" autocomplete="off"></label>
+        <label for="m-mensaje">Tu mensaje<textarea id="m-mensaje" maxlength="300" required></textarea><span class="cuenta-car" id="m-cuenta">0 / 300</span></label>
+        <button type="submit" class="btn" id="m-enviar" data-ev="muro: envió un saludo">Enviar saludo</button>
+        <p class="muro-estado" id="m-estado" aria-live="polite"></p>
+        <p class="nota">Los saludos aparecen en el muro después de que los revisamos. No pongas teléfonos ni datos personales.</p>
+      </form>
+    </div>
+    <div class="bloque">
+      <h3>Lo que nos dejaron</h3>
+      <div class="muro-lista" id="muro-lista"></div>
+    </div>
+  </section>
+
   <section class="vista" id="vista-emergencias" hidden>
     <div class="bloque">
       <span class="etiqueta">Tener a mano</span>
@@ -1518,6 +1552,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   // Mientras sea false, el modo familia y amigos está oculto: no se pregunta ni hay botón para pasarse.
   // Solo se entra con el enlace ...?familia (lo tiene Gustavo para probar). Cambiar a true para abrirlo a todos.
   const FAMILIA_ABIERTA = false;
+  // Muro de saludos: oculto para todos menos el celular de prueba (el que entró con ?familia) hasta abrirlo.
+  const MURO_ABIERTO = false;
   let appModo = leer("app-modo", null);
   if (appModo !== "grupo" && appModo !== "familia") appModo = (yaUsada || !FAMILIA_ABIERTA) ? "grupo" : null;
   if (!FAMILIA_ABIERTA && appModo === "familia" && !leer("app-modo-enlace", false)) appModo = "grupo";
@@ -1555,8 +1591,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   aplicarTema(leer("info-tema", "auto"));
 
   // ---------- Navegación ----------
-  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "juego", "fotos", "emergencias", "instalar"];
-  const BLOQUEADAS = ["seguir"]; // "familias" reabierta 22/11 para el modo familia
+  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "juego", "fotos", "muro", "emergencias", "instalar"];
+  const BLOQUEADAS = ["seguir"];
+  if (!MURO_ABIERTO && !leer("app-modo-enlace", false)) { BLOQUEADAS.push("muro"); $("#mosaico-muro").remove(); } // "familias" reabierta 22/11 para el modo familia
   const nombres = {};
   document.querySelectorAll(".mosaico").forEach(a => { nombres[a.dataset.vista] = a.querySelector("b").textContent; });
   function mostrar(v) {
@@ -2936,6 +2973,67 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   }
   ticRegresiva(); setInterval(ticRegresiva, 1000);
 
+
+  // ---------- Muro de saludos: se manda a un Formulario de Google (oculto); Gustavo aprueba en la planilla
+  // y la app lee solo la pestaña "Muro" publicada como CSV. ----------
+  (() => {
+    const FORM = "https://docs.google.com/forms/d/e/1FAIpQLSfjroJqKmkNtenK3NUIPxjd3cmBQC0FVnyj8AaMHvkQxiPL2g/formResponse";
+    const CAMPOS = { nombre: "entry.1742380033", lugar: "entry.1353420043", mensaje: "entry.1726810347" };
+    const MURO_CSV = ""; // enlace "Publicar en la Web" (CSV) de la pestaña Muro
+    const f = $("#muro-form"), est = $("#m-estado"), btn = $("#m-enviar"), txt = $("#m-mensaje"), lista = $("#muro-lista");
+    if (!f) return;
+    txt.addEventListener("input", () => { $("#m-cuenta").textContent = txt.value.length + " / 300"; });
+    const aviso = (t, ok) => { est.textContent = t; est.className = "muro-estado " + (ok ? "ok" : "mal"); };
+    f.addEventListener("submit", async e => {
+      e.preventDefault();
+      const nombre = $("#m-nombre").value.trim(), lugar = $("#m-lugar").value.trim(), mensaje = txt.value.trim();
+      if (!nombre || !mensaje) { aviso("Poné tu nombre y tu mensaje.", false); return; }
+      btn.disabled = true; aviso("Enviando…", true);
+      const datos = new URLSearchParams({ [CAMPOS.nombre]: nombre, [CAMPOS.lugar]: lugar, [CAMPOS.mensaje]: mensaje });
+      try {
+        await fetch(FORM, { method: "POST", mode: "no-cors", body: datos });
+        aviso("¡Gracias! Tu saludo llegó. Va a aparecer en el muro cuando lo revisemos.", true);
+        txt.value = ""; $("#m-cuenta").textContent = "0 / 300";
+        setTimeout(() => { btn.disabled = false; }, 20000);
+      } catch (err) {
+        aviso("No se pudo enviar. Revisá tu conexión a internet y probá de nuevo.", false);
+        btn.disabled = false;
+      }
+    });
+    function csv(t) {
+      const filas = []; let fila = [], campo = "", q = false;
+      for (let i = 0; i < t.length; i++) {
+        const c = t[i];
+        if (q) { if (c === '"') { if (t[i + 1] === '"') { campo += '"'; i++; } else q = false; } else campo += c; }
+        else if (c === '"') q = true;
+        else if (c === ",") { fila.push(campo); campo = ""; }
+        else if (c === "\n" || c === "\r") { if (c === "\r" && t[i + 1] === "\n") i++; fila.push(campo); filas.push(fila); fila = []; campo = ""; }
+        else campo += c;
+      }
+      if (campo || fila.length) { fila.push(campo); filas.push(fila); }
+      return filas;
+    }
+    function pintar(filas) {
+      const ok = filas.filter(r => r && (r[2] || "").trim() && !/^#/.test(r[0] || "")).reverse();
+      lista.replaceChildren(...(ok.length ? ok.map(r => el("div", { class: "saludo" },
+        el("p", { text: r[2].trim() }),
+        el("small", { text: "— " + (r[0] || "").trim() + ((r[1] || "").trim() ? " · " + r[1].trim() : "") }))) : [el("p", { class: "nota", text: "Todavía no hay saludos. ¡Dejá el primero!" })]));
+    }
+    async function cargar() {
+      const guardado = leer("muro-cache", null);
+      if (guardado) pintar(guardado); else pintar([]);
+      if (!MURO_CSV) return;
+      try {
+        const r = await fetch(MURO_CSV + (MURO_CSV.includes("?") ? "&" : "?") + "t=" + Date.now());
+        if (!r.ok) return;
+        const filas = csv(await r.text());
+        escribir("muro-cache", filas); pintar(filas);
+      } catch (e) {}
+    }
+    let cargado = false;
+    const ver = () => { if (location.hash === "#muro" && !cargado) { cargado = true; cargar(); setTimeout(() => { cargado = false; }, 60000); } };
+    window.addEventListener("hashchange", ver); ver();
+  })();
 
   // ---------- Chipa de la suerte: frase al azar, sin repetir hasta que salgan todas ----------
   (() => {
