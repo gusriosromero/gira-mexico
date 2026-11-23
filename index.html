@@ -1750,7 +1750,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     "2026-12-01": ["Guadalajara", "Itinerario a confirmar", ""],
     "2026-12-02": ["Guadalajara", "Itinerario a confirmar", ""],
     "2026-12-03": ["Guadalajara", "Itinerario a confirmar", ""],
-    "2026-12-04": ["San Blas", "Llegada e inicio del festival", "Función a las 19:30, hora local."],
+    "2026-12-04": ["San Blas y Ruiz", "Llegada, acreditación y primera función", "Bailamos en Ruiz, a una hora de San Blas. Horario a confirmar."],
     "2026-12-13": ["San Blas", "Última noche del festival", "Función a las 19:30, hora local."],
     "2026-12-14": ["Salida de San Blas", "Temprano por la mañana", "De noche, estar en el aeropuerto de Guadalajara a las 21:00."],
     "2026-12-15": ["Vuelta a casa", "Guadalajara → Panamá → Asunción", "Escala en Panamá. El vuelo CM 207 sale a las 15:55."],
@@ -1767,7 +1767,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     if (n < 1 || n > 17 || !d) { card.hidden = true; return null; }
     card.textContent = "";
     const nota = d[2] && esFamilia() ? d[2].replace("Función a las 19:30, hora local.", "Función a las 19:30 de allá, 23:30 en Paraguay.") : d[2];
-    card.append(esFamilia() ? el("span", { class: "dia", text: "Hoy el grupo está en" }) : null, el("b", { text: d[0] }), el("p", { text: d[1] }), nota ? el("p", { class: "nota", text: nota }) : null,
+    card.append(esFamilia() ? el("span", { class: "dia", text: "Hoy el grupo está en" }) : "", el("b", { text: d[0] }), el("p", { text: d[1] }), nota ? el("p", { class: "nota", text: nota }) : "",
       el("div", { class: "barra-dias", "aria-hidden": "true" }, Array.from({ length: 17 }, (_, i) => el("i", { class: i + 1 < n ? "pasado" : i + 1 === n ? "hoy-i" : "" }))));
     card.hidden = false;
     return n;
@@ -1881,7 +1881,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     { f: "30 nov", h: "06:31", t: "Salida de Asunción", d: "Vuelo a Ciudad de Panamá.", r: "Viaje: Asunción → Panamá → Guadalajara", ini: "2026-11-30", fin: "2026-11-30", hoy: "De viaje a México", hoyD: "Asunción → Panamá → Guadalajara. Llegamos de noche." },
     { f: "30 nov", h: "22:49", c: "clave", t: "Llegada a Guadalajara", d: "Jalisco, México. Hora local, 3 horas menos que Paraguay." },
     { f: "1 al 3 dic", c: "duda", t: "Días previos al festival", d: "Itinerario y traslado a San Blas (unas 3 a 4 horas por tierra).", r: "Guadalajara y traslado a San Blas", ini: "2026-12-01", fin: "2026-12-03", hoy: "En Guadalajara", hoyD: "Preparándonos para el festival." },
-    { f: "4 dic", h: "vie", c: "clave", t: "Llegada a San Blas, Nayarit", d: "Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026." },
+    { f: "4 dic", h: "vie", c: "clave", t: "Llegada a San Blas y primera función", d: "Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026. Acreditación y primera función en Ruiz, a una hora de San Blas. Horario a confirmar." },
     { f: "4 al 13 dic", t: "Festival", d: "Función todas las noches a las 19:30, en San Blas y pueblos cercanos. Desfile y honores a la bandera.", r: "Festival en San Blas, Nayarit. Función cada noche.", ini: "2026-12-04", fin: "2026-12-13", hoy: "Festival en San Blas", hoyD: "Función esta noche a las 19:30 de México (23:30 en Paraguay)." },
     { f: "14 dic", h: "lun", t: "Salida de San Blas", d: "Temprano por la mañana." },
     { f: "14 dic", c: "duda", t: "Traslado a Guadalajara", d: "Por tierra, unas 3 a 4 horas, para el vuelo de la noche.", r: "Traslado a Guadalajara y vuelo de regreso esa noche", ini: "2026-12-14", fin: "2026-12-15", hoy: "De regreso a casa", hoyD: "Traslado a Guadalajara y vuelo de vuelta, con escala en Panamá." },
@@ -2957,7 +2957,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const meta = () => vuelta()
     ? { fin: regreso, sub: "Llegan a Asunción el miércoles 16 de diciembre a las 00:02", para: "para que vuelvan a casa", voz: " para que vuelvan a casa. ¡Ya falta poco!", hoy: "VUELVEN!", casi: "¡Ya casi vuelven!" }
     : Date.now() >= salida
-    ? { fin: festival, sub: "El festival arranca el viernes 4 de diciembre a las 19:30 de México", para: "para el festival en San Blas", voz: " para el festival en San Blas. ¡Vamos Acuarela Mimbi!", hoy: "DEBUTAMOS!", casi: "¡Ya casi salimos al escenario!" }
+    ? { fin: festival, sub: "Debutamos el viernes 4 de diciembre en Ruiz, Nayarit", para: "para el festival en San Blas", voz: " para el festival en San Blas. ¡Vamos Acuarela Mimbi!", hoy: "DEBUTAMOS!", casi: "¡Ya casi salimos al escenario!" }
     : { fin: salida, sub: "Despegamos el lunes 30 de noviembre a las 06:31", para: "para la Gira México 2026", voz: " para la Gira México 2026. ¡Vamos Acuarela Mimbi!", hoy: "SALIMOS!", casi: "¡Ya casi despegamos!" };
   const faltan = () => {
     const t = Math.max(0, meta().fin - Date.now());
