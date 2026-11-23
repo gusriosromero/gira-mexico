@@ -140,6 +140,10 @@ section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqu
 .en-escenario small{display:block;font-weight:600;opacity:.9}
 .modo-app{text-align:center;font-size:13px;color:var(--suave);margin:4px 0 0}
 .modo-app button{font:inherit;font-weight:700;color:var(--texto);background:none;border:0;text-decoration:underline;cursor:pointer;padding:4px}
+.btn-album{display:flex;gap:12px;align-items:center;width:100%;border-radius:var(--radio);background:var(--p-celeste);color:#17171c;padding:14px 16px;text-decoration:none;font-size:30px;line-height:1}
+.btn-album b{display:block;font-size:16px}.btn-album small{display:block;font-size:13px;opacity:.8;margin-top:2px}
+.solo-fam-blq{width:100%}
+:root:not([data-modo-app="familia"]) .solo-fam-blq{display:none}
 /* Botones ocultos del Inicio (la sección sigue andando por enlace directo) */
 .mosaico.oculto{display:none!important}
 .mosaico:active{transform:scale(.97)}
@@ -709,6 +713,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       </div>
     </div>
     <div class="en-escenario" data-escenario hidden></div>
+    <div class="solo-fam-blq"><a class="btn-album" href="https://photos.app.goo.gl/vjeYbVuMJC1QcGmh9" target="_blank" rel="noopener" data-ev="familias: abrió el álbum de fotos (inicio)"><span aria-hidden="true">📸</span><span><b>Fotos de la gira</b><small>El álbum con las fotos de cada día</small></span></a></div>
     <div class="regresiva" id="regresiva" hidden>
       <button type="button" class="r-voz" id="r-voz" aria-label="Escuchar cuánto falta" data-ev="inicio: escuchó la cuenta regresiva" hidden>🔊</button>
       <span class="r-tit">Faltan</span>
@@ -1089,6 +1094,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <button type="button" class="btn sec" id="compartir-familias">Compartir esta página con la familia</button>
     </div>
     <div class="en-escenario" data-escenario hidden></div>
+    <div class="bloque">
+      <a class="btn-album" href="https://photos.app.goo.gl/vjeYbVuMJC1QcGmh9" target="_blank" rel="noopener" data-ev="familias: abrió el álbum de fotos"><span aria-hidden="true">📸</span><span><b>Fotos de la gira</b><small>El álbum con las fotos de cada día</small></span></a>
+    </div>
     <div class="bloque">
       <h3>Dónde estamos</h3>
       <ol class="fam-dias" id="fam-dias"></ol>
