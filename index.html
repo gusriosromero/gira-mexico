@@ -1558,8 +1558,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   let appModo = leer("app-modo", null);
   if (appModo !== "grupo" && appModo !== "familia") appModo = (yaUsada || !FAMILIA_ABIERTA) ? "grupo" : null;
   if (!FAMILIA_ABIERTA && appModo === "familia" && !leer("app-modo-enlace", false)) appModo = "grupo";
-  // Enlace para las familias (...?familia): entra directo en modo familia, sin preguntar.
-  if (/[?&]familia\b/.test(location.search)) {
+  // Enlace para familia y amigos (...?familia o ...?amigos): entra directo en modo familia, sin preguntar.
+  if (/[?&](familia|amigos)\b/.test(location.search)) {
     appModo = "familia"; escribir("app-modo-enlace", true);
     try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
   }
