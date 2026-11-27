@@ -3449,8 +3449,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     document.querySelectorAll("#vista-elenco .elenco li").forEach(li => {
       const archivo = CARAS[li.querySelector("b").textContent.trim()], ini = li.querySelector(".ini");
       if (!archivo || !ini) return;
-      const v = el("video", { class: ini.className, muted: "", loop: "", playsinline: "", preload: quieto ? "none" : "metadata", poster: "elenco/" + archivo + ".jpg?v=4", "aria-hidden": "true" });
-      v.muted = true; v.src = "elenco/" + archivo + ".mp4?v=4";
+      const v = el("video", { class: ini.className, muted: "", loop: "", playsinline: "", preload: quieto ? "none" : "metadata", poster: "elenco/" + archivo + ".jpg?v=5", "aria-hidden": "true" });
+      v.muted = true; v.src = "elenco/" + archivo + ".mp4?v=5";
       v.addEventListener("error", () => v.replaceWith(ini), { once: true });
       ini.replaceWith(v);
     });
