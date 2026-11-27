@@ -140,7 +140,10 @@ body.con-puerta{overflow:hidden}
 .clave-grupo{width:100%;display:grid;gap:10px;text-align:left;background:var(--p-lila);color:#17171c;border-radius:var(--radio);padding:16px}
 .clave-grupo label{font-size:15px;font-weight:700}
 .clave-fila{display:flex;gap:8px}
-.clave-fila input{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.25);background:#fff;color:#17171c}
+.clave-campo{flex:1;min-width:0;position:relative;display:flex}
+.clave-ojo{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;background:none;color:#55596b;cursor:pointer;display:grid;place-items:center;padding:0}
+.clave-ojo svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.clave-fila input{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px 46px 12px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.25);background:#fff;color:#17171c}
 .clave-error{font-size:13px;font-weight:700;color:#a3122a;margin:0}
 .clave-error[hidden]{display:none}
 .clave-ayuda{font-size:13px;margin:0}
@@ -704,7 +707,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     <b class="puerta-tit" id="puerta-tit">Gira México 2026</b>
     <form class="clave-grupo" id="clave-grupo" autocomplete="off">
       <label for="clave-input">Esta parte de la app es para el elenco. Poné la contraseña del grupo para entrar.</label>
-      <div class="clave-fila"><input type="password" id="clave-input" autocomplete="current-password" placeholder="Contraseña"><button type="submit" class="btn" data-ev="modo: entró con contraseña">Entrar</button></div>
+      <div class="clave-fila"><span class="clave-campo"><input type="password" id="clave-input" autocomplete="current-password" placeholder="Contraseña"><button type="button" class="clave-ojo" id="clave-ojo" aria-label="Mostrar la contraseña" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span><button type="submit" class="btn" data-ev="modo: entró con contraseña">Entrar</button></div>
       <p class="clave-error" id="clave-error" aria-live="polite" hidden>Esa no es la contraseña. Probá de nuevo.</p>
       <p class="clave-ayuda">Si no la sabés, pedísela al Director José, a Vivi o a Gustavo.</p>
     </form>
@@ -3229,9 +3232,17 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       try { ok = !!t && (await huella(t)) === CLAVE_HUELLA; } catch (err) {}
       $("#clave-error").hidden = ok;
       if (!ok) { inp.select(); return; }
-      inp.value = ""; escribir("grupo-ok", true); elegir("grupo");
+      inp.value = ""; inp.type = "password"; escribir("grupo-ok", true); elegir("grupo");
     });
     $("#clave-familia").addEventListener("click", () => elegir("familia"));
+    $("#clave-ojo").addEventListener("click", e => {
+      const inp = $("#clave-input"), ver = inp.type === "password", b = e.currentTarget;
+      inp.type = ver ? "text" : "password";
+      b.setAttribute("aria-pressed", String(ver));
+      b.setAttribute("aria-label", ver ? "Ocultar la contraseña" : "Mostrar la contraseña");
+      b.querySelector("svg").innerHTML = ver ? '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/>' : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>';
+      inp.focus();
+    });
     // Funciones: del 4 al 13 de diciembre, 19:30 de Nayarit (4 horas menos que Paraguay).
     function escenario() {
       const ahora = new Date(), fmt = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Mazatlan", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
