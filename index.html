@@ -998,7 +998,6 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <div class="tip importante"><h3>Valija despachada (23 kg)</h3><p>Vestuarios, elementos y todo lo que pase de 100 ml. Un porta traje ayuda a que el vestuario no se arrugue.</p></div>
       <div class="tip"><h3>Líquidos</h3><p>En la cartera y en la valija de mano, solo envases de hasta 100 ml. El desodorante, mejor en barra.</p></div>
       <div class="tip importante"><h3>Pasaporte</h3><p>Tiene que estar vigente durante todo el viaje y con margen. Sacale foto y guardala en el celular.</p></div>
-      <div class="tip importante"><h3>Llegada a Tepic: bajar en la SEGUNDA central</h3><p>Muy importante: cuando el bus llega a Tepic, primero para en una central chica, casi entrando a la ciudad. Ahí NO se baja nadie. Bajamos en la segunda central, donde nos espera Jeovani para seguir a San Blas.</p></div>
       <div class="tip importante"><h3>Repelente: no lo compres acá</h3><p>En San Blas hay jejenes y mosquitos, y muchos repelentes no sirven o duran poco. Lo compramos allá: los organizadores nos dicen qué marca funciona.</p></div>
       <div class="tip"><h3>Ropa de playa</h3><p>Llevá ropa de playa y de baño: hay al menos un paseo seguro donde nos vamos a bañar, y pueden surgir otros.</p></div>
       <div class="tip clima-dic"><h3>Cómo suele ser el clima en diciembre</h3>
@@ -1808,7 +1807,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   }
   const GASTOS = [
     ["Se paga en Paraguay", false, [["Aporte AIFL", 62200], ["Regalo de ñandutí", 40000], ["Camisa Ao Po'i", 150000], ["Remeras", 73500], ["Buzo", 210000], ["DJ en la presentación familiar", 20000], ["Accesorios", 110000, 1], ["Uñas", 100000, 1]]],
-    ["Se paga en México", true, [["Aporte al festival de San Blas", 350000], ["Hotel en San Blas (1 día)", 50000], ["Bus alquilado para todo el recorrido", 994000]]],
+    ["Se paga en México", true, [["Aporte al festival de San Blas", 350000], ["Bus alquilado para todo el recorrido", 994000]]],
   ];
   const gs = x => "G. " + fmtN(x, 0);
   let pagados = leer("gastos-pagados", {});
@@ -1890,9 +1889,8 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     { f: "30 nov", h: "03:30", c: "aeropuerto", t: "En el aeropuerto Silvio Pettirossi", d: "3 horas antes, para el check-in y la foto oficial de salida." },
     { f: "30 nov", h: "06:31", t: "Salida de Asunción", d: "Vuelo a Ciudad de Panamá.", r: "Viaje: Asunción → Panamá → Guadalajara", ini: "2026-11-30", fin: "2026-11-30", hoy: "De viaje a México", hoyD: "Asunción → Panamá → Guadalajara. Llegamos de noche." },
     { f: "30 nov", h: "22:49", c: "clave", t: "Llegada a Guadalajara", d: "Jalisco, México. Hora local, 3 horas menos que Paraguay." },
-    { f: "1 al 3 dic", c: "duda", t: "Días previos al festival", d: "Itinerario y traslado a San Blas (unas 3 a 4 horas por tierra).", r: "Guadalajara y traslado a San Blas", ini: "2026-12-01", fin: "2026-12-03", hoy: "En Guadalajara", hoyD: "Preparándonos para el festival." },
-    { f: "4 dic", h: "vie", c: "aeropuerto", t: "En Tepic, bajar en la SEGUNDA central", d: "El bus primero para en una central chica, casi entrando a la ciudad: ahí NO se baja nadie. Bajamos en la segunda, donde nos espera Jeovani para seguir a San Blas." },
-    { f: "4 dic", h: "15:00", c: "clave", t: "En San Blas antes de las 15:00", d: "Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026. Bienvenida, hospedaje y comida. Entre las 15:00 y las 15:30 salimos a Ruiz, a una hora de San Blas, para la primera función." },
+    { f: "1 al 3 dic", c: "duda", t: "Días previos al festival", d: "Itinerario a confirmar. Viajamos a San Blas en un bus alquilado para el grupo.", r: "Guadalajara y viaje a San Blas", ini: "2026-12-01", fin: "2026-12-03", hoy: "En Guadalajara", hoyD: "Preparándonos para el festival." },
+    { f: "4 dic", h: "vie", c: "clave", t: "En San Blas antes de las 15:00", d: "Inicio del 5.º Festival Internacional de la Danza del Folklor San Blas 2026. Bienvenida, hospedaje y comida. Entre las 15:00 y las 15:30 salimos a Ruiz, a una hora de San Blas, para la primera función." },
     { f: "4 al 13 dic", t: "Festival", d: "Cada día bailamos en un pueblo distinto de Nayarit. Desfile y honores a la bandera.", r: "Festival en San Blas, Nayarit. Función cada noche.", ini: "2026-12-04", fin: "2026-12-13", hoy: "Festival en San Blas", hoyD: "Función esta noche a las 19:30 de México (23:30 en Paraguay)." },
     { f: "5 dic", t: "Carleño", d: "Ballet Folklórico San Blas e internacionales, en la Plaza Principal." },
     { f: "6 dic", t: "Autan", d: "Presentaciones internacionales y San Blas." },
@@ -1904,7 +1902,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     { f: "12 dic", t: "Rosamorada", d: "Presentaciones internacionales y San Blas." },
     { f: "13 dic", t: "San Blas", d: "Presentaciones internacionales y cierre en La Tovara. El cierre depende de que se confirme el montaje y la iluminación." },
     { f: "14 dic", h: "lun", t: "Despedida y salida de San Blas", d: "Temprano por la mañana." },
-    { f: "14 dic", c: "duda", t: "Traslado a Guadalajara", d: "Por tierra, unas 3 a 4 horas, para el vuelo de la noche.", r: "Traslado a Guadalajara y vuelo de regreso esa noche", ini: "2026-12-14", fin: "2026-12-15", hoy: "De regreso a casa", hoyD: "Traslado a Guadalajara y vuelo de vuelta, con escala en Panamá." },
+    { f: "14 dic", c: "duda", t: "Viaje a Guadalajara", d: "En el bus alquilado, para el vuelo de la noche.", r: "Traslado a Guadalajara y vuelo de regreso esa noche", ini: "2026-12-14", fin: "2026-12-15", hoy: "De regreso a casa", hoyD: "Traslado a Guadalajara y vuelo de vuelta, con escala en Panamá." },
     { f: "14 dic", h: "21:00", c: "aeropuerto", t: "En el aeropuerto de Guadalajara", d: "3 horas antes del vuelo." },
     { f: "15 dic", h: "00:12", t: "Vuelo desde Guadalajara", d: "Sale en la noche del 14 al 15. Escala en Panamá." },
     { f: "16 dic", h: "00:02", c: "clave", t: "Llegada a Asunción", d: "De vuelta en casa.", r: "Llegada a Asunción a las 00:02", ini: "2026-12-16", fin: "2026-12-16", hoy: "¡De vuelta en casa!", hoyD: "Llegamos a Asunción a las 00:02." },
