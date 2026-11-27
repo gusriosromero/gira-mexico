@@ -130,19 +130,22 @@ section.vista:not(#vista-inicio) > .bloque:first-child:not(:has(> :not(h2,.etiqu
 :root[data-modo-app="familia"] .mosaico.solo-grupo{display:none!important}
 :root:not([data-modo-app="familia"]) .mosaico.solo-familia{display:none!important}
 .mosaico.solo-familia{order:-1}
-.elegir-modo{width:100%;border-radius:var(--radio);background:var(--p-lila);color:#17171c;padding:16px;display:grid;gap:8px;text-align:center}
+.elegir-modo{position:fixed;inset:0;z-index:900;overflow:auto;background:var(--fondo);color:var(--texto);display:grid;place-items:center;padding:24px 16px}
 .elegir-modo[hidden],.en-escenario[hidden]{display:none}
-.elegir-modo b{font-size:17px}.elegir-modo p{margin:0;font-size:14px}
-.elegir-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.elegir-btns .btn{padding:14px 8px;font-size:15px}
-.elegir-btns[hidden]{display:none}
-.clave-grupo{display:grid;gap:8px;text-align:left}
-.clave-grupo[hidden]{display:none}
-.clave-grupo label{font-size:14px;font-weight:700}
+body.con-puerta{overflow:hidden}
+.puerta-caja{width:100%;max-width:420px;display:grid;gap:14px;text-align:center;justify-items:center}
+.puerta-logo{width:150px;height:auto}
+.puerta-caja .acento-txt{font-size:28px;margin-bottom:-12px}
+.puerta-tit{font-family:var(--titulo);font-size:34px;text-transform:uppercase;line-height:1.05;font-weight:400}
+.clave-grupo{width:100%;display:grid;gap:10px;text-align:left;background:var(--p-lila);color:#17171c;border-radius:var(--radio);padding:16px}
+.clave-grupo label{font-size:15px;font-weight:700}
 .clave-fila{display:flex;gap:8px}
 .clave-fila input{flex:1;min-width:0;font:inherit;font-size:16px;padding:12px;border-radius:12px;border:1px solid rgba(0,0,0,.25);background:#fff;color:#17171c}
 .clave-error{font-size:13px;font-weight:700;color:#a3122a;margin:0}
-.clave-otra{font:inherit;font-size:13px;background:none;border:0;text-decoration:underline;cursor:pointer;color:#17171c;padding:2px;justify-self:start}
+.clave-error[hidden]{display:none}
+.clave-ayuda{font-size:13px;margin:0}
+.puerta-pie{width:100%;display:grid;gap:8px;margin-top:6px;padding-top:16px;border-top:1px solid var(--linea)}
+.puerta-pie p{margin:0;font-size:14px;color:var(--suave)}
 .en-escenario{width:100%;border-radius:var(--radio);background:#e5484d;color:#fff;padding:12px 14px;display:flex;gap:10px;align-items:center;font-weight:700}
 .en-escenario i{width:12px;height:12px;border-radius:50%;background:#fff;flex:none;animation:lu-pulso 1.2s ease-in-out infinite}
 .en-escenario small{display:block;font-weight:600;opacity:.9}
@@ -694,6 +697,23 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 @media (prefers-reduced-motion:no-preference){.barra i,.anillo{transition:all .3s ease}}
 </style>
 
+<div class="elegir-modo" id="elegir-modo" role="dialog" aria-modal="true" aria-labelledby="puerta-tit" hidden>
+  <div class="puerta-caja">
+    <img class="puerta-logo" id="puerta-logo" alt="">
+    <span class="acento-txt">Acuarela Mimbi</span>
+    <b class="puerta-tit" id="puerta-tit">Gira México 2026</b>
+    <form class="clave-grupo" id="clave-grupo" autocomplete="off">
+      <label for="clave-input">Esta parte de la app es para el elenco. Poné la contraseña del grupo para entrar.</label>
+      <div class="clave-fila"><input type="password" id="clave-input" autocomplete="current-password" placeholder="Contraseña"><button type="submit" class="btn" data-ev="modo: entró con contraseña">Entrar</button></div>
+      <p class="clave-error" id="clave-error" aria-live="polite" hidden>Esa no es la contraseña. Probá de nuevo.</p>
+      <p class="clave-ayuda">Si no la sabés, pedísela al Director José, a Vivi o a Gustavo.</p>
+    </form>
+    <div class="puerta-pie">
+      <p>¿Sos familia, amigo o seguís la gira desde lejos?</p>
+      <button type="button" class="btn sec" id="clave-familia" data-ev="modo: entró como familia">🏠 Entrar en modo familia y amigos</button>
+    </div>
+  </div>
+</div>
 <header class="portada">
   <button type="button" class="tema" aria-label="Cambiar tema"><svg viewBox="0 0 24 24" aria-hidden="true"></svg></button>
   <div class="envoltura">
@@ -727,20 +747,6 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
 
   <!-- INICIO -->
   <section class="vista" id="vista-inicio">
-    <div class="elegir-modo" id="elegir-modo" hidden>
-      <b>¡Bienvenidos a la app de la Gira México 2026!</b>
-      <p>Para mostrarte lo que te sirve, contanos:</p>
-      <div class="elegir-btns">
-        <button type="button" class="btn" data-elegir="grupo" data-ev="modo: eligió viajo con el grupo">💃 Viajo con el grupo</button>
-        <button type="button" class="btn" data-elegir="familia" data-ev="modo: eligió soy familia">🏠 Soy familia o amigo</button>
-      </div>
-      <form class="clave-grupo" id="clave-grupo" hidden autocomplete="off">
-        <label for="clave-input">La parte del grupo tiene contraseña. Pedísela al Director José, a Vivi o a Gustavo.</label>
-        <div class="clave-fila"><input type="password" id="clave-input" autocomplete="current-password" placeholder="Contraseña"><button type="submit" class="btn" data-ev="modo: entró con contraseña">Entrar</button></div>
-        <p class="clave-error" id="clave-error" aria-live="polite" hidden>Esa no es la contraseña. Probá de nuevo.</p>
-        <button type="button" class="clave-otra" id="clave-familia" data-ev="modo: siguió como familia">Mejor sigo como familia o amigo</button>
-      </form>
-    </div>
     <div class="en-escenario" data-escenario hidden></div>
     <div class="regresiva" id="regresiva" hidden>
       <button type="button" class="r-voz" id="r-voz" aria-label="Escuchar cuánto falta" data-ev="inicio: escuchó la cuenta regresiva" hidden>🔊</button>
@@ -3198,9 +3204,9 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     const caja = $("#elegir-modo"), linea = $("#modo-app");
     function pintarModo() {
       document.documentElement.dataset.modoApp = appModo || "familia";
-      caja.hidden = !!appModo && !pedirClave;
-      $("#clave-grupo").hidden = !pedirClave;
-      caja.querySelector(".elegir-btns").hidden = pedirClave;
+      const puerta = !appModo || pedirClave;
+      caja.hidden = !puerta;
+      document.body.classList.toggle("con-puerta", puerta);
       linea.textContent = "";
       if (appModo && (FAMILIA_ABIERTA || esFamilia())) linea.append("Estás viendo la app " + (esFamilia() ? "en modo familia y amigos" : "como parte del grupo") + ". ",
         el("button", { type: "button", "data-ev": "modo: cambió a " + (esFamilia() ? "grupo" : "familia"), onclick: () => elegir(esFamilia() ? "grupo" : "familia"), text: esFamilia() ? "Cambiar a modo grupo" : "Cambiar a modo familia y amigos" }));
@@ -3208,10 +3214,10 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       ticRegresiva(); escenario();
     }
     function elegir(m) {
-      if (m === "grupo" && !leer("grupo-ok", false)) { pedirClave = true; pintarModo(); window.scrollTo(0, 0); setTimeout(() => $("#clave-input").focus(), 50); return; }
+      if (m === "grupo" && !leer("grupo-ok", false)) { pedirClave = true; pintarModo(); setTimeout(() => $("#clave-input").focus(), 50); return; }
       pedirClave = false;
       appModo = m; escribir("app-modo", m); pintarModo(); mostrar(location.hash.slice(1)); window.scrollTo(0, 0); try { $("#chipa").classList.remove("abierta"); $("#chipa-papel").hidden = true; } catch (e) {} }
-    caja.querySelectorAll("[data-elegir]").forEach(b => b.addEventListener("click", () => elegir(b.dataset.elegir)));
+    try { $("#puerta-logo").src = $(".portada .marca img").src; } catch (e) {}
     async function huella(t) {
       const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("gira-mexico-2026:" + t));
       return [...new Uint8Array(d)].map(x => x.toString(16).padStart(2, "0")).join("");
