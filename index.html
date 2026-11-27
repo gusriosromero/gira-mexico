@@ -764,6 +764,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       <a class="mosaico c-durazno" href="#recorrido" data-vista="recorrido"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span class="txt"><b>Recorrido</b><small>Vuelos, fechas y el festival</small></span></a>
       <a class="mosaico c-celeste solo-grupo" href="#mi-lista" data-vista="mi-lista"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></svg></span><span class="txt"><b>Qué llevar</b><small>Tu lista de equipaje</small></span></a>
       <a class="mosaico c-lila" href="#repertorio" data-vista="repertorio"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="txt"><b>Repertorio</b><small>Cuadros y música del espectáculo</small></span></a>
+      <a class="mosaico c-rosa" href="#masterclass" data-vista="masterclass"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.5" r="2"/><path d="M12 7v7M7 9.5l5 1.5 5-1.5M12 14l-4 7M12 14l4 7"/></svg></span><span class="txt"><b>Masterclass</b><small>Música para la clase de danza paraguaya</small></span></a>
       <a class="mosaico c-rosa solo-grupo" href="#plata" data-vista="plata"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.5c-.5-1-1.6-1.5-3-1.5-1.7 0-3 .9-3 2s1.3 1.8 3 2 3 .9 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.5M12 6v2M12 16v2"/></svg></span><span class="txt"><b>Conversor y gastos</b><small>Pesos, guaraníes, dólares y gastos de la gira</small></span></a>
       <a class="mosaico c-durazno solo-grupo" href="#fotos" data-vista="fotos"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="txt"><b>Fotos y videos</b><small>Subí y bajá los del grupo</small></span></a>
       <a class="mosaico c-celeste" href="#lugares" data-vista="lugares"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.5 7-13a7 7 0 0 0-14 0c0 5.5 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></svg></span><span class="txt"><b>Lugares</b><small>Los 9 pueblos de la gira y San Blas</small></span></a>
@@ -1099,6 +1100,41 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
       </div>
       <ol class="e-temas" id="s-lista"></ol>
       <audio id="s-audio" preload="metadata"></audio>
+    </div>
+  </section>
+
+  <!-- MASTERCLASS -->
+  <section class="vista" id="vista-masterclass" hidden>
+    <div class="bloque">
+      <span class="etiqueta">Clase abierta</span>
+      <h3>Masterclass de danza paraguaya</h3>
+      <p>Durante la gira, Vivi va a dar una clase para que la gente de México y de otros países aprenda pasos de nuestra danza: la polca paraguaya, con su alegría y su elegancia. Acá está la música para practicar.</p>
+      <p class="nota">Día y lugar: a confirmar.</p>
+      <div class="e-guardar">
+        <button class="btn sec e-bajar" type="button" id="m-guardar-btn" data-ev="masterclass: guardar sin internet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span id="m-guardar-txt">Guardar las 4 para usar sin internet</span></button>
+        <div class="e-prog" id="m-prog" hidden><div class="e-prog-barra"><i id="m-prog-i"></i></div><span class="nota" id="m-prog-txt"></span></div>
+      </div>
+    </div>
+    <div class="sueltos">
+      <div class="s-player" id="m-player" hidden>
+        <div class="e-ahora" aria-live="polite"><small id="m-quien">Sonando</small><b id="m-tema">&nbsp;</b></div>
+        <div class="e-barra"><div class="e-hecho" id="m-hecho"></div><input type="range" id="m-pos" min="0" max="1000" step="1" value="0" aria-label="Posición en el tema"></div>
+        <div class="e-tiempos"><span id="m-actual">0:00</span><span id="m-total">0:00</span></div>
+        <div class="e-controles">
+          <button type="button" id="m-ant" aria-label="Tema anterior"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+          <button type="button" id="m-menos" class="salto" aria-label="Atrás 5 segundos">-5</button>
+          <button type="button" id="m-play" class="play" aria-label="Reproducir"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+          <button type="button" id="m-mas" class="salto" aria-label="Adelante 5 segundos">+5</button>
+          <button type="button" id="m-sig" aria-label="Tema siguiente"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        </div>
+        <div class="e-opciones">
+          <button type="button" id="m-repetir" aria-pressed="false">Repetir este tema</button>
+          <button type="button" id="m-vel">Velocidad 1x</button>
+        </div>
+        <p class="nota" id="m-estado"></p>
+      </div>
+      <ol class="e-temas" id="m-lista"></ol>
+      <audio id="m-audio" preload="metadata"></audio>
     </div>
   </section>
 
@@ -1594,7 +1630,7 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   aplicarTema(leer("info-tema", "auto"));
 
   // ---------- Navegación ----------
-  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "familias", "seguir", "elenco", "juego", "fotos", "muro", "emergencias", "instalar"];
+  const vistas = ["inicio", "recorrido", "lugares", "tips", "plata", "mi-lista", "repertorio", "masterclass", "familias", "seguir", "elenco", "juego", "fotos", "muro", "emergencias", "instalar"];
   const BLOQUEADAS = ["seguir"];
   if (!MURO_ABIERTO && !leer("app-modo-enlace", false)) { BLOQUEADAS.push("muro"); $("#mosaico-muro").remove(); } // "familias" reabierta 22/11 para el modo familia
   const nombres = {};
@@ -3404,6 +3440,111 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     catch (e) { const r = document.createRange(); r.selectNodeContents($("#url-app")); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent = "Seleccionado"; }
     setTimeout(() => { b.textContent = "Copiar"; }, 2000);
   });
+
+  // ---------- Masterclass: 4 temas sueltos, se guardan en el celular para usar sin internet ----------
+  (() => {
+    const MC = [
+      { n: "El Solito", a: "Banda Folclórica Municipal de Asunción", d: 134.9 },
+      { n: "Londón Karapé", a: "Banda Folclórica Municipal de Asunción · Boettner", d: 164.0 },
+      { n: "Selección de polkas", a: "Luis Álvarez", d: 307.5 },
+      { n: "Selección de polcas", a: "Ymaguareicha", d: 190.3 },
+    ];
+    const V = 1; // subir si se cambia algún MP3
+    const src = k => "audio/masterclass-" + (k + 1) + ".mp3?v=" + V;
+    const au = $("#m-audio"), urls = {}, VELS = [1, 0.9, 0.75];
+    let k = -1, rep = false, vel = 1, guardando = false;
+    const mmss = t => { t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0"); };
+    function bd() {
+      return new Promise((ok, mal) => {
+        const r = indexedDB.open("gira-masterclass", 1);
+        r.onupgradeneeded = () => r.result.createObjectStore("audios");
+        r.onsuccess = () => ok(r.result); r.onerror = () => mal(r.error);
+      });
+    }
+    async function hacer(modo, fn) {
+      const db = await bd();
+      return new Promise((ok, mal) => { const tx = db.transaction("audios", modo), q = fn(tx.objectStore("audios")); tx.oncomplete = () => ok(q && q.result); tx.onerror = () => mal(tx.error); });
+    }
+    const traer = i => hacer("readonly", s => s.get(i)).then(x => x && x.v === V ? x : null).catch(() => null);
+    const guardar = (i, blob) => hacer("readwrite", s => s.put({ blob, v: V }, i));
+    const dura = () => (isFinite(au.duration) && au.duration > 0) ? au.duration : (k >= 0 ? MC[k].d : 0);
+
+    async function pintarLista() {
+      const hechos = await Promise.all(MC.map((_, i) => traer(i)));
+      $("#m-lista").replaceChildren(...MC.map((t, i) => el("li", {},
+        el("button", { type: "button", class: i === k ? "activo" : "", onclick: () => tocar(i) },
+          el("span", { class: "n", text: i + 1 }), el("span", {}, el("span", { text: t.n }), el("br"), el("small", { class: "nota", text: t.a })),
+          el("span", { class: "t", text: (hechos[i] ? "✓ " : "") + mmss(t.d) })))));
+      const todos = hechos.every(Boolean);
+      $("#m-guardar-btn").disabled = todos || guardando;
+      $("#m-guardar-txt").textContent = todos ? "Las 4 ya están guardadas en el celular" : "Guardar las 4 para usar sin internet";
+    }
+    async function tocar(i) {
+      if (i < 0 || i >= MC.length) return;
+      k = i;
+      $("#e-audio")?.pause(); $("#s-audio")?.pause();
+      let fuente = urls[i];
+      if (!fuente) { const x = await traer(i); if (x) fuente = urls[i] = URL.createObjectURL(x.blob); }
+      if (k !== i) return;
+      au.src = fuente || src(i);
+      au.playbackRate = vel;
+      $("#m-estado").textContent = fuente ? "Guardado en el celular, funciona sin internet." : "Sonando desde internet.";
+      $("#m-quien").textContent = "Tema " + (i + 1) + " de " + MC.length + " · " + MC[i].a;
+      $("#m-tema").textContent = MC[i].n;
+      $("#m-player").hidden = false;
+      au.play().catch(() => {});
+      if ("mediaSession" in navigator && window.MediaMetadata)
+        navigator.mediaSession.metadata = new MediaMetadata({ title: MC[i].n, artist: MC[i].a, album: "Masterclass · Acuarela Mimbi", artwork: [{ src: "icons/gira-app-512.png", sizes: "512x512", type: "image/png" }] });
+      pintarLista(); pintar();
+    }
+    function pintar() {
+      const t = au.currentTime || 0, d = dura() || 1;
+      $("#m-hecho").style.width = (t / d * 100) + "%";
+      $("#m-pos").value = Math.round(t / d * 1000);
+      $("#m-pos").setAttribute("aria-valuetext", mmss(t) + " de " + mmss(d));
+      $("#m-actual").textContent = mmss(t); $("#m-total").textContent = mmss(d);
+      const b = $("#m-play"), son = !au.paused;
+      b.setAttribute("aria-label", son ? "Pausa" : "Reproducir");
+      b.querySelector("svg").innerHTML = son ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>' : '<path d="M8 5v14l11-7z"/>';
+    }
+    const mover = s => { au.currentTime = Math.min(Math.max(au.currentTime + s, 0), dura()); pintar(); };
+    ["timeupdate", "play", "pause", "loadedmetadata"].forEach(ev => au.addEventListener(ev, pintar));
+    au.addEventListener("ended", () => { if (rep) { au.currentTime = 0; au.play().catch(() => {}); } else if (k + 1 < MC.length) tocar(k + 1); });
+    au.addEventListener("error", () => { if (k >= 0 && !urls[k]) $("#m-estado").textContent = "No se pudo cargar. La primera vez necesita internet."; });
+    $("#e-audio")?.addEventListener("play", () => au.pause());
+    $("#s-audio")?.addEventListener("play", () => au.pause());
+    $("#m-play").addEventListener("click", () => { if (k < 0) return tocar(0); au.paused ? au.play().catch(() => {}) : au.pause(); });
+    $("#m-ant").addEventListener("click", () => au.currentTime > 3 || k === 0 ? (au.currentTime = 0) : tocar(k - 1));
+    $("#m-sig").addEventListener("click", () => tocar(k + 1));
+    $("#m-menos").addEventListener("click", () => mover(-5));
+    $("#m-mas").addEventListener("click", () => mover(5));
+    $("#m-pos").addEventListener("input", e => { au.currentTime = e.target.value / 1000 * dura(); pintar(); });
+    $("#m-repetir").addEventListener("click", e => { rep = !rep; e.currentTarget.setAttribute("aria-pressed", String(rep)); });
+    $("#m-vel").addEventListener("click", e => {
+      vel = VELS[(VELS.indexOf(vel) + 1) % VELS.length]; au.playbackRate = vel;
+      e.currentTarget.textContent = "Velocidad " + String(vel).replace(".", ",") + "x";
+      e.currentTarget.setAttribute("aria-pressed", String(vel !== 1));
+    });
+    $("#m-guardar-btn").addEventListener("click", async () => {
+      guardando = true; $("#m-guardar-btn").disabled = true; $("#m-prog").hidden = false;
+      try {
+        for (let i = 0; i < MC.length; i++) {
+          const pct = Math.round(i / MC.length * 100);
+          $("#m-prog-i").style.width = pct + "%"; $("#m-prog-txt").textContent = "Guardando " + MC[i].n + "… " + pct + "%";
+          if (await traer(i)) continue;
+          const r = await fetch(src(i)); if (!r.ok) throw new Error(r.status);
+          await guardar(i, await r.blob());
+        }
+        if (navigator.storage?.persist) navigator.storage.persist().catch(() => {});
+        $("#m-prog-i").style.width = "100%"; $("#m-prog-txt").textContent = "¡Listo! Las 4 funcionan sin internet.";
+      } catch (e) {
+        $("#m-prog-txt").textContent = "Se cortó la descarga. Revisá la conexión (mejor con wifi) y volvé a tocar el botón.";
+      }
+      guardando = false; pintarLista();
+    });
+    $("#m-guardar-btn").parentElement.hidden = !/github\.io$/.test(location.hostname);
+    pintarLista();
+  })();
 
   // ---------- Reproductor de ensayo ----------
   // [canción, inicio, fin] en segundos, medidos sobre los MP3 finales de cada cuadro.
