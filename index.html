@@ -407,6 +407,7 @@ p{margin:0}
 .elenco{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .elenco li{display:flex;align-items:center;gap:10px;border:1px solid var(--linea);border-radius:14px;padding:8px 10px}
 .elenco .ini{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:#17171c;font-family:var(--titulo);font-size:20px}
+.elenco video.ini{width:58px;height:58px;object-fit:cover;padding:0;border:2px solid var(--c);background:var(--linea)}
 .elenco b{display:block;font-size:15px}
 .elenco small{display:block;font-size:12px;color:var(--suave)}
 .cnt-elenco{font-size:13px;font-weight:600;color:var(--suave);margin-left:4px}
@@ -3440,6 +3441,25 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
     catch (e) { const r = document.createRange(); r.selectNodeContents($("#url-app")); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent = "Seleccionado"; }
     setTimeout(() => { b.textContent = "Copiar"; }, 2000);
   });
+
+  // ---------- El elenco: videito en loop de cada uno (sacado del video de presentación) ----------
+  (() => {
+    const CARAS = { "Director José": "Jose", "Vivi": "Vivi", "Caro": "Caro", "Carmen": "Carmen", "Flavia": "Flavia", "Kari": "Kari", "Kate": "Kate", "Nahomi": "Nahomi", "Samira": "Sami", "Carlitos": "Carlitos", "Edu": "Edu", "Joel": "Joel", "Santi": "Santi", "Tima": "Tima", "Gustavo": "Gustavo" };
+    const quieto = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll("#vista-elenco .elenco li").forEach(li => {
+      const archivo = CARAS[li.querySelector("b").textContent.trim()], ini = li.querySelector(".ini");
+      if (!archivo || !ini) return;
+      const v = el("video", { class: ini.className, muted: "", loop: "", playsinline: "", preload: quieto ? "none" : "metadata", poster: "elenco/" + archivo + ".jpg", "aria-hidden": "true" });
+      v.muted = true; v.src = "elenco/" + archivo + ".mp4";
+      v.addEventListener("error", () => v.replaceWith(ini), { once: true });
+      ini.replaceWith(v);
+    });
+    // Solo se mueven mientras se ve la sección, para no gastar batería.
+    const vids = () => document.querySelectorAll("#vista-elenco video");
+    const mover = () => { const ver = !$("#vista-elenco").hidden; vids().forEach(v => ver && !quieto ? v.play().catch(() => {}) : v.pause()); };
+    new MutationObserver(mover).observe($("#vista-elenco"), { attributes: true, attributeFilter: ["hidden"] });
+    setTimeout(mover, 0);
+  })();
 
   // ---------- Masterclass: 4 temas sueltos, se guardan en el celular para usar sin internet ----------
   (() => {
