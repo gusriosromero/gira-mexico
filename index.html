@@ -465,6 +465,15 @@ p{margin:0}
 .clima .c-dia i{font-style:normal;color:var(--suave)}
 .clima .c-tip{margin:0;font-size:13.5px;font-weight:600;border-top:1px solid var(--linea);padding-top:9px}
 .clima .c-pie{font-size:11.5px;color:var(--suave)}
+.clima .c-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.clima .c-tabs::-webkit-scrollbar{display:none}
+.clima .c-tabs button{flex:1 1 0;min-width:max-content;justify-content:center;font:inherit;font-size:12.5px;font-weight:700;border:1px solid var(--linea);background:var(--fondo);color:var(--texto);border-radius:999px;padding:6px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.clima .c-tabs button[aria-selected="true"]{background:var(--tinta);border-color:var(--tinta);color:#fff}
+.clima .c-tabs .aca{width:7px;height:7px;border-radius:50%;background:var(--amarillo)}
+.clima .c-pista{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;overscroll-behavior-x:contain}
+.clima .c-pista::-webkit-scrollbar{display:none}
+.clima .c-slide{flex:0 0 100%;scroll-snap-align:start;padding:0 16px;display:grid;gap:10px;box-sizing:border-box}
+.clima .c-desliza{font-size:11.5px;color:var(--suave);text-align:right}
 .clima-tabla{list-style:none;margin:6px 0 8px;padding:0;display:grid;gap:8px}
 .clima-tabla li{display:grid;gap:1px;border-bottom:1px solid var(--linea);padding-bottom:8px}
 .clima-tabla span{font-size:13.5px;font-weight:600}
@@ -1994,8 +2003,21 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   }
   pintarSeguirHoy();
 
-  // ---------- Clima de San Blas (Open-Meteo, gratis y sin cuenta). Guarda el último pronóstico para usar sin internet. ----------
-  const CLIMA_URL = "https://api.open-meteo.com/v1/forecast?latitude=21.54&longitude=-105.29&current=temperature_2m,apparent_temperature,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max&timezone=America%2FMazatlan&forecast_days=4";
+  // ---------- Clima de las 3 paradas (Open-Meteo, gratis y sin cuenta). Guarda el último pronóstico para usar sin internet. ----------
+  // Una sola consulta trae las 3 ciudades, cada una con su hora local (timezone=auto).
+  const CIUDADES_CLIMA = [
+    { id: "gdl", nom: "Guadalajara", lat: 20.67, lon: -103.35 },
+    { id: "pv", nom: "Puerto Vallarta", corto: "Vallarta", lat: 20.65, lon: -105.23 },
+    { id: "sb", nom: "San Blas", lat: 21.54, lon: -105.29 },
+  ];
+  const CLIMA_URL = "https://api.open-meteo.com/v1/forecast?latitude=" + CIUDADES_CLIMA.map(c => c.lat).join(",") + "&longitude=" + CIUDADES_CLIMA.map(c => c.lon).join(",") + "&current=temperature_2m,apparent_temperature,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max&timezone=auto&forecast_days=4";
+  // Dónde está el grupo cada día (hora de Paraguay): define qué ciudad se muestra primero.
+  function ciudadHoy() {
+    const h = new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" });
+    if (h >= "2026-12-02" && h <= "2026-12-03") return "pv";
+    if (h >= "2026-12-04" && h <= "2026-12-13") return "sb";
+    return "gdl";
+  }
   function cielo(c) {
     if (c === 0) return ["☀️", "Despejado"];
     if (c === 1) return ["🌤️", "Casi despejado"];
@@ -2021,43 +2043,63 @@ p.aviso{display:block;padding:12px 14px;font-size:14px}
   const climaActivo = () => new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" }) >= CLIMA_DESDE;
   function pintarClima() {
     if (!climaActivo()) return;
-    const g = leer("info-clima", null);
-    if (!g || !g.datos || !g.datos.current) return;
-    const { current: a, daily: d } = g.datos;
-    const [ico, txt] = cielo(a.weather_code);
+    const g = leer("info-clima3", null);
+    if (!g || !Array.isArray(g.datos) || g.datos.length !== CIUDADES_CLIMA.length) return;
     const hoy = new Date().toLocaleDateString("en-CA", { timeZone: "America/Asuncion" });
     const enGira = hoy >= "2026-11-30" && hoy <= "2026-12-15";
-    const dias = () => d.time.slice(1, 4).map((t, i) => {
-      const k = i + 1, nom = new Date(t + "T12:00:00").toLocaleDateString("es", { weekday: "short" }).replace(".", "");
-      return el("div", { class: "c-dia" }, el("em", { text: nom }), el("span", { class: "e", text: cielo(d.weather_code[k])[0] }),
-        el("b", { text: Math.round(d.temperature_2m_max[k]) + "°" }), el("i", { text: Math.round(d.temperature_2m_min[k]) + "°" }));
-    });
+    const aca = ciudadHoy();
     const hace = Math.round((Date.now() - g.cuando) / 60000);
     const pie = !navigator.onLine || hace > 90
       ? "Último pronóstico guardado: " + new Date(g.cuando).toLocaleString("es", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })
       : "Fuente: Open-Meteo";
-    document.querySelectorAll("[data-clima]").forEach(c => {
-      c.replaceChildren(
+    const slide = (ciudad, datos) => {
+      const { current: a, daily: d } = datos, [ico, txt] = cielo(a.weather_code);
+      const dias = d.time.slice(1, 4).map((t, i) => {
+        const k = i + 1, nom = new Date(t + "T12:00:00").toLocaleDateString("es", { weekday: "short" }).replace(".", "");
+        return el("div", { class: "c-dia" }, el("em", { text: nom }), el("span", { class: "e", text: cielo(d.weather_code[k])[0] }),
+          el("b", { text: Math.round(d.temperature_2m_max[k]) + "°" }), el("i", { text: Math.round(d.temperature_2m_min[k]) + "°" }));
+      });
+      const titulo = enGira && ciudad.id === aca ? ciudad.nom + " · acá estamos" : ciudad.nom + " ahora";
+      return el("div", { class: "c-slide", "data-c": ciudad.id, role: "tabpanel", "aria-label": ciudad.nom },
         el("div", { class: "c-top" },
-          el("div", { class: "c-ahora" }, el("small", { text: enGira ? "San Blas ahora" : "Así está San Blas hoy" }),
+          el("div", { class: "c-ahora" }, el("small", { text: titulo }),
             el("b", { text: `${ico} ${Math.round(a.temperature_2m)}°` }),
             el("span", { text: `${txt} · Máx ${Math.round(d.temperature_2m_max[0])}° Mín ${Math.round(d.temperature_2m_min[0])}°` })),
-          el("div", { class: "c-dias" }, dias())),
-        ...(enGira ? [el("p", { class: "c-tip", text: consejoClima(d) })] : []),
-        el("span", { class: "c-pie", text: pie }));
+          el("div", { class: "c-dias" }, dias)),
+        ...(enGira ? [el("p", { class: "c-tip", text: consejoClima(d) })] : []));
+    };
+    document.querySelectorAll("[data-clima]").forEach(c => {
+      const pista = el("div", { class: "c-pista" }, CIUDADES_CLIMA.map((ci, k) => slide(ci, g.datos[k])));
+      const tabs = el("div", { class: "c-tabs", role: "tablist", "aria-label": "Ciudad" }, CIUDADES_CLIMA.map(ci =>
+        el("button", { type: "button", role: "tab", "data-c": ci.id, "aria-selected": "false", "data-ev": "clima: vio " + ci.nom,
+          onclick: () => { const sl = pista.querySelector(`[data-c="${ci.id}"]`); pista.scrollTo({ left: sl.offsetLeft - pista.offsetLeft, behavior: "smooth" }); marcar(ci.id); } },
+          enGira && ci.id === aca ? el("i", { class: "aca", "aria-hidden": "true" }) : null, ci.corto || ci.nom)));
+      const marcar = id => tabs.querySelectorAll("button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.c === id)));
+      let t = null;
+      pista.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
+        const k = Math.round(pista.scrollLeft / pista.clientWidth); marcar(CIUDADES_CLIMA[Math.min(Math.max(k, 0), CIUDADES_CLIMA.length - 1)].id); }, 60); }, { passive: true });
+      c.replaceChildren(tabs, pista, el("div", { class: "c-pie" }, el("span", { text: pie }), " · ", el("span", { text: "Deslizá para ver las otras ciudades" })));
       c.hidden = false;
+      // Arranca en la ciudad donde está (o va a estar primero) el grupo.
+      const k = CIUDADES_CLIMA.findIndex(ci => ci.id === aca);
+      marcar(aca);
+      // Si la tarjeta está oculta (otra sección abierta), se acomoda cuando aparece.
+      let listo = false;
+      const ir = () => { if (!listo && pista.clientWidth) { listo = true; pista.scrollLeft = k * pista.clientWidth; } };
+      requestAnimationFrame(ir);
+      if (window.ResizeObserver) new ResizeObserver(ir).observe(pista);
     });
   }
   async function traerClima() {
     if (!climaActivo()) return;
-    const g = leer("info-clima", null);
+    const g = leer("info-clima3", null);
     if (g && Date.now() - g.cuando < 30 * 60000) return;
     try {
       const r = await fetch(CLIMA_URL, { cache: "no-store" });
       if (!r.ok) return;
       const datos = await r.json();
-      if (!datos.current || !datos.daily) return;
-      escribir("info-clima", { cuando: Date.now(), datos });
+      if (!Array.isArray(datos) || datos.length !== CIUDADES_CLIMA.length || datos.some(x => !x.current || !x.daily)) return;
+      escribir("info-clima3", { cuando: Date.now(), datos });
       pintarClima();
     } catch (e) {}
   }
